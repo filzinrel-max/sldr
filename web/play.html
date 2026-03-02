@@ -4,12 +4,50 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>SLDR Play</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Teko:wght@500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="./assets/app.css" />
-    <script src="./assets/common.js" defer></script>
     <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: #000000;
+        overflow: hidden;
+      }
+
+      body {
+        position: relative;
+      }
+
+      #songVideo {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        background: #000000;
+      }
+
+      #statusText {
+        position: fixed;
+        left: 50%;
+        bottom: 5.2vh;
+        transform: translateX(-50%);
+        margin: 0;
+        padding: 6px 12px;
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.55);
+        color: #ffffff;
+        font: 700 20px "Rajdhani", "Segoe UI", sans-serif;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        display: none;
+        z-index: 2;
+      }
+
       .screen-wipe {
         position: fixed;
         inset: 0;
@@ -49,7 +87,34 @@
     <script defer>
       (() => {
         "use strict";
+
         const REVEAL_DELAY_MS = 2000;
+
+        function resolveMediaUrl(mediaParam) {
+          if (!mediaParam) {
+            return "";
+          }
+          const raw = String(mediaParam).trim();
+          if (!raw) {
+            return "";
+          }
+          try {
+            if (/^(https?:)?\/\//i.test(raw)) {
+              return raw;
+            }
+            if (raw.indexOf("data:") === 0) {
+              return raw;
+            }
+            if (raw.indexOf("blob:") === 0) {
+              return raw;
+            }
+            const appRoot = new URL("../", window.location.href);
+            const normalizedPath = raw.replace(/^\/+/, "").replace(/^\.\//, "");
+            return new URL(normalizedPath, appRoot).toString();
+          } catch (_err) {
+            return raw;
+          }
+        }
 
         function startLoadReveal() {
           const wipe = document.getElementById("screenWipe");
@@ -66,109 +131,76 @@
           });
         }
 
-        function resolveMediaUrl(mediaParam) {
-          if (!mediaParam) {
-            return "";
+        function showStatus(text) {
+          const node = document.getElementById("statusText");
+          if (!node) {
+            return;
           }
-          const raw = String(mediaParam).trim();
-          if (!raw) {
-            return "";
+          if (!text) {
+            node.style.display = "none";
+            node.textContent = "";
+            return;
           }
-          try {
-            if (/^(https?:)?\/\//i.test(raw) || raw.startsWith("data:") || raw.startsWith("blob:")) {
-              return raw;
-            }
-
-            const appRoot = new URL("../", window.location.href);
-            const normalizedPath = raw.replace(/^\/+/, "").replace(/^\.\//, "");
-            return new URL(normalizedPath, appRoot).toString();
-          } catch (_err) {
-            return raw;
-          }
+          node.textContent = text;
+          node.style.display = "block";
         }
 
         function boot() {
-          window.setTimeout(() => {
-            startLoadReveal();
-          }, REVEAL_DELAY_MS);
-          const q = SLDR.query();
-          const loading = SLDR.getParam(q, "loading", "1") === "1";
-          const id = SLDR.getParam(q, "id", "song-unknown");
-          const title = SLDR.getParam(q, "title", "Unknown Song");
-          const artist = SLDR.getParam(q, "artist", "Unknown Artist");
-          const difficulty = SLDR.getParam(q, "difficulty", "Unknown");
-          const meter = SLDR.getParam(q, "meter", "-");
-          const media = SLDR.getParam(q, "media", "");
+          window.setTimeout(startLoadReveal, REVEAL_DELAY_MS);
+
+          const q = new URLSearchParams(window.location.search);
+          const mediaRaw = q.get("media");
+          let media = "";
+          if (mediaRaw) {
+            media = mediaRaw;
+          }
           const mediaUrl = resolveMediaUrl(media);
-          const player = document.getElementById("songAudio");
+          const video = document.getElementById("songVideo");
+          if (!video) {
+            return;
+          }
 
-          SLDR.applyThemeSeed(id);
-          SLDR.setText("songTitle", title);
-          SLDR.setText("artist", artist);
-          SLDR.setText("difficulty", difficulty);
-          SLDR.setText("meter", meter);
-          SLDR.setText("songId", id);
-          SLDR.setText("media", media || "(none)");
+          if (!mediaUrl) {
+            showStatus("No Media URL");
+            return;
+          }
 
-          const status = loading ? "Loading Chart..." : "Ready";
-          const statusClass = loading ? "loading" : "ready";
-          SLDR.setText("status", status);
-          SLDR.setAttr("status", "class", `status ${statusClass}`);
-          SLDR.setText("marqueeText", `${title} | ${artist} | ${difficulty} ${meter}`);
+          video.pause();
+          video.removeAttribute("src");
+          video.load();
+          video.muted = false;
+          video.playsInline = true;
+          video.autoplay = true;
+          video.loop = false;
+          video.src = mediaUrl;
 
-          function tryStartPlayback() {
-            if (!player || loading) {
-              return;
-            }
-            if (!mediaUrl) {
-              SLDR.setText("status", "Ready (No media URL)");
-              SLDR.setAttr("status", "class", "status loading");
-              return;
-            }
-            if (player.src !== mediaUrl) {
-              player.src = mediaUrl;
-            }
-            const playResult = player.play();
-            if (playResult && typeof playResult.catch === "function") {
-              playResult.catch(() => {
-                SLDR.setText("status", "Tap screen to start audio");
-                SLDR.setAttr("status", "class", "status loading");
+          const playResult = video.play();
+          if (playResult && typeof playResult.then === "function") {
+            playResult
+              .then(() => {
+                showStatus("");
+              })
+              .catch(() => {
+                showStatus("Tap To Start");
               });
-            }
           }
-
-          if (player) {
-            player.pause();
-            player.removeAttribute("src");
-            player.load();
-          }
-          tryStartPlayback();
 
           window.addEventListener(
             "pointerdown",
             () => {
-              tryStartPlayback();
+              const retry = video.play();
+              if (retry && typeof retry.then === "function") {
+                retry
+                  .then(() => {
+                    showStatus("");
+                  })
+                  .catch(() => {
+                    showStatus("Tap To Start");
+                  });
+              }
             },
             { passive: true }
           );
-
-          const start = Date.now();
-          const timer = document.getElementById("timer");
-          const loop = () => {
-            if (loading) {
-              timer.textContent = "--:--";
-            } else {
-              let elapsedSeconds = Math.floor((Date.now() - start) / 1000);
-              if (player && Number.isFinite(player.currentTime) && player.currentTime > 0) {
-                elapsedSeconds = Math.floor(player.currentTime);
-              }
-              const mm = String(Math.floor(elapsedSeconds / 60)).padStart(2, "0");
-              const ss = String(elapsedSeconds % 60).padStart(2, "0");
-              timer.textContent = `${mm}:${ss}`;
-            }
-            requestAnimationFrame(loop);
-          };
-          loop();
         }
 
         window.addEventListener("DOMContentLoaded", boot);
@@ -176,35 +208,8 @@
     </script>
   </head>
   <body>
-    <main class="screen">
-      <section class="shell banner">
-        <p class="kicker">Now Playing</p>
-        <h1 id="songTitle" class="title">Loading Song</h1>
-        <div class="row">
-          <span class="pill">Artist<strong id="artist">-</strong></span>
-          <span class="pill">Difficulty<strong id="difficulty">-</strong></span>
-          <span class="pill">Meter<strong id="meter">-</strong></span>
-          <span class="pill">Song ID<strong id="songId">-</strong></span>
-        </div>
-      </section>
-
-      <section class="shell panel">
-        <div class="row" style="justify-content: space-between;">
-          <h2 id="status" class="status loading">Loading Chart...</h2>
-          <div class="kv">
-            <div class="k">Elapsed</div>
-            <div class="v" id="timer">--:--</div>
-          </div>
-        </div>
-        <div class="divider"></div>
-        <audio id="songAudio" preload="auto"></audio>
-        <div class="lanes" aria-label="lane-visual">
-          <div class="lane-target"></div>
-        </div>
-        <p class="subtle">Media <span id="media">(none)</span></p>
-        <p class="subtle marquee"><span id="marqueeText">Preparing lane data...</span></p>
-      </section>
-    </main>
+    <video id="songVideo" preload="auto" playsinline></video>
+    <p id="statusText"></p>
     <div id="screenWipe" class="screen-wipe is-holding" aria-hidden="true"></div>
   </body>
 </html>

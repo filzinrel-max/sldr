@@ -13,6 +13,7 @@ integer gGameplayActive = FALSE;
 integer gControlsCaptured = FALSE;
 key gActivePlayer = NULL_KEY;
 integer gSessionActive = FALSE;
+integer gHasShownMenu = FALSE;
 string gLastPlayRequestSignature = "";
 string gPlayingMediaPath = "";
 integer gDirectionHeldMask = 0;
@@ -57,6 +58,7 @@ integer ddrBootShowSplash()
 
 integer ddrGoMainMenu(string reason, string extraQuery)
 {
+    gHasShownMenu = TRUE;
     string query = extraQuery;
     if (gPlayingSongId != "")
     {
@@ -705,7 +707,14 @@ integer ddrStartSession(key playerId)
     ddrSendRuntimeReset();
 
     ddrDebug("SESSION", "start player=" + (string)gActivePlayer);
-    ddrTransition(DDR_STATE_SPLASH, "session-start", "status=loading");
+    if (gHasShownMenu)
+    {
+        ddrGoMainMenu("session-start", "status=ready");
+    }
+    else
+    {
+        ddrTransition(DDR_STATE_SPLASH, "session-start", "status=loading");
+    }
     ddrRequestRuntimePermissionsFor(gActivePlayer);
     return TRUE;
 }
@@ -739,6 +748,7 @@ integer ddrBoot()
     gLoadingChart = FALSE;
     gGameplayActive = FALSE;
     gSessionActive = FALSE;
+    gHasShownMenu = FALSE;
     gActivePlayer = NULL_KEY;
     gControlsCaptured = FALSE;
     gLastPlayRequestSignature = "";

@@ -7,7 +7,7 @@ These pages are loaded on the media texture by `lsl/core/sldr_game_main.lsl`.
 `splash.html`
 - `status`
 - `error` (optional)
-- auto-redirects to `menu.html` after ~5 seconds
+- no auto-navigation; LSL controls the next page
 
 `menu.html`
 - LSL-provided optional:
@@ -30,6 +30,11 @@ These pages are loaded on the media texture by `lsl/core/sldr_game_main.lsl`.
   - `difficulty`
   - `chart` (relative chart index path, e.g. `game-data/charts/<song>/<difficulty>.chart.idx.json`)
   - `media` (optional relative media path)
+  - request is sent by navigating to `loading.html` with those query fields
+
+`loading.html`
+- receives the same play request query fields from `select.html`
+- displays loading interstitial while LSL reads the media URL and transitions to `play.html`
 
 `play.html`
 - `loading` (`0|1`)
@@ -39,6 +44,7 @@ These pages are loaded on the media texture by `lsl/core/sldr_game_main.lsl`.
 - `difficulty`
 - `meter`
 - `media` (optional relative/absolute media URL; usually `*.mp4` with song audio)
+- behavior: full-page MP4/video playback using `media` (UI overlays removed)
 
 `score.html`
 - `result` (escaped JSON payload from LSL)
