@@ -360,6 +360,78 @@
         "use strict";
 
         const REVEAL_DELAY_MS = 2000;
+        let gIntroMusicAudio = null;
+        let gIntroUnlockBound = false;
+        let gIntroPrimeTried = false;
+
+        function initIntroMusicAudio() {
+          gIntroMusicAudio = new Audio("./assets/intro_music.mp3");
+          gIntroMusicAudio.preload = "auto";
+          gIntroMusicAudio.loop = true;
+          gIntroMusicAudio.volume = 0.75;
+          gIntroMusicAudio.playsInline = true;
+        }
+
+        function onIntroUnlock() {
+          playIntroMusic();
+        }
+
+        function bindIntroUnlock() {
+          if (gIntroUnlockBound) {
+            return;
+          }
+          gIntroUnlockBound = true;
+          window.addEventListener("pointerdown", onIntroUnlock, { passive: true });
+          window.addEventListener("touchstart", onIntroUnlock, { passive: true });
+          window.addEventListener("mousedown", onIntroUnlock, { passive: true });
+          window.addEventListener("keydown", onIntroUnlock);
+          window.addEventListener("focus", onIntroUnlock);
+        }
+
+        function playIntroMusic() {
+          if (!gIntroMusicAudio) {
+            return;
+          }
+          if (!gIntroMusicAudio.paused) {
+            if (!gIntroMusicAudio.muted) {
+              return;
+            }
+          }
+
+          gIntroMusicAudio.muted = false;
+
+          try {
+            const playResult = gIntroMusicAudio.play();
+            if (playResult && typeof playResult.then === "function") {
+              playResult.catch(() => {
+                bindIntroUnlock();
+              });
+              return;
+            }
+            if (playResult && typeof playResult.catch === "function") {
+              playResult.catch(() => {
+                bindIntroUnlock();
+              });
+            }
+          } catch (_err) {
+            bindIntroUnlock();
+          }
+
+          if (gIntroPrimeTried) {
+            return;
+          }
+          gIntroPrimeTried = true;
+
+          try {
+            gIntroMusicAudio.muted = true;
+            const primeResult = gIntroMusicAudio.play();
+            if (primeResult && typeof primeResult.catch === "function") {
+              primeResult.catch(() => {});
+            }
+          } catch (_err) {
+            // Ignore; unmuted retries continue on user interaction.
+          }
+        }
 
         function startLoadReveal() {
           const wipe = document.getElementById("screenWipe");
@@ -434,6 +506,9 @@
           window.setTimeout(() => {
             startLoadReveal();
           }, REVEAL_DELAY_MS);
+          initIntroMusicAudio();
+          bindIntroUnlock();
+          playIntroMusic();
 
           const result = loadResultFromQuery();
           const seed = String(result.songId || "") + ":" + String(result.title || "");
