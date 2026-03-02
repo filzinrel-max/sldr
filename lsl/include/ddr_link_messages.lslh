@@ -15,4 +15,13 @@ integer DDR_LM_MAIN_FAIL = 7201;
 integer DDR_LM_MAIN_COMPLETE = 7202;
 integer DDR_LM_MAIN_STATUS = 7203;
 
+// Runtime engine -> FX
+integer DDR_LM_FX_RESET = 7300;
+integer DDR_LM_FX_NOTE = 7301;        // payload: "<judgement>|<combo>"
+integer DDR_LM_FX_HOLD = 7302;        // payload: "<holdState>|<combo>"
+integer DDR_LM_FX_JUDGE = 7303;       // payload: "<judgement>"
+integer DDR_LM_FX_HOLD_JUDGE = 7304;  // payload: "<holdState>"
+integer DDR_LM_FX_HIDE_COMBO = 7305;
+integer DDR_LM_FX_HIDE_JUDGE = 7306;
+
 #endif

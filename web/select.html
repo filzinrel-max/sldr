@@ -543,7 +543,8 @@
           selectedDifficulty: "",
           visualSongIndex: 0.0,
           rouletteAnimFrame: 0,
-          wheelAccumulator: 0
+          wheelAccumulator: 0,
+          previewRequestId: 0
         };
         let gMenuPopAudio = null;
         let gSelectedAudio = null;
@@ -983,6 +984,9 @@
             return;
           }
 
+          state.previewRequestId += 1;
+          const requestId = state.previewRequestId;
+
           if (!mediaUrl) {
             video.pause();
             video.removeAttribute("src");
@@ -1004,12 +1008,37 @@
             return;
           }
 
+          video.pause();
+          video.muted = false;
+          video.autoplay = true;
+          video.loop = true;
+          video.playsInline = true;
           video.src = mediaUrl;
           video.style.display = "block";
           fallback.style.display = "none";
           const playResult = video.play();
-          if (playResult && typeof playResult.catch === "function") {
+          if (playResult && typeof playResult.then === "function") {
             playResult.catch(() => {
+              if (requestId !== state.previewRequestId) {
+                return;
+              }
+              video.muted = true;
+              const mutedResult = video.play();
+              if (mutedResult && typeof mutedResult.catch === "function") {
+                mutedResult.catch(() => {
+                  if (requestId !== state.previewRequestId) {
+                    return;
+                  }
+                  fallback.style.display = "grid";
+                  fallback.textContent = "Tap to start preview";
+                });
+              }
+            });
+          } else if (playResult && typeof playResult.catch === "function") {
+            playResult.catch(() => {
+              if (requestId !== state.previewRequestId) {
+                return;
+              }
               fallback.style.display = "grid";
               fallback.textContent = "Tap to start preview";
             });
@@ -1201,6 +1230,7 @@
               if (!video) {
                 return;
               }
+              video.muted = false;
               const playResult = video.play();
               if (playResult && typeof playResult.then === "function") {
                 playResult.then(() => {
