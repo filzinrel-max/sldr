@@ -195,25 +195,6 @@
             });
           }
         }, REVEAL_DELAY_MS);
-        window.setTimeout(() => {
-          if (!wipe) {
-            return;
-          }
-          wipe.classList.remove("is-holding");
-          wipe.classList.remove("is-revealing");
-          wipe.classList.remove("is-covering");
-          wipe.classList.remove("is-covering-prep");
-          wipe.classList.add("is-covering-prep");
-          void wipe.offsetWidth;
-          wipe.classList.remove("is-covering-prep");
-          wipe.classList.add("is-covering");
-        }, 4000);
-        window.setTimeout(() => {
-          if (gWelcomeAudio) {
-            gWelcomeAudio.pause();
-          }
-          window.location.href = "./menu.html";
-        }, 5000);
       });
     </script>
   </head>

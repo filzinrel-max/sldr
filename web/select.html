@@ -1174,13 +1174,20 @@
             params.set("media", mediaPath);
           }
 
+          const previewVideo = document.getElementById("previewVideo");
+          if (previewVideo) {
+            previewVideo.pause();
+            previewVideo.removeAttribute("src");
+            previewVideo.load();
+          }
+
           gStartingPlay = true;
           setStatus("Sending Play Request...", "loading");
           setError("");
           startScreenWipe();
           playSelectedSfx();
           window.setTimeout(() => {
-            window.location.href = `./select.html?${params.toString()}`;
+            window.location.href = `./loading.html?${params.toString()}`;
           }, 1000);
         }
 
