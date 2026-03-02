@@ -6,10 +6,291 @@
     <title>SLDR Results</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Teko:wght@500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="./assets/app.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet" />
     <script src="./assets/common.js" defer></script>
     <style>
+      :root {
+        --ink: #0e2a35;
+        --muted: #5a7b86;
+        --line: #cde7ef;
+        --teal: #1ad4d8;
+        --teal-strong: #00aeb7;
+        --pink: #ff4f9a;
+        --ok: #00a66a;
+        --warn: #ff8d42;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        color: var(--ink);
+        font-family: "Rajdhani", "Segoe UI", sans-serif;
+        background:
+          radial-gradient(100vmax 70vmax at -10% 115%, rgba(26, 212, 216, 0.22), transparent 60%),
+          radial-gradient(90vmax 60vmax at 110% -5%, rgba(255, 79, 154, 0.2), transparent 64%),
+          linear-gradient(160deg, #fdfeff, #f3fbff 46%, #fdf8ff);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background:
+          repeating-linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.022) 0,
+            rgba(0, 0, 0, 0.022) 2px,
+            transparent 2px,
+            transparent 7px
+          );
+        mix-blend-mode: soft-light;
+        opacity: 0.48;
+      }
+
+      .score-root {
+        position: relative;
+        min-height: 100vh;
+        padding: clamp(12px, 2.7vw, 30px);
+        display: grid;
+        gap: 12px;
+      }
+
+      .topbar {
+        width: min(1320px, 100%);
+        margin: 0 auto;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: linear-gradient(120deg, rgba(255, 255, 255, 0.95), rgba(246, 253, 255, 0.86));
+        padding: 10px clamp(12px, 2vw, 20px);
+        box-shadow: 0 10px 32px rgba(36, 108, 133, 0.11);
+        display: grid;
+        gap: 4px;
+      }
+
+      .top-kicker {
+        margin: 0;
+        font: 700 13px "Rajdhani", sans-serif;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .top-title {
+        margin: 0;
+        font: 800 clamp(28px, 4.8vw, 48px) "Orbitron", sans-serif;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--teal-strong);
+        text-shadow: 0 0 14px rgba(26, 212, 216, 0.32);
+      }
+
+      .song-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .pill {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 4px 12px;
+        background: #ffffff;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .pill strong {
+        color: var(--ink);
+        margin-left: 6px;
+      }
+
+      .score-layout {
+        width: min(1320px, 100%);
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: minmax(320px, 54%) minmax(280px, 46%);
+        gap: clamp(12px, 2.2vw, 24px);
+      }
+
+      .score-layout > * {
+        min-width: 0;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: linear-gradient(140deg, rgba(255, 255, 255, 0.96), rgba(244, 252, 255, 0.9));
+        box-shadow: 0 16px 42px rgba(36, 108, 133, 0.12);
+        padding: clamp(12px, 2vw, 18px);
+      }
+
+      .panel-kicker {
+        margin: 0;
+        font: 700 14px "Rajdhani", sans-serif;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .grade-row {
+        display: grid;
+        grid-template-columns: minmax(130px, 200px) minmax(200px, 1fr);
+        gap: 12px;
+        align-items: end;
+      }
+
+      .grade-value {
+        margin: 0;
+        line-height: 0.88;
+        font: 800 clamp(84px, 15vw, 180px) "Orbitron", sans-serif;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: transparent;
+        background: linear-gradient(180deg, #17d4d8 0%, #00afb7 45%, #ff4f9a 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+
+      .grade-value[data-letter="A"] {
+        background: linear-gradient(180deg, #15d977 0%, #00b863 60%, #00a653 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+
+      .grade-value[data-letter="B"] {
+        background: linear-gradient(180deg, #17d4d8 0%, #00afb7 45%, #3d8fff 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+
+      .grade-value[data-letter="C"] {
+        background: linear-gradient(180deg, #ffd86b 0%, #ffb74d 50%, #ff9457 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+
+      .grade-value[data-letter="D"] {
+        background: linear-gradient(180deg, #ffb76b 0%, #ff9457 48%, #ff6e6e 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+
+      .grade-value[data-letter="E"],
+      .grade-value[data-letter="F"] {
+        background: linear-gradient(180deg, #ff8aa9 0%, #ff5f8f 42%, #ff4f9a 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+
+      .kv-grid {
+        display: grid;
+        gap: 8px;
+      }
+
+      .kv {
+        border: 1px solid #c8e4ed;
+        border-radius: 12px;
+        background: #ffffff;
+        padding: 8px 10px;
+        display: grid;
+        gap: 1px;
+      }
+
+      .kv .k {
+        color: var(--muted);
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .kv .v {
+        color: var(--ink);
+        font: 800 clamp(24px, 3.2vw, 36px) "Orbitron", sans-serif;
+        line-height: 1;
+        letter-spacing: 0.03em;
+      }
+
+      .divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #b8dce8 14%, #b8dce8 86%, transparent);
+        margin: 12px 0;
+      }
+
+      .judge-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .judge {
+        border: 1px solid #c8e4ed;
+        border-radius: 12px;
+        background: #ffffff;
+        padding: 7px 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .judge .name {
+        color: var(--muted);
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .judge .count {
+        color: var(--ink);
+        font: 800 25px "Orbitron", sans-serif;
+        line-height: 1;
+      }
+
+      .radar-wrap {
+        border: 1px solid #d6ebf2;
+        border-radius: 14px;
+        background:
+          radial-gradient(90% 40% at 50% 18%, rgba(26, 212, 216, 0.16), transparent 72%),
+          radial-gradient(90% 45% at 50% 88%, rgba(255, 79, 154, 0.14), transparent 74%),
+          linear-gradient(180deg, #fbfeff, #f2fbff);
+        min-height: min(56vh, 480px);
+        padding: 8px;
+      }
+
+      #radar {
+        width: 100%;
+        height: min(52vh, 440px);
+        display: block;
+      }
+
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+        color: var(--muted);
+      }
+
+      .legend span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .dot {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+      }
+
       .screen-wipe {
         position: fixed;
         inset: 0;
@@ -45,11 +326,112 @@
           transform: translate(-120%, -120%) rotate(-45deg);
         }
       }
+
+      @media (max-width: 1020px) {
+        .score-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .grade-row {
+          grid-template-columns: minmax(120px, 170px) 1fr;
+        }
+
+        .radar-wrap {
+          min-height: min(50vh, 420px);
+        }
+
+        #radar {
+          height: min(46vh, 380px);
+        }
+      }
+
+      @media (max-width: 640px) {
+        .judge-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .kv .v {
+          font-size: 30px;
+        }
+      }
     </style>
     <script defer>
       (() => {
         "use strict";
+
         const REVEAL_DELAY_MS = 2000;
+        let gIntroMusicAudio = null;
+        let gIntroUnlockBound = false;
+        let gIntroPrimeTried = false;
+
+        function initIntroMusicAudio() {
+          gIntroMusicAudio = new Audio("./assets/intro_music.mp3");
+          gIntroMusicAudio.preload = "auto";
+          gIntroMusicAudio.loop = true;
+          gIntroMusicAudio.volume = 0.75;
+          gIntroMusicAudio.playsInline = true;
+        }
+
+        function onIntroUnlock() {
+          playIntroMusic();
+        }
+
+        function bindIntroUnlock() {
+          if (gIntroUnlockBound) {
+            return;
+          }
+          gIntroUnlockBound = true;
+          window.addEventListener("pointerdown", onIntroUnlock, { passive: true });
+          window.addEventListener("touchstart", onIntroUnlock, { passive: true });
+          window.addEventListener("mousedown", onIntroUnlock, { passive: true });
+          window.addEventListener("keydown", onIntroUnlock);
+          window.addEventListener("focus", onIntroUnlock);
+        }
+
+        function playIntroMusic() {
+          if (!gIntroMusicAudio) {
+            return;
+          }
+          if (!gIntroMusicAudio.paused) {
+            if (!gIntroMusicAudio.muted) {
+              return;
+            }
+          }
+
+          gIntroMusicAudio.muted = false;
+
+          try {
+            const playResult = gIntroMusicAudio.play();
+            if (playResult && typeof playResult.then === "function") {
+              playResult.catch(() => {
+                bindIntroUnlock();
+              });
+              return;
+            }
+            if (playResult && typeof playResult.catch === "function") {
+              playResult.catch(() => {
+                bindIntroUnlock();
+              });
+            }
+          } catch (_err) {
+            bindIntroUnlock();
+          }
+
+          if (gIntroPrimeTried) {
+            return;
+          }
+          gIntroPrimeTried = true;
+
+          try {
+            gIntroMusicAudio.muted = true;
+            const primeResult = gIntroMusicAudio.play();
+            if (primeResult && typeof primeResult.catch === "function") {
+              primeResult.catch(() => {});
+            }
+          } catch (_err) {
+            // Ignore; unmuted retries continue on user interaction.
+          }
+        }
 
         function startLoadReveal() {
           const wipe = document.getElementById("screenWipe");
@@ -89,7 +471,9 @@
           const q = SLDR.query();
           const raw = SLDR.getParam(q, "result", "");
           const parsed = SLDR.decodeMaybeJson(raw);
-          if (parsed && typeof parsed === "object") return parsed;
+          if (parsed && typeof parsed === "object") {
+            return parsed;
+          }
           return fallbackResult();
         }
 
@@ -97,12 +481,37 @@
           SLDR.setText(id, String(SLDR.toNumber(value, 0)));
         }
 
+        function renderRadar(result) {
+          const radar = result.radar || {};
+          const songData = Array.isArray(radar.song) ? radar.song : [0, 0, 0, 0, 0];
+          const perfData = Array.isArray(radar.performance) ? radar.performance : [0, 0, 0, 0, 0];
+          SLDR.drawRadar(document.getElementById("radar"), {
+            labels: ["Stream", "Voltage", "Air", "Freeze", "Chaos"],
+            datasets: [
+              {
+                values: songData,
+                stroke: "rgba(255, 79, 154, 0.95)",
+                fill: "rgba(255, 79, 154, 0.2)"
+              },
+              {
+                values: perfData,
+                stroke: "rgba(26, 212, 216, 0.95)",
+                fill: "rgba(26, 212, 216, 0.22)"
+              }
+            ]
+          });
+        }
+
         function boot() {
           window.setTimeout(() => {
             startLoadReveal();
           }, REVEAL_DELAY_MS);
+          initIntroMusicAudio();
+          bindIntroUnlock();
+          playIntroMusic();
+
           const result = loadResultFromQuery();
-          const seed = `${result.songId || ""}:${result.title || ""}`;
+          const seed = String(result.songId || "") + ":" + String(result.title || "");
           SLDR.applyThemeSeed(seed);
 
           const grade = String(result.grade || "F").toUpperCase();
@@ -127,23 +536,9 @@
           setCount("holdOk", h.ok);
           setCount("holdNg", h.ng);
 
-          const radar = result.radar || {};
-          const songData = Array.isArray(radar.song) ? radar.song : [0, 0, 0, 0, 0];
-          const perfData = Array.isArray(radar.performance) ? radar.performance : [0, 0, 0, 0, 0];
-          SLDR.drawRadar(document.getElementById("radar"), {
-            labels: ["Stream", "Voltage", "Air", "Freeze", "Chaos"],
-            datasets: [
-              {
-                values: songData,
-                stroke: "rgba(255,193,69,0.95)",
-                fill: "rgba(255,193,69,0.22)"
-              },
-              {
-                values: perfData,
-                stroke: "rgba(21,215,255,0.95)",
-                fill: "rgba(21,215,255,0.22)"
-              }
-            ]
+          renderRadar(result);
+          window.addEventListener("resize", () => {
+            renderRadar(result);
           });
         }
 
@@ -152,25 +547,23 @@
     </script>
   </head>
   <body>
-    <main class="screen">
-      <section class="shell banner">
-        <p class="kicker">Results</p>
-        <h1 id="title" class="title">Song Title</h1>
-        <div class="row">
+    <main class="score-root">
+      <header class="topbar">
+        <p class="top-kicker">Dance Results</p>
+        <h1 id="title" class="top-title">Song Title</h1>
+        <div class="song-row">
           <span class="pill">Artist<strong id="artist">-</strong></span>
           <span class="pill">Difficulty<strong id="difficulty">-</strong></span>
           <span class="pill">Meter<strong id="meter">0</strong></span>
         </div>
-      </section>
+      </header>
 
-      <section class="shell grid cols-2">
+      <section class="score-layout">
         <article class="panel">
-          <div class="row" style="justify-content: space-between; align-items: flex-end;">
-            <div>
-              <p class="kicker">Grade</p>
-              <p id="grade" class="grade" data-letter="F">F</p>
-            </div>
-            <div class="grid" style="gap: 10px; min-width: 200px;">
+          <p class="panel-kicker">Grade Summary</p>
+          <div class="grade-row">
+            <p id="grade" class="grade-value" data-letter="F">F</p>
+            <div class="kv-grid">
               <div class="kv">
                 <div class="k">Score</div>
                 <div class="v" id="score">0</div>
@@ -185,7 +578,10 @@
               </div>
             </div>
           </div>
+
           <div class="divider"></div>
+
+          <p class="panel-kicker">Judgements</p>
           <div class="judge-grid">
             <div class="judge"><div class="name">Perfect</div><div class="count" id="perfect">0</div></div>
             <div class="judge"><div class="name">Great</div><div class="count" id="great">0</div></div>
@@ -198,11 +594,13 @@
         </article>
 
         <article class="panel">
-          <p class="kicker">DDR Radar</p>
-          <canvas id="radar" class="radar" aria-label="radar chart"></canvas>
+          <p class="panel-kicker">DDR Radar</p>
+          <div class="radar-wrap">
+            <canvas id="radar" aria-label="radar chart"></canvas>
+          </div>
           <div class="legend">
-            <span><span class="dot" style="background: rgba(255,193,69,0.95)"></span>Song Profile</span>
-            <span><span class="dot" style="background: rgba(21,215,255,0.95)"></span>Performance</span>
+            <span><span class="dot" style="background: rgba(255, 79, 154, 0.95)"></span>Song Profile</span>
+            <span><span class="dot" style="background: rgba(26, 212, 216, 0.95)"></span>Performance</span>
           </div>
         </article>
       </section>
