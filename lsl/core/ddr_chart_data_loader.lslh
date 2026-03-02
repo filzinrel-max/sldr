@@ -1,293 +1,286 @@
 #ifndef DDR_CHART_DATA_LOADER_LSLH
 #define DDR_CHART_DATA_LOADER_LSLH
 
-// Runtime chart data model shared by renderer/judgement/scoring.
-// Notes stride: [timeCs, lane, holdId(-1=tap), judge, flags, ...]
-// Holds stride: [holdId, lane, endCs, state, ...]
-list gNoteEvents = [];
-list gHoldEvents = [];
+// Builder-side chart storage used by sldr_game_chart_loader.lsl.
+// Input format is sparse masked events loaded in multiple chunks.
 
 string gChartDifficultyName = "";
 integer gChartMeter = 0;
 float gChartDurationSeconds = 0.0;
 
-integer gChartTotalRows = 0;
 integer gChartTotalNotes = 0;
 integer gChartTotalHolds = 0;
-integer gChartChordRows = 0;
-integer gChartMaxSimultaneous = 0;
-integer gChartOffbeatNotes = 0;
+integer gChartStoreSeq = 0;
+string gChartStorePrefix = "";
 
-list gChartSongRadar = [0.0, 0.0, 0.0, 0.0, 0.0];
+// Build state across chunks.
+integer gChartCursorCs = 0;
+integer gChartLatestNoteCs = 0;
+integer gChartNextHoldId = 1;
+list gChartOpenHoldIds = [-1, -1, -1, -1];
+list gChartOpenHoldStarts = [0, 0, 0, 0];
 
-integer ddrChartReset()
+#define DDR_PACK_TIME_BIAS 32768
+#define DDR_PACK_HOLD_NONE 511
+
+integer ddrPackClamp(integer value, integer minValue, integer maxValue)
 {
-    gNoteEvents = [];
-    gHoldEvents = [];
-    gChartDifficultyName = "";
-    gChartMeter = 0;
-    gChartDurationSeconds = 0.0;
-    gChartTotalRows = 0;
-    gChartTotalNotes = 0;
-    gChartTotalHolds = 0;
-    gChartChordRows = 0;
-    gChartMaxSimultaneous = 0;
-    gChartOffbeatNotes = 0;
-    gChartSongRadar = [0.0, 0.0, 0.0, 0.0, 0.0];
-    return TRUE;
+    if (value < minValue)
+    {
+        return minValue;
+    }
+    if (value > maxValue)
+    {
+        return maxValue;
+    }
+    return value;
 }
 
-integer ddrChartNoteCount()
+integer ddrPackTimeEncode(integer timeCs)
 {
-    return llGetListLength(gNoteEvents) / 5;
+    return ddrPackClamp(timeCs + DDR_PACK_TIME_BIAS, 0, 65535);
 }
 
-integer ddrChartHoldCount()
+integer ddrNoteJudgeEncode(integer judgement)
 {
-    return llGetListLength(gHoldEvents) / 4;
+    return ddrPackClamp(judgement + 1, 0, 7);
 }
 
-list ddrChartParseRadar(string radarJson)
+integer ddrNoteHoldEncode(integer holdId)
 {
-    list out = [0.0, 0.0, 0.0, 0.0, 0.0];
-    if (radarJson == JSON_INVALID || llJsonValueType(radarJson, []) != JSON_ARRAY)
+    if (holdId < 0)
     {
-        return out;
+        return DDR_PACK_HOLD_NONE;
     }
-
-    list values = llJson2List(radarJson);
-    integer maxCopy = llGetListLength(values);
-    if (maxCopy > 5)
-    {
-        maxCopy = 5;
-    }
-
-    integer i = 0;
-    for (; i < maxCopy; ++i)
-    {
-        float value = (float)llList2String(values, i);
-        value = ddrClampFloat(value, 0.0, 1.0);
-        out = llListReplaceList(out, [value], i, i);
-    }
-    return out;
+    return ddrPackClamp(holdId, 0, DDR_PACK_HOLD_NONE - 1);
 }
 
-integer ddrChartFindRecordSeparator(string text, integer fromIndex)
+integer ddrNotePack(integer timeCs, integer lane, integer holdId, integer judgement)
 {
-    integer len = llStringLength(text);
-    integer i = fromIndex;
-    for (; i < len; ++i)
-    {
-        if (llGetSubString(text, i, i) == ";")
-        {
-            return i;
-        }
-    }
-    return -1;
+    integer packed = ddrPackTimeEncode(timeCs);
+    packed = packed | ((ddrPackClamp(lane, 0, 3) & 3) << 16);
+    packed = packed | ((ddrNoteHoldEncode(holdId) & 511) << 18);
+    packed = packed | ((ddrNoteJudgeEncode(judgement) & 7) << 27);
+    return packed;
 }
 
-integer ddrChartLoadNotesString(string encodedNotes)
+integer ddrHoldPack(integer holdId, integer lane, integer endCs, integer holdState)
 {
-    if (encodedNotes == "")
+    integer packed = ddrPackClamp(holdId, 0, DDR_PACK_HOLD_NONE - 1);
+    packed = packed | ((ddrPackClamp(lane, 0, 3) & 3) << 9);
+    packed = packed | ((ddrPackTimeEncode(endCs) & 65535) << 11);
+    packed = packed | ((ddrPackClamp(holdState, 0, 3) & 3) << 27);
+    return packed;
+}
+
+string ddrChartPrefixForSeq(integer seq)
+{
+    return "e" + (string)seq + ":";
+}
+
+string ddrChartNoteKey(integer noteIndex)
+{
+    return gChartStorePrefix + "n" + (string)noteIndex;
+}
+
+string ddrChartHoldKey(integer holdIndex)
+{
+    return gChartStorePrefix + "h" + (string)holdIndex;
+}
+
+integer ddrChartWriteNote(integer timeCs, integer lane, integer holdId)
+{
+    integer packed = ddrNotePack(timeCs, lane, holdId, DDR_JUDGE_NONE);
+    llLinksetDataWrite(ddrChartNoteKey(gChartTotalNotes), (string)packed);
+    ++gChartTotalNotes;
+    if (timeCs > gChartLatestNoteCs)
     {
-        return TRUE;
-    }
-
-    integer len = llStringLength(encodedNotes);
-    integer cursor = 0;
-    while (cursor < len)
-    {
-        integer sepPos = ddrChartFindRecordSeparator(encodedNotes, cursor);
-        string row = "";
-        if (sepPos < 0)
-        {
-            row = llGetSubString(encodedNotes, cursor, -1);
-            cursor = len;
-        }
-        else
-        {
-            if (sepPos > cursor)
-            {
-                row = llGetSubString(encodedNotes, cursor, sepPos - 1);
-            }
-            cursor = sepPos + 1;
-        }
-
-        row = llStringTrim(row, STRING_TRIM);
-        if (row == "")
-        {
-            jump next_row;
-        }
-
-        list fields = llParseStringKeepNulls(row, [","], []);
-        if (llGetListLength(fields) < 5)
-        {
-            jump next_row;
-        }
-
-        integer cs = (integer)llList2String(fields, 0);
-        integer lane = (integer)llList2String(fields, 1);
-        integer noteType = (integer)llList2String(fields, 2);
-        integer refId = (integer)llList2String(fields, 3);
-        integer flags = (integer)llList2String(fields, 4);
-        integer holdId = -1;
-        if (noteType == DDR_NOTE_HOLD_HEAD)
-        {
-            holdId = refId;
-        }
-
-        gNoteEvents += [cs, lane, holdId, DDR_JUDGE_NONE, flags];
-        ++gChartTotalNotes;
-        if (flags & DDR_NOTE_FLAG_OFFBEAT)
-        {
-            ++gChartOffbeatNotes;
-        }
-        float noteTime = (float)cs * 0.01;
-        if (noteTime > gChartDurationSeconds)
-        {
-            gChartDurationSeconds = noteTime;
-        }
-@next_row;
+        gChartLatestNoteCs = timeCs;
     }
     return TRUE;
 }
 
-integer ddrChartLoadHoldsString(string encodedHolds)
+integer ddrChartWriteHold(integer holdId, integer lane, integer endCs)
 {
-    if (encodedHolds == "")
-    {
-        return TRUE;
-    }
-
-    integer len = llStringLength(encodedHolds);
-    integer cursor = 0;
-    while (cursor < len)
-    {
-        integer sepPos = ddrChartFindRecordSeparator(encodedHolds, cursor);
-        string row = "";
-        if (sepPos < 0)
-        {
-            row = llGetSubString(encodedHolds, cursor, -1);
-            cursor = len;
-        }
-        else
-        {
-            if (sepPos > cursor)
-            {
-                row = llGetSubString(encodedHolds, cursor, sepPos - 1);
-            }
-            cursor = sepPos + 1;
-        }
-
-        row = llStringTrim(row, STRING_TRIM);
-        if (row == "")
-        {
-            jump next_row;
-        }
-
-        list fields = llParseStringKeepNulls(row, [","], []);
-        if (llGetListLength(fields) < 4)
-        {
-            jump next_row;
-        }
-
-        integer holdId = (integer)llList2String(fields, 0);
-        integer lane = (integer)llList2String(fields, 1);
-        integer startCs = (integer)llList2String(fields, 2);
-        integer endCs = (integer)llList2String(fields, 3);
-        if (endCs < startCs)
-        {
-            endCs = startCs;
-        }
-
-        gHoldEvents += [holdId, lane, endCs, DDR_HOLD_STATE_PENDING];
-        ++gChartTotalHolds;
-
-        float endTime = (float)endCs * 0.01;
-        if (endTime > gChartDurationSeconds)
-        {
-            gChartDurationSeconds = endTime;
-        }
-@next_row;
-    }
-    return TRUE;
-}
-
-integer ddrChartLoadFromCompactJson(string chartJson)
-{
-    ddrChartReset();
-    if (chartJson == "" || llJsonValueType(chartJson, []) != JSON_OBJECT)
+    integer holdIndex = holdId - 1;
+    if (holdIndex < 0)
     {
         return FALSE;
     }
 
-    string difficulty = llJsonGetValue(chartJson, ["d"]);
-    if (difficulty != JSON_INVALID)
+    integer packed = ddrHoldPack(holdId, lane, endCs, DDR_HOLD_STATE_PENDING);
+    llLinksetDataWrite(ddrChartHoldKey(holdIndex), (string)packed);
+    if (holdId > gChartTotalHolds)
     {
-        gChartDifficultyName = difficulty;
+        gChartTotalHolds = holdId;
+    }
+    return TRUE;
+}
+
+integer ddrChartOpenHoldId(integer lane)
+{
+    return llList2Integer(gChartOpenHoldIds, lane);
+}
+
+integer ddrChartOpenHoldStart(integer lane)
+{
+    return llList2Integer(gChartOpenHoldStarts, lane);
+}
+
+integer ddrChartSetOpenHold(integer lane, integer holdId, integer startCs)
+{
+    gChartOpenHoldIds = llListReplaceList(gChartOpenHoldIds, [holdId], lane, lane);
+    gChartOpenHoldStarts = llListReplaceList(gChartOpenHoldStarts, [startCs], lane, lane);
+    return TRUE;
+}
+
+integer ddrChartCloseHold(integer lane, integer endCs)
+{
+    integer holdId = ddrChartOpenHoldId(lane);
+    if (holdId < 1)
+    {
+        return FALSE;
     }
 
-    string meterRaw = llJsonGetValue(chartJson, ["m"]);
-    if (meterRaw != JSON_INVALID)
+    integer startCs = ddrChartOpenHoldStart(lane);
+    if (endCs < startCs)
     {
-        gChartMeter = (integer)meterRaw;
+        endCs = startCs;
     }
 
-    string durationRaw = llJsonGetValue(chartJson, ["du"]);
-    if (durationRaw != JSON_INVALID)
+    ddrChartWriteHold(holdId, lane, endCs);
+    ddrChartSetOpenHold(lane, -1, 0);
+    if ((float)endCs * 0.01 > gChartDurationSeconds)
     {
-        gChartDurationSeconds = (float)durationRaw;
+        gChartDurationSeconds = (float)endCs * 0.01;
+    }
+    return TRUE;
+}
+
+integer ddrChartReset()
+{
+    if (gChartStorePrefix != "")
+    {
+        integer i = 0;
+        for (; i < gChartTotalNotes; ++i)
+        {
+            llLinksetDataDelete(ddrChartNoteKey(i));
+        }
+        for (i = 0; i < gChartTotalHolds; ++i)
+        {
+            llLinksetDataDelete(ddrChartHoldKey(i));
+        }
     }
 
-    string totalRowsRaw = llJsonGetValue(chartJson, ["tr"]);
-    if (totalRowsRaw != JSON_INVALID)
-    {
-        gChartTotalRows = (integer)totalRowsRaw;
-    }
-    string chordRowsRaw = llJsonGetValue(chartJson, ["ch"]);
-    if (chordRowsRaw != JSON_INVALID)
-    {
-        gChartChordRows = (integer)chordRowsRaw;
-    }
-    string maxSimRaw = llJsonGetValue(chartJson, ["mx"]);
-    if (maxSimRaw != JSON_INVALID)
-    {
-        gChartMaxSimultaneous = (integer)maxSimRaw;
-    }
+    gChartDifficultyName = "";
+    gChartMeter = 0;
+    gChartDurationSeconds = 0.0;
+    gChartTotalNotes = 0;
+    gChartTotalHolds = 0;
+    gChartStorePrefix = "";
+    gChartCursorCs = 0;
+    gChartLatestNoteCs = 0;
+    gChartNextHoldId = 1;
+    gChartOpenHoldIds = [-1, -1, -1, -1];
+    gChartOpenHoldStarts = [0, 0, 0, 0];
+    return TRUE;
+}
 
-    string radarRaw = llJsonGetValue(chartJson, ["sr"]);
-    gChartSongRadar = ddrChartParseRadar(radarRaw);
+integer ddrChartBeginBuild(string difficulty, integer meter, float duration)
+{
+    ddrChartReset();
 
-    string encodedNotes = llJsonGetValue(chartJson, ["n"]);
-    string encodedHolds = llJsonGetValue(chartJson, ["h"]);
-    chartJson = "";
-
-    if (encodedNotes == JSON_INVALID)
+    gChartStoreSeq = gChartStoreSeq + 1;
+    if (gChartStoreSeq <= 0)
     {
-        encodedNotes = "";
-    }
-    ddrChartLoadNotesString(encodedNotes);
-    encodedNotes = "";
-
-    if (encodedHolds == JSON_INVALID)
-    {
-        encodedHolds = "";
-    }
-    ddrChartLoadHoldsString(encodedHolds);
-    encodedHolds = "";
-
-    if (gChartTotalRows <= 0 && gChartTotalNotes > 0)
-    {
-        gChartTotalRows = gChartTotalNotes;
+        gChartStoreSeq = 1;
     }
 
-    ddrDebug(
-        "PARSE",
-        "difficulty=" + gChartDifficultyName +
-        " meter=" + (string)gChartMeter +
-        " notes=" + (string)gChartTotalNotes +
-        " holds=" + (string)gChartTotalHolds
-    );
+    gChartStorePrefix = ddrChartPrefixForSeq(gChartStoreSeq);
+    gChartDifficultyName = difficulty;
+    gChartMeter = meter;
+    if (duration < 0.0)
+    {
+        duration = 0.0;
+    }
+    gChartDurationSeconds = duration;
+    gChartCursorCs = 0;
+    gChartLatestNoteCs = 0;
+    gChartNextHoldId = 1;
+    gChartOpenHoldIds = [-1, -1, -1, -1];
+    gChartOpenHoldStarts = [0, 0, 0, 0];
+    return TRUE;
+}
+
+integer ddrChartApplyEvent(integer timeCs, integer pressMask, integer holdStartMask, integer holdEndMask)
+{
+    integer lane = 0;
+    for (; lane < 4; ++lane)
+    {
+        integer bit = 1 << lane;
+        if ((holdEndMask & bit) != 0)
+        {
+            ddrChartCloseHold(lane, timeCs);
+        }
+    }
+
+    for (lane = 0; lane < 4; ++lane)
+    {
+        integer bitStart = 1 << lane;
+        if ((holdStartMask & bitStart) != 0)
+        {
+            integer holdId = gChartNextHoldId;
+            gChartNextHoldId = gChartNextHoldId + 1;
+            ddrChartSetOpenHold(lane, holdId, timeCs);
+            ddrChartWriteNote(timeCs, lane, holdId);
+        }
+    }
+
+    for (lane = 0; lane < 4; ++lane)
+    {
+        integer bitPress = 1 << lane;
+        if ((pressMask & bitPress) != 0 && (holdStartMask & bitPress) == 0)
+        {
+            ddrChartWriteNote(timeCs, lane, -1);
+        }
+    }
+
+    if ((float)timeCs * 0.01 > gChartDurationSeconds)
+    {
+        gChartDurationSeconds = (float)timeCs * 0.01;
+    }
+    return TRUE;
+}
+
+integer ddrChartAppendDeltaEvent(integer deltaCs, integer pressMask, integer holdStartMask, integer holdEndMask)
+{
+    gChartCursorCs = gChartCursorCs + deltaCs;
+    return ddrChartApplyEvent(gChartCursorCs, pressMask, holdStartMask, holdEndMask);
+}
+
+integer ddrChartFinalizeBuild()
+{
+    integer lane = 0;
+    integer holdEnd = gChartLatestNoteCs + 25;
+    for (; lane < 4; ++lane)
+    {
+        integer holdId = ddrChartOpenHoldId(lane);
+        if (holdId > 0)
+        {
+            integer startCs = ddrChartOpenHoldStart(lane);
+            integer endCs = holdEnd;
+            if (endCs < startCs)
+            {
+                endCs = startCs;
+            }
+            ddrChartWriteHold(holdId, lane, endCs);
+            ddrChartSetOpenHold(lane, -1, 0);
+            if ((float)endCs * 0.01 > gChartDurationSeconds)
+            {
+                gChartDurationSeconds = (float)endCs * 0.01;
+            }
+        }
+    }
     return gChartTotalNotes > 0;
 }
 

@@ -1,0 +1,224 @@
+#ifndef DDR_CHART_DATA_RUNTIME_LSLH
+#define DDR_CHART_DATA_RUNTIME_LSLH
+
+// Runtime chart data access for sldr_game_engine.lsl.
+// Chart content is already written to linkset data by sldr_game_chart_loader.lsl.
+
+string gChartDifficultyName = "";
+integer gChartMeter = 0;
+float gChartDurationSeconds = 0.0;
+
+integer gChartTotalNotes = 0;
+integer gChartTotalHolds = 0;
+integer gChartStoreSeq = 0;
+string gChartStorePrefix = "";
+
+// Kept to preserve compatibility with existing boot code.
+integer gNoteCacheIndex = -1;
+integer gNoteCachePacked = 0;
+integer gHoldCacheIndex = -1;
+integer gHoldCachePacked = 0;
+
+#define DDR_PACK_TIME_BIAS 32768
+#define DDR_PACK_HOLD_NONE 511
+
+integer ddrPackClamp(integer value, integer minValue, integer maxValue)
+{
+    if (value < minValue)
+    {
+        return minValue;
+    }
+    if (value > maxValue)
+    {
+        return maxValue;
+    }
+    return value;
+}
+
+integer ddrPackTimeDecode(integer encodedTime)
+{
+    return encodedTime - DDR_PACK_TIME_BIAS;
+}
+
+integer ddrNoteJudgeEncode(integer judgement)
+{
+    return ddrPackClamp(judgement + 1, 0, 7);
+}
+
+integer ddrNoteJudgeDecode(integer encodedJudge)
+{
+    return encodedJudge - 1;
+}
+
+integer ddrNoteHoldDecode(integer encodedHold)
+{
+    if (encodedHold == DDR_PACK_HOLD_NONE)
+    {
+        return -1;
+    }
+    return encodedHold;
+}
+
+string ddrChartPrefixForSeq(integer seq)
+{
+    return "e" + (string)seq + ":";
+}
+
+string ddrChartNoteKey(integer noteIndex)
+{
+    return gChartStorePrefix + "n" + (string)noteIndex;
+}
+
+string ddrChartHoldKey(integer holdIndex)
+{
+    return gChartStorePrefix + "h" + (string)holdIndex;
+}
+
+integer ddrNotePackedAt(integer noteIndex)
+{
+    if (noteIndex < 0 || noteIndex >= gChartTotalNotes)
+    {
+        return 0;
+    }
+    return (integer)llLinksetDataRead(ddrChartNoteKey(noteIndex));
+}
+
+integer ddrHoldPackedAt(integer holdIndex)
+{
+    if (holdIndex < 0 || holdIndex >= gChartTotalHolds)
+    {
+        return 0;
+    }
+    return (integer)llLinksetDataRead(ddrChartHoldKey(holdIndex));
+}
+
+integer ddrNoteTimeCsAt(integer noteIndex)
+{
+    return ddrPackTimeDecode(ddrNotePackedAt(noteIndex) & 65535);
+}
+
+integer ddrNoteLaneAt(integer noteIndex)
+{
+    return (ddrNotePackedAt(noteIndex) >> 16) & 3;
+}
+
+integer ddrNoteHoldIdAt(integer noteIndex)
+{
+    return ddrNoteHoldDecode((ddrNotePackedAt(noteIndex) >> 18) & 511);
+}
+
+integer ddrNoteJudgeAt(integer noteIndex)
+{
+    return ddrNoteJudgeDecode((ddrNotePackedAt(noteIndex) >> 27) & 7);
+}
+
+integer ddrNoteSetJudgeAt(integer noteIndex, integer judgement)
+{
+    if (noteIndex < 0 || noteIndex >= gChartTotalNotes)
+    {
+        return FALSE;
+    }
+
+    integer packed = ddrNotePackedAt(noteIndex);
+    packed = (packed & (~(7 << 27))) | ((ddrNoteJudgeEncode(judgement) & 7) << 27);
+    llLinksetDataWrite(ddrChartNoteKey(noteIndex), (string)packed);
+    return TRUE;
+}
+
+integer ddrHoldLaneAt(integer holdIndex)
+{
+    return (ddrHoldPackedAt(holdIndex) >> 9) & 3;
+}
+
+integer ddrHoldEndCsAt(integer holdIndex)
+{
+    return ddrPackTimeDecode((ddrHoldPackedAt(holdIndex) >> 11) & 65535);
+}
+
+integer ddrHoldStateAt(integer holdIndex)
+{
+    return (ddrHoldPackedAt(holdIndex) >> 27) & 3;
+}
+
+integer ddrHoldSetStateAt(integer holdIndex, integer holdState)
+{
+    if (holdIndex < 0 || holdIndex >= gChartTotalHolds)
+    {
+        return FALSE;
+    }
+
+    integer packed = ddrHoldPackedAt(holdIndex);
+    packed = (packed & (~(3 << 27))) | ((ddrPackClamp(holdState, 0, 3) & 3) << 27);
+    llLinksetDataWrite(ddrChartHoldKey(holdIndex), (string)packed);
+    return TRUE;
+}
+
+integer ddrChartReset()
+{
+    if (gChartStorePrefix != "")
+    {
+        integer i = 0;
+        for (; i < gChartTotalNotes; ++i)
+        {
+            llLinksetDataDelete(ddrChartNoteKey(i));
+        }
+        for (i = 0; i < gChartTotalHolds; ++i)
+        {
+            llLinksetDataDelete(ddrChartHoldKey(i));
+        }
+    }
+
+    gChartDifficultyName = "";
+    gChartMeter = 0;
+    gChartDurationSeconds = 0.0;
+    gChartTotalNotes = 0;
+    gChartTotalHolds = 0;
+    gChartStoreSeq = 0;
+    gChartStorePrefix = "";
+    gNoteCacheIndex = -1;
+    gNoteCachePacked = 0;
+    gHoldCacheIndex = -1;
+    gHoldCachePacked = 0;
+    return TRUE;
+}
+
+integer ddrChartSetLoaded(integer seq, string difficulty, integer meter, float duration, integer noteCount, integer holdCount)
+{
+    if (seq <= 0)
+    {
+        return FALSE;
+    }
+    if (noteCount < 0)
+    {
+        noteCount = 0;
+    }
+    if (holdCount < 0)
+    {
+        holdCount = 0;
+    }
+
+    gChartStoreSeq = seq;
+    gChartStorePrefix = ddrChartPrefixForSeq(seq);
+    gChartDifficultyName = difficulty;
+    gChartMeter = meter;
+    gChartDurationSeconds = duration;
+    gChartTotalNotes = noteCount;
+    gChartTotalHolds = holdCount;
+    gNoteCacheIndex = -1;
+    gNoteCachePacked = 0;
+    gHoldCacheIndex = -1;
+    gHoldCachePacked = 0;
+    return TRUE;
+}
+
+integer ddrChartNoteCount()
+{
+    return gChartTotalNotes;
+}
+
+integer ddrChartHoldCount()
+{
+    return gChartTotalHolds;
+}
+
+#endif

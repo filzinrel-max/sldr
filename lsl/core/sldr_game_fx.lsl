@@ -1,6 +1,6 @@
 //mono
 #include "../include/ddr_constants.lslh"
-#include "../include/ddr_config.lslh"
+#include "../include/ddr_config_fx.lslh"
 #include "../include/ddr_debug_engine.lslh"
 #include "../include/ddr_link_messages.lslh"
 

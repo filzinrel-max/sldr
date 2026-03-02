@@ -3,7 +3,7 @@ name: Generate And Commit Assets (prod)
 on:
   push:
     branches:
-      - prod
+      - prodx
 
 permissions:
   contents: write

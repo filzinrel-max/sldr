@@ -1,0 +1,164 @@
+#ifndef DDR_CHART_DATA_LOADER_RENDERER_LSLH
+#define DDR_CHART_DATA_LOADER_RENDERER_LSLH
+
+// Renderer-side chart storage from sparse masked chunk events.
+// Only press/start masks become visual notes.
+
+float gChartDurationSeconds = 0.0;
+integer gRenderNoteCount = 0;
+integer gRenderNoteSeq = 0;
+string gRenderNotePrefix = "";
+integer gRenderNoteCacheIndex = -1;
+integer gRenderNoteCachePacked = 0;
+integer gRenderCursorCs = 0;
+
+#define DDR_RENDER_PACK_TIME_BIAS 32768
+
+integer ddrRenderPackClamp(integer value, integer minValue, integer maxValue)
+{
+    if (value < minValue)
+    {
+        return minValue;
+    }
+    if (value > maxValue)
+    {
+        return maxValue;
+    }
+    return value;
+}
+
+integer ddrRenderPackTimeEncode(integer timeCs)
+{
+    return ddrRenderPackClamp(timeCs + DDR_RENDER_PACK_TIME_BIAS, 0, 65535);
+}
+
+integer ddrRenderPackTimeDecode(integer encodedTime)
+{
+    return encodedTime - DDR_RENDER_PACK_TIME_BIAS;
+}
+
+integer ddrRenderNotePack(integer timeCs, integer lane)
+{
+    integer packed = ddrRenderPackTimeEncode(timeCs);
+    packed = packed | ((ddrRenderPackClamp(lane, 0, 3) & 3) << 16);
+    return packed;
+}
+
+string ddrRenderPrefixForSeq(integer seq)
+{
+    return "r" + (string)seq + ":";
+}
+
+string ddrRenderNoteKey(integer index)
+{
+    return gRenderNotePrefix + "n" + (string)index;
+}
+
+integer ddrChartReset()
+{
+    if (gRenderNotePrefix != "")
+    {
+        integer i = 0;
+        for (; i < gRenderNoteCount; ++i)
+        {
+            llLinksetDataDelete(ddrRenderNoteKey(i));
+        }
+    }
+
+    gRenderNoteCount = 0;
+    gRenderNotePrefix = "";
+    gRenderNoteCacheIndex = -1;
+    gRenderNoteCachePacked = 0;
+    gChartDurationSeconds = 0.0;
+    gRenderCursorCs = 0;
+    return TRUE;
+}
+
+integer ddrChartNoteCount()
+{
+    return gRenderNoteCount;
+}
+
+integer ddrRenderNotePackedAt(integer noteIndex)
+{
+    if (noteIndex == gRenderNoteCacheIndex)
+    {
+        return gRenderNoteCachePacked;
+    }
+
+    if (noteIndex < 0 || noteIndex >= gRenderNoteCount)
+    {
+        return 0;
+    }
+
+    integer packed = (integer)llLinksetDataRead(ddrRenderNoteKey(noteIndex));
+    gRenderNoteCacheIndex = noteIndex;
+    gRenderNoteCachePacked = packed;
+    return packed;
+}
+
+integer ddrNoteTimeCsAt(integer noteIndex)
+{
+    integer packed = ddrRenderNotePackedAt(noteIndex);
+    return ddrRenderPackTimeDecode(packed & 65535);
+}
+
+integer ddrNoteLaneAt(integer noteIndex)
+{
+    integer packed = ddrRenderNotePackedAt(noteIndex);
+    return (packed >> 16) & 3;
+}
+
+integer ddrChartBeginBuild(float durationSeconds)
+{
+    ddrChartReset();
+
+    gRenderNoteSeq = gRenderNoteSeq + 1;
+    if (gRenderNoteSeq <= 0)
+    {
+        gRenderNoteSeq = 1;
+    }
+    gRenderNotePrefix = ddrRenderPrefixForSeq(gRenderNoteSeq);
+    gRenderNoteCacheIndex = -1;
+    gRenderNoteCachePacked = 0;
+    gRenderCursorCs = 0;
+    if (durationSeconds < 0.0)
+    {
+        durationSeconds = 0.0;
+    }
+    gChartDurationSeconds = durationSeconds;
+    return TRUE;
+}
+
+integer ddrChartAppendDeltaEvent(integer deltaCs, integer pressMask, integer holdStartMask, integer holdEndMask)
+{
+    gRenderCursorCs = gRenderCursorCs + deltaCs;
+
+    integer startOrPressMask = pressMask | holdStartMask;
+    integer lane = 0;
+    for (; lane < 4; ++lane)
+    {
+        integer bit = 1 << lane;
+        if ((startOrPressMask & bit) != 0)
+        {
+            llLinksetDataWrite(
+                ddrRenderNoteKey(gRenderNoteCount),
+                (string)ddrRenderNotePack(gRenderCursorCs, lane)
+            );
+            gRenderNoteCount = gRenderNoteCount + 1;
+        }
+    }
+
+    if ((float)gRenderCursorCs * 0.01 > gChartDurationSeconds)
+    {
+        gChartDurationSeconds = (float)gRenderCursorCs * 0.01;
+    }
+    return TRUE;
+}
+
+integer ddrChartFinalizeBuild()
+{
+    return gRenderNoteCount > 0;
+}
+
+#endif

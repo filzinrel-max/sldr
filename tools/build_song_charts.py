@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prebuild compact per-difficulty chart JSON for LSL runtime."""
+"""Prebuild chunked sparse per-difficulty chart payloads for LSL runtime."""
 
 from __future__ import annotations
 
@@ -9,14 +9,6 @@ from pathlib import Path
 from typing import Any
 
 from _songlib import extract_notes_sections, extract_tag, parse_bpms, read_text_file, slugify
-
-
-def clamp_float(value: float, low: float, high: float) -> float:
-    if value < low:
-        return low
-    if value > high:
-        return high
-    return value
 
 
 def parse_meter(value: str) -> int:
@@ -69,24 +61,51 @@ def iter_measure_rows(note_data: str) -> list[tuple[int, list[str]]]:
     return out
 
 
+def bit_count4(mask: int) -> int:
+    count = 0
+    if mask & 1:
+        count += 1
+    if mask & 2:
+        count += 1
+    if mask & 4:
+        count += 1
+    if mask & 8:
+        count += 1
+    return count
+
+
+def merge_event(
+    events_by_time: dict[int, tuple[int, int, int]],
+    time_cs: int,
+    press_mask: int,
+    hold_start_mask: int,
+    hold_end_mask: int,
+) -> None:
+    previous = events_by_time.get(time_cs, (0, 0, 0))
+    events_by_time[time_cs] = (
+        previous[0] | press_mask,
+        previous[1] | hold_start_mask,
+        previous[2] | hold_end_mask,
+    )
+
+
 def parse_chart_section(
     note_data: str,
     offset_seconds: float,
     bpm_pairs: list[dict[str, float]],
 ) -> dict[str, Any]:
-    note_events: list[tuple[int, int, int, int, int]] = []
-    hold_events: list[tuple[int, int, int, int]] = []
+    events_by_time: dict[int, tuple[int, int, int]] = {}
 
-    hold_serial = 1
-    open_hold_ids = [-1, -1, -1, -1]
-    open_hold_starts = [0, 0, 0, 0]
+    open_holds = [False, False, False, False]
+    latest_note_cs = 0
+    duration_cs = 0
 
     total_rows = 0
     chord_rows = 0
     max_simultaneous = 0
     offbeat_notes = 0
-    latest_note_cs = 0
-    duration_cs = 0
+    total_notes = 0
+    total_holds = 0
 
     for measure_index, rows in iter_measure_rows(note_data):
         row_count = len(rows)
@@ -101,125 +120,125 @@ def parse_chart_section(
             beat = (float(measure_index) * 4.0) + ((4.0 * float(row_index)) / float(row_count))
             note_time = beat_to_seconds(beat, bpm_pairs) - offset_seconds
             note_cs = int(round(note_time * 100.0))
-            if note_cs > latest_note_cs:
-                latest_note_cs = note_cs
-            if note_cs > duration_cs:
-                duration_cs = note_cs
 
-            starts_in_row = 0
-            row_cells: list[str] = []
+            press_mask = 0
+            hold_start_mask = 0
+            hold_end_mask = 0
+
             for lane in range(4):
-                cell = row[lane]
-                row_cells.append(cell)
-                if cell in {"1", "2", "4"}:
-                    starts_in_row += 1
+                bit = 1 << lane
+                symbol = row[lane]
+                if symbol == "1":
+                    press_mask |= bit
+                elif symbol in {"2", "4"}:
+                    press_mask |= bit
+                    hold_start_mask |= bit
+                    open_holds[lane] = True
+                    total_holds += 1
+                elif symbol == "3":
+                    if open_holds[lane]:
+                        hold_end_mask |= bit
+                        open_holds[lane] = False
 
-            row_flags = 0
-            if ((row_index * 4) % row_count) != 0:
-                row_flags |= 2
-            if starts_in_row >= 2:
-                row_flags |= 1
-                chord_rows += 1
-            if starts_in_row > max_simultaneous:
-                max_simultaneous = starts_in_row
+            starts_in_row = bit_count4(press_mask)
             if starts_in_row > 0:
                 total_rows += 1
+                total_notes += starts_in_row
+                if starts_in_row >= 2:
+                    chord_rows += 1
+                if starts_in_row > max_simultaneous:
+                    max_simultaneous = starts_in_row
+                if ((row_index * 4) % row_count) != 0:
+                    offbeat_notes += starts_in_row
+                if note_cs > latest_note_cs:
+                    latest_note_cs = note_cs
 
-            for lane in range(4):
-                symbol = row_cells[lane]
-                if symbol == "1":
-                    note_events.append((note_cs, lane, 1, -1, row_flags))
-                    if row_flags & 2:
-                        offbeat_notes += 1
-                elif symbol in {"2", "4"}:
-                    hold_id = hold_serial
-                    hold_serial += 1
-                    open_hold_ids[lane] = hold_id
-                    open_hold_starts[lane] = note_cs
-                    note_events.append((note_cs, lane, 2, hold_id, row_flags))
-                    if row_flags & 2:
-                        offbeat_notes += 1
-                elif symbol == "3":
-                    active_hold_id = open_hold_ids[lane]
-                    if active_hold_id >= 0:
-                        hold_start = open_hold_starts[lane]
-                        hold_events.append((active_hold_id, lane, hold_start, note_cs))
-                        if note_cs > duration_cs:
-                            duration_cs = note_cs
-                        open_hold_ids[lane] = -1
-                        open_hold_starts[lane] = 0
+            if (press_mask | hold_start_mask | hold_end_mask) != 0:
+                merge_event(events_by_time, note_cs, press_mask, hold_start_mask, hold_end_mask)
+                if note_cs > duration_cs:
+                    duration_cs = note_cs
 
     for lane in range(4):
-        dangling_hold_id = open_hold_ids[lane]
-        if dangling_hold_id >= 0:
+        if open_holds[lane]:
             hold_end = latest_note_cs + 25
-            hold_start = open_hold_starts[lane]
-            if hold_end < hold_start:
-                hold_end = hold_start
-            hold_events.append((dangling_hold_id, lane, hold_start, hold_end))
+            merge_event(events_by_time, hold_end, 0, 0, 1 << lane)
             if hold_end > duration_cs:
                 duration_cs = hold_end
 
-    total_notes = len(note_events)
-    total_holds = len(hold_events)
+    sorted_times = sorted(events_by_time.keys())
+    events: list[tuple[int, int, int, int]] = []
+    for time_cs in sorted_times:
+        masks = events_by_time[time_cs]
+        events.append((time_cs, masks[0], masks[1], masks[2]))
 
-    duration_seconds = max(duration_cs / 100.0, 0.0)
-    radar_duration = duration_seconds
-    if radar_duration < 1.0:
-        radar_duration = 1.0
-
-    note_rate = float(total_notes) / radar_duration
-    stream = clamp_float(note_rate / 6.0, 0.0, 1.0)
-    voltage = clamp_float(float(max_simultaneous) / 4.0, 0.0, 1.0)
-    air = 0.0
-    freeze = 0.0
-    chaos = 0.0
-    if total_rows > 0:
-        air = clamp_float(float(chord_rows) / float(total_rows), 0.0, 1.0)
-    if total_notes > 0:
-        freeze = clamp_float(float(total_holds) / float(total_notes), 0.0, 1.0)
-        chaos = clamp_float(float(offbeat_notes) / float(total_notes), 0.0, 1.0)
+    duration_seconds = 0.0
+    if duration_cs > 0:
+        duration_seconds = round(duration_cs / 100.0, 3)
 
     return {
         "durationCs": duration_cs,
-        "duration": round(duration_seconds, 3),
+        "duration": duration_seconds,
         "totalRows": total_rows,
         "chordRows": chord_rows,
         "maxSimultaneous": max_simultaneous,
         "offbeatNotes": offbeat_notes,
-        "notes": note_events,
-        "holds": hold_events,
-        "radarSong": [
-            round(stream, 6),
-            round(voltage, 6),
-            round(air, 6),
-            round(freeze, 6),
-            round(chaos, 6),
-        ],
+        "totalNotes": total_notes,
+        "totalHolds": total_holds,
+        "events": events,
     }
 
 
-def encode_records(rows: list[tuple[int, ...]]) -> str:
+def encode_event_deltas(events: list[tuple[int, int, int, int]]) -> list[str]:
+    rows: list[str] = []
+    previous_time = 0
+    for time_cs, press_mask, hold_start_mask, hold_end_mask in events:
+        delta_cs = time_cs - previous_time
+        previous_time = time_cs
+        rows.append(f"{delta_cs},{press_mask},{hold_start_mask},{hold_end_mask}")
+    return rows
+
+
+def split_rows_into_chunks(rows: list[str], max_chunk_bytes: int) -> list[str]:
     if not rows:
-        return ""
-    return ";".join(",".join(str(value) for value in row) for row in rows)
+        return []
+
+    chunks: list[str] = []
+    current_rows: list[str] = []
+    current_bytes = 0
+
+    for row in rows:
+        piece = row + ";"
+        piece_bytes = len(piece.encode("utf-8"))
+        if current_rows and (current_bytes + piece_bytes) > max_chunk_bytes:
+            chunks.append("".join(current_rows))
+            current_rows = [piece]
+            current_bytes = piece_bytes
+        else:
+            current_rows.append(piece)
+            current_bytes += piece_bytes
+
+    if current_rows:
+        chunks.append("".join(current_rows))
+    return chunks
 
 
-def make_chart_payload(song_id: str, difficulty: str, meter: int, parsed: dict[str, Any]) -> dict[str, Any]:
+def make_chart_index_payload(
+    song_id: str,
+    difficulty: str,
+    meter: int,
+    parsed: dict[str, Any],
+    chunk_file_names: list[str],
+) -> dict[str, Any]:
     return {
-        "v": 1,
-        "fmt": "sldr-chart-v1",
+        "v": 2,
+        "fmt": "sldr-chart-chunks-v1",
         "id": song_id,
         "d": difficulty,
         "m": meter,
         "du": parsed["duration"],
-        "tr": parsed["totalRows"],
-        "ch": parsed["chordRows"],
-        "mx": parsed["maxSimultaneous"],
-        "of": parsed["offbeatNotes"],
-        "sr": parsed["radarSong"],
-        "n": encode_records(parsed["notes"]),
-        "h": encode_records(parsed["holds"]),
+        "n": parsed["totalNotes"],
+        "h": parsed["totalHolds"],
+        "c": chunk_file_names,
     }
 
 
@@ -238,13 +257,19 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--charts-root",
         default="game-data/charts",
-        help="Output directory for generated chart JSON (default: game-data/charts)",
+        help="Output directory for generated chart payloads (default: game-data/charts)",
     )
     parser.add_argument(
-        "--max-bytes",
+        "--chunk-max-bytes",
         type=int,
-        default=15000,
-        help="Warn when a generated chart file exceeds this byte size (default: 15000)",
+        default=3200,
+        help="Max bytes per chunk payload (default: 3200)",
+    )
+    parser.add_argument(
+        "--max-index-bytes",
+        type=int,
+        default=12000,
+        help="Warn when an index payload exceeds this size (default: 12000)",
     )
     return parser.parse_args()
 
@@ -266,7 +291,8 @@ def main() -> int:
         song.get("id", ""): song for song in compact_manifest.get("songs", []) if isinstance(song, dict)
     }
 
-    generated = 0
+    generated_indexes = 0
+    generated_chunks = 0
     warnings: list[str] = []
 
     for song in manifest.get("songs", []):
@@ -300,11 +326,13 @@ def main() -> int:
 
         chart_map: dict[str, str] = {}
         used_chart_names: set[str] = set()
+        song_chart_dir = charts_root / song_id
+        song_chart_dir.mkdir(parents=True, exist_ok=True)
+
         for section in singles:
             difficulty = section["difficulty"].strip() or "Unknown"
             meter = parse_meter(section["meter"])
             parsed = parse_chart_section(section["note_data"], offset_seconds=offset_seconds, bpm_pairs=bpm_pairs)
-            chart_payload = make_chart_payload(song_id=song_id, difficulty=difficulty, meter=meter, parsed=parsed)
 
             diff_slug = slugify(difficulty)
             chart_name = diff_slug
@@ -314,21 +342,40 @@ def main() -> int:
                 suffix += 1
             used_chart_names.add(chart_name)
 
-            chart_rel = f"game-data/charts/{song_id}/{chart_name}.chart.json"
-            chart_abs = (manifest_path.parent.parent / chart_rel).resolve()
-            chart_abs.parent.mkdir(parents=True, exist_ok=True)
-            encoded = json.dumps(chart_payload, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
-            chart_abs.write_bytes(encoded)
+            encoded_rows = encode_event_deltas(parsed["events"])
+            chunk_payloads = split_rows_into_chunks(encoded_rows, max_chunk_bytes=args.chunk_max_bytes)
 
-            generated += 1
-            chart_map[difficulty] = chart_rel
-            if len(encoded) > args.max_bytes:
+            chunk_file_names: list[str] = []
+            for chunk_index, chunk_payload in enumerate(chunk_payloads, start=1):
+                chunk_name = f"{chart_name}.chart.c{chunk_index:03d}.txt"
+                chunk_path = song_chart_dir / chunk_name
+                chunk_path.write_text(chunk_payload, encoding="utf-8")
+                chunk_file_names.append(chunk_name)
+                generated_chunks += 1
+
+            index_payload = make_chart_index_payload(
+                song_id=song_id,
+                difficulty=difficulty,
+                meter=meter,
+                parsed=parsed,
+                chunk_file_names=chunk_file_names,
+            )
+
+            index_name = f"{chart_name}.chart.idx.json"
+            index_path = song_chart_dir / index_name
+            index_encoded = json.dumps(index_payload, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+            index_path.write_bytes(index_encoded)
+            generated_indexes += 1
+
+            if len(index_encoded) > args.max_index_bytes:
                 warnings.append(
-                    f"{song_id} [{difficulty}] chart payload {len(encoded)} bytes exceeds {args.max_bytes}"
+                    f"{song_id} [{difficulty}] chart index {len(index_encoded)} bytes exceeds {args.max_index_bytes}"
                 )
 
-        song["chartJsonByDifficulty"] = chart_map
+            chart_rel = f"game-data/charts/{song_id}/{index_name}"
+            chart_map[difficulty] = chart_rel
 
+        song["chartJsonByDifficulty"] = chart_map
         compact_song = compact_index_by_id.get(song_id)
         if compact_song is not None:
             compact_song["cj"] = chart_map
@@ -338,7 +385,8 @@ def main() -> int:
         json.dumps(compact_manifest, separators=(",", ":"), ensure_ascii=False), encoding="utf-8"
     )
 
-    print(f"Generated chart JSON files: {generated}")
+    print(f"Generated chart index files: {generated_indexes}")
+    print(f"Generated chart chunk files: {generated_chunks}")
     print(f"Updated full manifest: {manifest_path.as_posix()}")
     print(f"Updated compact manifest: {compact_manifest_path.as_posix()}")
     if warnings:

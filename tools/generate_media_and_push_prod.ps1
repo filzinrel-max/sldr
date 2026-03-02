@@ -38,7 +38,7 @@ try {
         python tools/build_song_manifest.py
     }
 
-    Invoke-Step -Name "Build preparsed chart JSON" -Action {
+    Invoke-Step -Name "Build preparsed chart chunks" -Action {
         python tools/build_song_charts.py
     }
 

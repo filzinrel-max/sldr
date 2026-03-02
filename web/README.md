@@ -28,7 +28,7 @@ These pages are loaded on the media texture by `lsl/core/sldr_game_main.lsl`.
   - `title`
   - `artist`
   - `difficulty`
-  - `chart` (relative chart JSON path, e.g. `game-data/charts/<song>/<difficulty>.chart.json`)
+  - `chart` (relative chart index path, e.g. `game-data/charts/<song>/<difficulty>.chart.idx.json`)
   - `media` (optional relative media path)
 
 `play.html`

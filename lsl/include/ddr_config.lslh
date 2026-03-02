@@ -25,7 +25,7 @@ string DDR_MANIFEST_PATH = "/game-data/song-manifest.lsl.json";
 integer DDR_MEDIA_FACE = 7;
 integer DDR_ARROW_SLOTS_PER_LANE = 10;
 string DDR_SIT_TEXT = "Dance";
-vector DDR_SIT_TARGET_OFFSET = <0.0, 0.0, 0.45>;
+vector DDR_SIT_TARGET_OFFSET = <-1.75, 0.0, -2>;
 rotation DDR_SIT_TARGET_ROT = ZERO_ROTATION;
 
 // Arrow lane renderer (stacked prim + client texture animation).
@@ -54,8 +54,8 @@ float DDR_ARROW_TRAVEL_SECONDS = 1.0;
 
 // Judge feedback prim (set link number for the separate prim that shows hit result art).
 // Set to 0 or a negative number to disable.
-integer DDR_JUDGE_FEEDBACK_LINK = 42;
-integer DDR_JUDGE_FEEDBACK_FACE = ALL_SIDES;
+integer DDR_JUDGE_FEEDBACK_LINK = -1;
+integer DDR_JUDGE_FEEDBACK_FACE = 1;
 float DDR_JUDGE_FEEDBACK_SECONDS = 0.30;
 
 // Texture names or UUIDs in this exact order:
@@ -72,7 +72,7 @@ list DDR_JUDGE_FEEDBACK_TEXTURES = [
 
 // Combo popup prim (set link number for separate prim that shows combo text).
 // Set to 0 or a negative number to disable.
-integer DDR_COMBO_FEEDBACK_LINK = 43;
+integer DDR_COMBO_FEEDBACK_LINK = -1;
 float DDR_COMBO_FEEDBACK_SECONDS = 0.55;
 integer DDR_COMBO_FEEDBACK_MIN_COMBO = 2;
 float DDR_COMBO_FEEDBACK_ALPHA = 1.0;
@@ -125,5 +125,8 @@ list DDR_LANE_ANIMATIONS = [
     "DDR_Up",
     "DDR_Right"
 ];
+
+// Idle animation played while seated when no lane keys are held.
+string DDR_IDLE_ANIMATION = "DDR_Idle";
 
 #endif

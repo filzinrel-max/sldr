@@ -1,0 +1,47 @@
+#ifndef DDR_CONFIG_RENDERER_LSLH
+#define DDR_CONFIG_RENDERER_LSLH
+
+#ifndef DDR_DEBUG
+#define DDR_DEBUG 1
+#endif
+
+// Arrow lane renderer (stacked prim + client texture animation).
+#define DDR_ARROW_FACE 1 // face index on arrow lane prims (0-based)
+#define DDR_ARROW_SLOTS_PER_LANE 10
+list DDR_LANE_LINK_PREFIXES = [
+    "ARROW_LANE_LEFT",
+    "ARROW_LANE_DOWN",
+    "ARROW_LANE_UP",
+    "ARROW_LANE_RIGHT"
+];
+list DDR_LANE_ARROW_TEXTURES = [
+    "e7e8a952-9b55-b641-e906-5d549a0099a8",
+    "3ae1705f-acb7-88f8-bc1b-3be065e560d4",
+    "933879ff-7c3d-7c77-d72b-b7f973c4ea32",
+    "b2198a32-347c-1f03-97ce-73f407a07aa8"
+];
+#define DDR_ARROW_TINT <1.0, 1.0, 1.0>
+#define DDR_ARROW_ALPHA 1.0
+#define DDR_ARROW_TEXTURE_REPEAT_X 1.0
+#define DDR_ARROW_TEXTURE_REPEAT_Y 1.0
+#define DDR_ARROW_TEXTURE_ROTATE_DEGREES 90.0
+#define DDR_ARROW_ANIM_START 1.0
+#define DDR_ARROW_ANIM_LENGTH 1.0
+#define DDR_ARROW_ANIM_REVERSE TRUE
+#define DDR_ARROW_TRAVEL_SECONDS 1.0
+#define DDR_ARROW_DESPAWN_GRACE_SECONDS 0.30
+// Hide/freeze this many seconds before receptor time to avoid texture-anim wrap flash.
+#define DDR_ARROW_FREEZE_EARLY_SECONDS 0.04
+
+// Runtime cadence
+#define DDR_TICK_SECONDS 0.05
+#define DDR_PLAY_START_DELAY 0.75
+#define DDR_POST_SONG_GRACE_SECONDS 1.25
+
+// Arrow motion / renderer behavior
+#define DDR_RENDER_LOOKAHEAD_SECONDS 2.8
+
+// Miss window used for arrow hide timing.
+#define DDR_WINDOW_MISS 0.180
+
+#endif

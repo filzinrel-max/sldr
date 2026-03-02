@@ -36,7 +36,7 @@ def discover_chart_json_map(
     if not chart_dir.exists() or not chart_dir.is_dir():
         return chart_map
 
-    chart_files = sorted(chart_dir.glob("*.chart.json"), key=lambda path: path.name.lower())
+    chart_files = sorted(chart_dir.glob("*.chart.idx.json"), key=lambda path: path.name.lower())
     for chart_file in chart_files:
         try:
             chart_payload = json.loads(chart_file.read_text(encoding="utf-8"))
@@ -62,7 +62,7 @@ def discover_chart_json_map(
         if diff_slug == "":
             continue
 
-        guessed_file = chart_dir / f"{diff_slug}.chart.json"
+        guessed_file = chart_dir / f"{diff_slug}.chart.idx.json"
         if guessed_file.exists():
             chart_map[difficulty] = relative_posix(guessed_file.resolve(), project_root)
 

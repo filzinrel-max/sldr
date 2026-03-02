@@ -4,34 +4,11 @@
 #include "../include/ddr_debug_engine.lslh"
 #include "../include/ddr_link_messages.lslh"
 
-#include "ddr_chart_data_loader.lslh"
-#include "ddr_scoring.lslh"
+#include "ddr_chart_data_runtime.lslh"
 #include "ddr_judgement.lslh"
-
-// Feedback visuals are delegated to sldr_game_fx.lsl via link messages.
-integer ddrFxSend(integer code, string payload)
-{
-    llMessageLinked(LINK_SET, code, payload, NULL_KEY);
-    return TRUE;
-}
-
-integer ddrComboFeedbackInit() { return ddrFxSend(DDR_LM_FX_RESET, ""); }
-integer ddrComboFeedbackHide() { return ddrFxSend(DDR_LM_FX_HIDE_COMBO, ""); }
-integer ddrComboFeedbackTick() { return FALSE; }
-integer ddrComboFeedbackOnNoteJudge(integer judgement, integer comboValue) { return ddrFxSend(DDR_LM_FX_NOTE, (string)judgement + "|" + (string)comboValue); }
-integer ddrComboFeedbackOnHoldResult(integer holdState, integer comboValue) { return ddrFxSend(DDR_LM_FX_HOLD, (string)holdState + "|" + (string)comboValue); }
-integer ddrJudgeFeedbackInit() { return ddrFxSend(DDR_LM_FX_RESET, ""); }
-integer ddrJudgeFeedbackHide() { return ddrFxSend(DDR_LM_FX_HIDE_JUDGE, ""); }
-integer ddrJudgeFeedbackTick() { return FALSE; }
-integer ddrJudgeFeedbackShowJudge(integer judgement) { return ddrFxSend(DDR_LM_FX_JUDGE, (string)judgement); }
-integer ddrJudgeFeedbackShowHold(integer holdState) { return ddrFxSend(DDR_LM_FX_HOLD_JUDGE, (string)holdState); }
 
 integer gRuntimeActive = FALSE;
 integer gRuntimeLoading = FALSE;
-key gRuntimeChartRequestId = NULL_KEY;
-integer gRuntimeSystemsReady = FALSE;
-
-string gRuntimeChartUrl = "";
 
 string gRuntimeSongId = "";
 string gRuntimeSongTitle = "";
@@ -40,6 +17,60 @@ string gRuntimeSongDifficulty = "";
 
 integer gRuntimeSongClockStarted = FALSE;
 float gRuntimeSongClockStartAt = 0.0;
+
+// Feedback visuals are delegated to sldr_game_fx.lsl via link messages.
+integer ddrFxSend(integer code, string payload)
+{
+    llMessageLinked(LINK_SET, code, payload, NULL_KEY);
+    return TRUE;
+}
+
+integer ddrJudgeFeedbackShowJudge(integer judgement) { return ddrFxSend(DDR_LM_FX_JUDGE, (string)judgement); }
+integer ddrJudgeFeedbackShowHold(integer holdState) { return ddrFxSend(DDR_LM_FX_HOLD_JUDGE, (string)holdState); }
+
+integer ddrScoreSend(integer code, string payload)
+{
+    llMessageLinked(LINK_SET, code, payload, NULL_KEY);
+    return TRUE;
+}
+
+integer ddrScoreReset()
+{
+    return ddrScoreSend(DDR_LM_SCORE_RESET, "");
+}
+
+integer ddrScorePrepareForChart()
+{
+    integer noteCount = ddrChartNoteCount();
+    integer holdCount = ddrChartHoldCount();
+
+    string payload = "{}";
+    payload = llJsonSetValue(payload, ["songId"], gRuntimeSongId);
+    payload = llJsonSetValue(payload, ["title"], gRuntimeSongTitle);
+    payload = llJsonSetValue(payload, ["artist"], gRuntimeSongArtist);
+    payload = llJsonSetValue(payload, ["difficulty"], gRuntimeSongDifficulty);
+    payload = llJsonSetValue(payload, ["meter"], (string)gChartMeter);
+    payload = llJsonSetValue(payload, ["noteCount"], (string)noteCount);
+    payload = llJsonSetValue(payload, ["holdCount"], (string)holdCount);
+    payload = llJsonSetValue(payload, ["chordTotal"], "0");
+    payload = llJsonSetValue(payload, ["offbeatTotal"], "0");
+    payload = llJsonSetValue(payload, ["songRadar"], "[0,0,0,0,0]");
+
+    return ddrScoreSend(DDR_LM_SCORE_START, payload);
+}
+
+integer ddrScoreApplyNoteJudge(integer judgement, integer noteFlags)
+{
+    return ddrScoreSend(
+        DDR_LM_SCORE_NOTE,
+        (string)judgement + "|" + (string)noteFlags
+    );
+}
+
+integer ddrScoreApplyHoldResult(integer holdState)
+{
+    return ddrScoreSend(DDR_LM_SCORE_HOLD, (string)holdState);
+}
 
 integer ddrRuntimeSend(integer code, string payload)
 {
@@ -75,37 +106,28 @@ integer ddrRuntimeSetLaneDown(integer lane, integer isDown)
     return TRUE;
 }
 
-integer ddrRuntimeEnsureSystemsReady()
+integer ddrRuntimeStopGameplayEx(integer resetScore)
 {
-    if (gRuntimeSystemsReady)
-    {
-        return TRUE;
-    }
+    gRuntimeActive = FALSE;
+    gRuntimeLoading = FALSE;
+    llMessageLinked(LINK_SET, DDR_LM_CHART_CANCEL, "", NULL_KEY);
 
-    ddrComboFeedbackInit();
-    ddrJudgeFeedbackInit();
-    gRuntimeSystemsReady = TRUE;
+    ddrRuntimeClockStop();
+    ddrChartReset();
+    if (resetScore)
+    {
+        ddrScoreReset();
+    }
+    ddrFxSend(DDR_LM_FX_RESET, "");
+    gPendingNotes = 0;
+    gPendingHolds = 0;
+    gLaneDown = [FALSE, FALSE, FALSE, FALSE];
     return TRUE;
 }
 
 integer ddrRuntimeStopGameplay()
 {
-    gRuntimeActive = FALSE;
-    gRuntimeLoading = FALSE;
-    gRuntimeChartRequestId = NULL_KEY;
-
-    ddrRuntimeClockStop();
-    ddrChartReset();
-    ddrScoreReset();
-    if (gRuntimeSystemsReady)
-    {
-        ddrComboFeedbackHide();
-        ddrJudgeFeedbackHide();
-    }
-    gPendingNotes = 0;
-    gPendingHolds = 0;
-    gLaneDown = [FALSE, FALSE, FALSE, FALSE];
-    return TRUE;
+    return ddrRuntimeStopGameplayEx(TRUE);
 }
 
 integer ddrRuntimeFail(string reason)
@@ -115,24 +137,13 @@ integer ddrRuntimeFail(string reason)
     return TRUE;
 }
 
-integer ddrRuntimeRequestChart()
+integer ddrRuntimeRequestChart(string chartUrl)
 {
-    if (gRuntimeChartUrl == "")
+    if (chartUrl == "")
     {
         return FALSE;
     }
-    gRuntimeChartRequestId = llHTTPRequest(
-        gRuntimeChartUrl,
-        [
-            HTTP_METHOD, "GET",
-            HTTP_MIMETYPE, "text/plain"
-        ],
-        ""
-    );
-    if (gRuntimeChartRequestId == NULL_KEY)
-    {
-        return FALSE;
-    }
+    llMessageLinked(LINK_SET, DDR_LM_CHART_LOAD, chartUrl, NULL_KEY);
     return TRUE;
 }
 
@@ -144,10 +155,7 @@ integer ddrRuntimeStartFromPayload(string payload)
         return ddrRuntimeFail("missing-chart-url");
     }
 
-    ddrRuntimeEnsureSystemsReady();
     ddrRuntimeStopGameplay();
-
-    gRuntimeChartUrl = chartUrl;
 
     gRuntimeSongId = llJsonGetValue(payload, ["songId"]);
     gRuntimeSongTitle = llJsonGetValue(payload, ["title"]);
@@ -164,12 +172,50 @@ integer ddrRuntimeStartFromPayload(string payload)
     {
         gRuntimeSongArtist = "";
     }
+    gRuntimeSongDifficulty = "";
 
     gRuntimeLoading = TRUE;
-    if (!ddrRuntimeRequestChart())
+    if (!ddrRuntimeRequestChart(chartUrl))
     {
         return ddrRuntimeFail("chart-request-failed");
     }
+    return TRUE;
+}
+
+integer ddrRuntimeHandleChartReady(string payload)
+{
+    if (!gRuntimeLoading)
+    {
+        return FALSE;
+    }
+
+    integer seq = (integer)llJsonGetValue(payload, ["seq"]);
+    string difficulty = llJsonGetValue(payload, ["difficulty"]);
+    integer meter = (integer)llJsonGetValue(payload, ["meter"]);
+    float duration = (float)llJsonGetValue(payload, ["duration"]);
+    integer notes = (integer)llJsonGetValue(payload, ["notes"]);
+    integer holds = (integer)llJsonGetValue(payload, ["holds"]);
+
+    if (difficulty == JSON_INVALID)
+    {
+        difficulty = "";
+    }
+    if (!ddrChartSetLoaded(seq, difficulty, meter, duration, notes, holds))
+    {
+        return ddrRuntimeFail("chart-metadata-failed");
+    }
+
+    gRuntimeSongDifficulty = gChartDifficultyName;
+
+    ddrScoreReset();
+    ddrScorePrepareForChart();
+    ddrJudgeResetForChart();
+    ddrFxSend(DDR_LM_FX_RESET, "");
+    ddrRuntimeClockStart();
+
+    gRuntimeLoading = FALSE;
+    gRuntimeActive = TRUE;
+    ddrRuntimeSendReady();
     return TRUE;
 }
 
@@ -230,46 +276,8 @@ integer ddrRuntimeHandleControl(integer held, integer changedMask)
 
 integer ddrRuntimeCompleteSong()
 {
-    string payload = ddrScorePayloadJson(
-        gRuntimeSongId,
-        gRuntimeSongTitle,
-        gRuntimeSongArtist,
-        gRuntimeSongDifficulty
-    );
-    ddrRuntimeStopGameplay();
-    return ddrRuntimeSend(DDR_LM_MAIN_COMPLETE, payload);
-}
-
-integer ddrRuntimeTick()
-{
-    if (!gRuntimeActive)
-    {
-        ddrComboFeedbackTick();
-        ddrJudgeFeedbackTick();
-        return FALSE;
-    }
-
-    float songTime = ddrRuntimeSongTimeNow();
-    if (songTime < -DDR_RENDER_LOOKAHEAD_SECONDS)
-    {
-        ddrComboFeedbackTick();
-        ddrJudgeFeedbackTick();
-        return FALSE;
-    }
-
-    if (songTime >= 0.0)
-    {
-        ddrJudgeAutoMisses(songTime);
-        ddrJudgeUpdateHolds(songTime);
-    }
-
-    if (ddrJudgeSongComplete(songTime))
-    {
-        ddrRuntimeCompleteSong();
-    }
-
-    ddrComboFeedbackTick();
-    ddrJudgeFeedbackTick();
+    ddrScoreSend(DDR_LM_SCORE_FINISH, "");
+    ddrRuntimeStopGameplayEx(FALSE);
     return TRUE;
 }
 
@@ -284,12 +292,36 @@ integer ddrRuntimeSendStatus()
     return ddrRuntimeSend(DDR_LM_MAIN_STATUS, payload);
 }
 
+integer ddrRuntimeTick()
+{
+    if (!gRuntimeActive)
+    {
+        return FALSE;
+    }
+
+    float songTime = ddrRuntimeSongTimeNow();
+    if (songTime < -DDR_RENDER_LOOKAHEAD_SECONDS)
+    {
+        return FALSE;
+    }
+
+    if (songTime >= 0.0)
+    {
+        ddrJudgeAutoMisses(songTime);
+        ddrJudgeUpdateHolds(songTime);
+    }
+
+    if (ddrJudgeSongComplete(songTime))
+    {
+        ddrRuntimeCompleteSong();
+    }
+    return TRUE;
+}
+
 integer ddrRuntimeBoot()
 {
-    gRuntimeSystemsReady = FALSE;
     gRuntimeActive = FALSE;
     gRuntimeLoading = FALSE;
-    gRuntimeChartRequestId = NULL_KEY;
     ddrRuntimeClockStop();
     ddrChartReset();
     ddrScoreReset();
@@ -305,6 +337,7 @@ default
     state_entry()
     {
         llSetMemoryLimit(65536);
+        ddrFxSend(DDR_LM_FX_RESET, "");
         ddrRuntimeBoot();
     }
 
@@ -338,6 +371,19 @@ default
             ddrRuntimeStartFromPayload(str);
             return;
         }
+        if (num == DDR_LM_CHART_READY)
+        {
+            ddrRuntimeHandleChartReady(str);
+            return;
+        }
+        if (num == DDR_LM_CHART_FAIL)
+        {
+            if (gRuntimeLoading)
+            {
+                ddrRuntimeFail(str);
+            }
+            return;
+        }
         if (num == DDR_LM_RUNTIME_CONTROL)
         {
             list tokens = llParseStringKeepNulls(str, ["|"], []);
@@ -369,44 +415,6 @@ default
             ddrRuntimeSendStatus();
             return;
         }
-    }
-
-    http_response(key requestId, integer status, list metadata, string body)
-    {
-        if (requestId != gRuntimeChartRequestId)
-        {
-            return;
-        }
-
-        gRuntimeChartRequestId = NULL_KEY;
-        if (!gRuntimeLoading)
-        {
-            return;
-        }
-
-        if (status < 200 || status >= 300)
-        {
-            ddrRuntimeFail("chart-http-" + (string)status);
-            return;
-        }
-        if (!ddrChartLoadFromCompactJson(body))
-        {
-            ddrRuntimeFail("chart-parse-failed");
-            return;
-        }
-
-        gRuntimeSongDifficulty = gChartDifficultyName;
-
-        ddrScoreReset();
-        ddrScorePrepareForChart();
-        ddrJudgeResetForChart();
-        ddrComboFeedbackHide();
-        ddrJudgeFeedbackHide();
-        ddrRuntimeClockStart();
-
-        gRuntimeLoading = FALSE;
-        gRuntimeActive = TRUE;
-        ddrRuntimeSendReady();
     }
 
     timer()

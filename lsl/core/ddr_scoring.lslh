@@ -50,9 +50,9 @@ integer ddrScorePrepareForChart()
 
     integer eventLen = llGetListLength(gNoteEvents);
     integer i = 0;
-    for (; i < eventLen; i += 5)
+    for (; i < eventLen; ++i)
     {
-        integer flags = llList2Integer(gNoteEvents, i + 4);
+        integer flags = ddrNoteFlagsAt(i);
         if (flags & DDR_NOTE_FLAG_CHORD)
         {
             ++gMetricChordTotalNotes;

@@ -4,14 +4,48 @@
 integer gComboFeedbackEnabled = FALSE;
 integer gComboFeedbackVisible = FALSE;
 float gComboFeedbackHideAt = 0.0;
+integer gComboFeedbackLink = 0;
+
+integer ddrFxFindLinkByName(string targetName)
+{
+    string wanted = llToLower(llStringTrim(targetName, STRING_TRIM));
+    if (wanted == "")
+    {
+        return 0;
+    }
+
+    integer linkNum = 1;
+    integer primCount = llGetNumberOfPrims();
+    for (; linkNum <= primCount; ++linkNum)
+    {
+        string current = llToLower(llStringTrim(llGetLinkName(linkNum), STRING_TRIM));
+        if (current == wanted)
+        {
+            return linkNum;
+        }
+    }
+    return 0;
+}
+
+integer ddrComboFeedbackResolveLink()
+{
+    integer byName = ddrFxFindLinkByName(DDR_COMBO_FEEDBACK_PRIM_NAME);
+    if (byName > 0)
+    {
+        return byName;
+    }
+
+    if (DDR_COMBO_FEEDBACK_LINK > 0 && DDR_COMBO_FEEDBACK_LINK <= llGetNumberOfPrims())
+    {
+        return DDR_COMBO_FEEDBACK_LINK;
+    }
+    return 0;
+}
 
 integer ddrComboFeedbackValidLink()
 {
-    if (DDR_COMBO_FEEDBACK_LINK <= 0)
-    {
-        return FALSE;
-    }
-    return DDR_COMBO_FEEDBACK_LINK <= llGetNumberOfPrims();
+    gComboFeedbackLink = ddrComboFeedbackResolveLink();
+    return gComboFeedbackLink > 0;
 }
 
 vector ddrComboFeedbackColor(integer comboValue)
@@ -43,7 +77,7 @@ integer ddrComboFeedbackHide()
         return FALSE;
     }
     llSetLinkPrimitiveParamsFast(
-        DDR_COMBO_FEEDBACK_LINK,
+        gComboFeedbackLink,
         [
             PRIM_TEXT, "", <1.0, 1.0, 1.0>, 0.0
         ]
@@ -64,7 +98,7 @@ integer ddrComboFeedbackShow(integer comboValue)
     }
 
     llSetLinkPrimitiveParamsFast(
-        DDR_COMBO_FEEDBACK_LINK,
+        gComboFeedbackLink,
         [
             PRIM_TEXT, ddrComboFeedbackText(comboValue), ddrComboFeedbackColor(comboValue), DDR_COMBO_FEEDBACK_ALPHA
         ]
@@ -119,7 +153,7 @@ integer ddrComboFeedbackInit()
     if (gComboFeedbackEnabled)
     {
         ddrComboFeedbackHide();
-        ddrDebug("FX", "combo feedback enabled link=" + (string)DDR_COMBO_FEEDBACK_LINK);
+        ddrDebug("FX", "combo feedback enabled link=" + (string)gComboFeedbackLink);
     }
     else
     {
@@ -129,4 +163,3 @@ integer ddrComboFeedbackInit()
 }
 
 #endif
-

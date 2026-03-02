@@ -26,28 +26,14 @@ integer ddrJudgeFromAbsDelta(float absDelta)
     return DDR_JUDGE_MISS;
 }
 
-integer ddrFindHoldIndexById(integer holdId)
-{
-    integer len = llGetListLength(gHoldEvents);
-    integer i = 0;
-    for (; i < len; i += 4)
-    {
-        if (llList2Integer(gHoldEvents, i) == holdId)
-        {
-            return i;
-        }
-    }
-    return -1;
-}
-
 integer ddrSetHoldStateAt(integer holdIndex, integer newState)
 {
-    if (holdIndex < 0)
+    if (holdIndex < 0 || holdIndex >= ddrChartHoldCount())
     {
         return FALSE;
     }
 
-    integer oldState = llList2Integer(gHoldEvents, holdIndex + 3);
+    integer oldState = ddrHoldStateAt(holdIndex);
     if (oldState == newState)
     {
         return FALSE;
@@ -57,7 +43,10 @@ integer ddrSetHoldStateAt(integer holdIndex, integer newState)
         return FALSE;
     }
 
-    gHoldEvents = llListReplaceList(gHoldEvents, [newState], holdIndex + 3, holdIndex + 3);
+    if (!ddrHoldSetStateAt(holdIndex, newState))
+    {
+        return FALSE;
+    }
     if (newState == DDR_HOLD_STATE_OK || newState == DDR_HOLD_STATE_NG)
     {
         --gPendingHolds;
@@ -71,51 +60,49 @@ integer ddrSetHoldStateAt(integer holdIndex, integer newState)
     return TRUE;
 }
 
-integer ddrSetHoldStateById(integer holdId, integer newState)
-{
-    return ddrSetHoldStateAt(ddrFindHoldIndexById(holdId), newState);
-}
-
 integer ddrSetNoteJudge(integer noteIndex, integer judgement)
 {
     if (noteIndex < 0)
     {
         return FALSE;
     }
-    integer oldJudge = llList2Integer(gNoteEvents, noteIndex + 3);
+    integer oldJudge = ddrNoteJudgeAt(noteIndex);
     if (oldJudge != DDR_JUDGE_NONE)
     {
         return FALSE;
     }
 
-    gNoteEvents = llListReplaceList(gNoteEvents, [judgement], noteIndex + 3, noteIndex + 3);
+    if (!ddrNoteSetJudgeAt(noteIndex, judgement))
+    {
+        return FALSE;
+    }
     --gPendingNotes;
     if (gPendingNotes < 0)
     {
         gPendingNotes = 0;
     }
 
-    integer lane = llList2Integer(gNoteEvents, noteIndex + 1);
-    integer holdId = llList2Integer(gNoteEvents, noteIndex + 2);
-    integer noteFlags = llList2Integer(gNoteEvents, noteIndex + 4);
-    ddrScoreApplyNoteJudge(judgement, noteFlags);
+    integer lane = ddrNoteLaneAt(noteIndex);
+    integer holdId = ddrNoteHoldIdAt(noteIndex);
+    ddrScoreApplyNoteJudge(judgement, 0);
     ddrJudgeFeedbackShowJudge(judgement);
 
     if (holdId >= 0)
     {
+        integer holdIndex = holdId - 1;
         if (judgement == DDR_JUDGE_MISS)
         {
-            ddrSetHoldStateById(holdId, DDR_HOLD_STATE_NG);
+            ddrSetHoldStateAt(holdIndex, DDR_HOLD_STATE_NG);
         }
         else
         {
             if (llList2Integer(gLaneDown, lane))
             {
-                ddrSetHoldStateById(holdId, DDR_HOLD_STATE_ACTIVE);
+                ddrSetHoldStateAt(holdIndex, DDR_HOLD_STATE_ACTIVE);
             }
             else
             {
-                ddrSetHoldStateById(holdId, DDR_HOLD_STATE_NG);
+                ddrSetHoldStateAt(holdIndex, DDR_HOLD_STATE_NG);
             }
         }
     }
@@ -127,14 +114,14 @@ integer ddrFindBestLaneCandidate(integer lane, float songTime)
     integer bestIndex = -1;
     float bestAbs = 9999.0;
 
-    integer len = llGetListLength(gNoteEvents);
+    integer len = ddrChartNoteCount();
     integer i = 0;
-    for (; i < len; i += 5)
+    for (; i < len; ++i)
     {
-        integer judge = llList2Integer(gNoteEvents, i + 3);
-        if (judge == DDR_JUDGE_NONE && llList2Integer(gNoteEvents, i + 1) == lane)
+        integer judge = ddrNoteJudgeAt(i);
+        if (judge == DDR_JUDGE_NONE && ddrNoteLaneAt(i) == lane)
         {
-            float noteTime = (float)llList2Integer(gNoteEvents, i) * 0.01;
+            float noteTime = (float)ddrNoteTimeCsAt(i) * 0.01;
             float absDelta = llFabs(songTime - noteTime);
             if (absDelta <= DDR_WINDOW_MISS && absDelta < bestAbs)
             {
@@ -154,7 +141,7 @@ integer ddrJudgeLanePress(integer lane, float songTime)
         return FALSE;
     }
 
-    float noteTime = (float)llList2Integer(gNoteEvents, noteIndex) * 0.01;
+    float noteTime = (float)ddrNoteTimeCsAt(noteIndex) * 0.01;
     integer judgement = ddrJudgeFromAbsDelta(llFabs(songTime - noteTime));
     ddrSetNoteJudge(noteIndex, judgement);
     return TRUE;
@@ -162,15 +149,15 @@ integer ddrJudgeLanePress(integer lane, float songTime)
 
 integer ddrJudgeLaneRelease(integer lane, float songTime)
 {
-    integer holdLen = llGetListLength(gHoldEvents);
+    integer holdLen = ddrChartHoldCount();
     integer i = 0;
-    for (; i < holdLen; i += 4)
+    for (; i < holdLen; ++i)
     {
-        integer holdLane = llList2Integer(gHoldEvents, i + 1);
-        integer holdState = llList2Integer(gHoldEvents, i + 3);
+        integer holdLane = ddrHoldLaneAt(i);
+        integer holdState = ddrHoldStateAt(i);
         if (holdLane == lane && holdState == DDR_HOLD_STATE_ACTIVE)
         {
-            float holdEnd = (float)llList2Integer(gHoldEvents, i + 2) * 0.01;
+            float holdEnd = (float)ddrHoldEndCsAt(i) * 0.01;
             if (songTime < holdEnd)
             {
                 ddrSetHoldStateAt(i, DDR_HOLD_STATE_NG);
@@ -182,15 +169,15 @@ integer ddrJudgeLaneRelease(integer lane, float songTime)
 
 integer ddrJudgeAutoMisses(float songTime)
 {
-    integer len = llGetListLength(gNoteEvents);
+    integer len = ddrChartNoteCount();
     integer i = 0;
     integer changedCount = 0;
-    for (; i < len; i += 5)
+    for (; i < len; ++i)
     {
-        integer judge = llList2Integer(gNoteEvents, i + 3);
+        integer judge = ddrNoteJudgeAt(i);
         if (judge == DDR_JUDGE_NONE)
         {
-            float noteTime = (float)llList2Integer(gNoteEvents, i) * 0.01;
+            float noteTime = (float)ddrNoteTimeCsAt(i) * 0.01;
             if ((songTime - noteTime) > DDR_WINDOW_MISS)
             {
                 ddrSetNoteJudge(i, DDR_JUDGE_MISS);
@@ -203,14 +190,14 @@ integer ddrJudgeAutoMisses(float songTime)
 
 integer ddrJudgeUpdateHolds(float songTime)
 {
-    integer len = llGetListLength(gHoldEvents);
+    integer len = ddrChartHoldCount();
     integer i = 0;
     integer changedCount = 0;
-    for (; i < len; i += 4)
+    for (; i < len; ++i)
     {
-        integer holdState = llList2Integer(gHoldEvents, i + 3);
-        integer holdLane = llList2Integer(gHoldEvents, i + 1);
-        float holdEnd = (float)llList2Integer(gHoldEvents, i + 2) * 0.01;
+        integer holdState = ddrHoldStateAt(i);
+        integer holdLane = ddrHoldLaneAt(i);
+        float holdEnd = (float)ddrHoldEndCsAt(i) * 0.01;
 
         if (holdState == DDR_HOLD_STATE_ACTIVE)
         {
@@ -247,17 +234,17 @@ integer ddrJudgeUpdateHolds(float songTime)
 
 integer ddrJudgeResetForChart()
 {
-    integer len = llGetListLength(gNoteEvents);
+    integer len = ddrChartNoteCount();
     integer i = 0;
-    for (; i < len; i += 5)
+    for (; i < len; ++i)
     {
-        gNoteEvents = llListReplaceList(gNoteEvents, [DDR_JUDGE_NONE], i + 3, i + 3);
+        ddrNoteSetJudgeAt(i, DDR_JUDGE_NONE);
     }
 
-    len = llGetListLength(gHoldEvents);
-    for (i = 0; i < len; i += 4)
+    len = ddrChartHoldCount();
+    for (i = 0; i < len; ++i)
     {
-        gHoldEvents = llListReplaceList(gHoldEvents, [DDR_HOLD_STATE_PENDING], i + 3, i + 3);
+        ddrHoldSetStateAt(i, DDR_HOLD_STATE_PENDING);
     }
 
     gPendingNotes = ddrChartNoteCount();

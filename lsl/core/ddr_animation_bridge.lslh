@@ -3,6 +3,7 @@
 
 integer gRuntimePerms = 0;
 key gRuntimePermsAgent = NULL_KEY;
+integer gIdleAnimationActive = FALSE;
 
 integer ddrHasPermission(integer permissionFlag)
 {
@@ -23,6 +24,10 @@ integer ddrHandleRuntimePermissions(integer permissions)
 {
     gRuntimePerms = permissions;
     gRuntimePermsAgent = llGetPermissionsKey();
+    if (!ddrHasPermission(PERMISSION_TRIGGER_ANIMATION))
+    {
+        gIdleAnimationActive = FALSE;
+    }
     ddrDebug("PERM", "permissions=" + (string)permissions);
     return TRUE;
 }
@@ -31,7 +36,61 @@ integer ddrClearRuntimePermissions()
 {
     gRuntimePerms = 0;
     gRuntimePermsAgent = NULL_KEY;
+    gIdleAnimationActive = FALSE;
     return TRUE;
+}
+
+integer ddrIdleAnimationStart()
+{
+    if (!ddrHasPermission(PERMISSION_TRIGGER_ANIMATION))
+    {
+        return FALSE;
+    }
+
+    string animationName = llStringTrim(DDR_IDLE_ANIMATION, STRING_TRIM);
+    if (animationName == "")
+    {
+        return FALSE;
+    }
+    if (gIdleAnimationActive)
+    {
+        return TRUE;
+    }
+
+    llStartAnimation(animationName);
+    gIdleAnimationActive = TRUE;
+    return TRUE;
+}
+
+integer ddrIdleAnimationStop()
+{
+    if (!gIdleAnimationActive)
+    {
+        return TRUE;
+    }
+
+    string animationName = llStringTrim(DDR_IDLE_ANIMATION, STRING_TRIM);
+    if (animationName == "")
+    {
+        gIdleAnimationActive = FALSE;
+        return TRUE;
+    }
+
+    if (ddrHasPermission(PERMISSION_TRIGGER_ANIMATION))
+    {
+        llStopAnimation(animationName);
+    }
+    gIdleAnimationActive = FALSE;
+    return TRUE;
+}
+
+integer ddrIdleAnimationSync(integer hasDirectionHeld)
+{
+    if (hasDirectionHeld)
+    {
+        return ddrIdleAnimationStop();
+    }
+    return ddrIdleAnimationStart();
 }
 
 integer ddrPlayLaneAnimation(integer lane)

@@ -10,14 +10,15 @@ Outputs:
 - `game-data/song-manifest.json` (full)
 - `game-data/song-manifest.lsl.json` (compact for LSL startup fetch)
 
-## 2) Build Preparsed Chart JSON
+## 2) Build Preparsed Chart Chunks
 
 ```bash
 python tools/build_song_charts.py
 ```
 
 Outputs:
-- `game-data/charts/<song_id>/<difficulty>.chart.json` (compact prebuilt chart payloads)
+- `game-data/charts/<song_id>/<difficulty>.chart.idx.json` (chart index)
+- `game-data/charts/<song_id>/<difficulty>.chart.cNNN.txt` (sparse chunk payloads)
 - updates `game-data/song-manifest.json` and `game-data/song-manifest.lsl.json` with chart-path mappings
 
 ## 3) Convert OGG to MP3

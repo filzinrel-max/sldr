@@ -15,6 +15,9 @@ key gActivePlayer = NULL_KEY;
 integer gSessionActive = FALSE;
 string gLastPlayRequestSignature = "";
 string gPlayingMediaPath = "";
+integer gDirectionHeldMask = 0;
+vector gSitTargetOffset = <0.0, 0.0, 0.0>;
+rotation gSitTargetRot = ZERO_ROTATION;
 
 integer ddrIsOwner(key agentId)
 {
@@ -38,7 +41,7 @@ key ddrCurrentSitter()
 
 integer ddrSetupSitTarget()
 {
-    llSitTarget(DDR_SIT_TARGET_OFFSET, DDR_SIT_TARGET_ROT);
+    llSitTarget(gSitTargetOffset, gSitTargetRot);
     llSetSitText(DDR_SIT_TEXT);
     llSetTouchText(DDR_SIT_TEXT);
     llSetClickAction(CLICK_ACTION_SIT);
@@ -81,7 +84,57 @@ integer ddrGoMainMenu(string reason, string extraQuery)
 
 integer ddrInputControlMask()
 {
-    return CONTROL_LEFT | CONTROL_DOWN | CONTROL_UP | CONTROL_RIGHT;
+    return
+        CONTROL_LEFT |
+        CONTROL_RIGHT |
+        CONTROL_UP |
+        CONTROL_DOWN |
+        CONTROL_FWD |
+        CONTROL_BACK |
+        CONTROL_ROT_LEFT |
+        CONTROL_ROT_RIGHT;
+}
+
+integer ddrDirectionHeldMask(integer held)
+{
+    integer mapped = 0;
+
+    if ((held & (CONTROL_LEFT | CONTROL_ROT_LEFT)) != 0)
+    {
+        mapped = mapped | CONTROL_LEFT;
+    }
+    if ((held & (CONTROL_RIGHT | CONTROL_ROT_RIGHT)) != 0)
+    {
+        mapped = mapped | CONTROL_RIGHT;
+    }
+    if ((held & (CONTROL_UP | CONTROL_FWD)) != 0)
+    {
+        mapped = mapped | CONTROL_UP;
+    }
+    if ((held & (CONTROL_DOWN | CONTROL_BACK)) != 0)
+    {
+        mapped = mapped | CONTROL_DOWN;
+    }
+    return mapped;
+}
+
+integer ddrSyncIdleAnimationFromHeld(integer heldMask)
+{
+    if (!gSessionActive)
+    {
+        ddrIdleAnimationStop();
+        return TRUE;
+    }
+
+    if (heldMask != 0)
+    {
+        ddrIdleAnimationStop();
+    }
+    else
+    {
+        ddrIdleAnimationStart();
+    }
+    return TRUE;
 }
 
 integer ddrInputStartCapture()
@@ -92,6 +145,8 @@ integer ddrInputStartCapture()
     }
     llTakeControls(ddrInputControlMask(), TRUE, FALSE);
     gControlsCaptured = TRUE;
+    gDirectionHeldMask = 0;
+    ddrSyncIdleAnimationFromHeld(gDirectionHeldMask);
     return TRUE;
 }
 
@@ -102,6 +157,8 @@ integer ddrInputStopCapture()
         llReleaseControls();
     }
     gControlsCaptured = FALSE;
+    gDirectionHeldMask = 0;
+    ddrSyncIdleAnimationFromHeld(gDirectionHeldMask);
     return TRUE;
 }
 
@@ -561,10 +618,35 @@ integer ddrHandleOwnerCommand(string message)
             " player=" + (string)gActivePlayer +
             " loading=" + (string)gLoadingChart +
             " gameplayActive=" + (string)gGameplayActive +
+            " sitOffset=" + (string)gSitTargetOffset +
             " media=" + ddrReadMediaCurrentUrl() +
             " freeMemory=" + (string)llGetFreeMemory()
         );
         ddrSendRuntimeStatusRequest();
+        return TRUE;
+    }
+    if (cmd == "sitoffset")
+    {
+        if (llGetListLength(tokens) < 4)
+        {
+            llOwnerSay("[SLDR] usage: /" + (string)DDR_COMMAND_CHANNEL + " sitoffset <x> <y> <z>");
+            return FALSE;
+        }
+
+        float x = (float)llList2String(tokens, 1);
+        float y = (float)llList2String(tokens, 2);
+        float z = (float)llList2String(tokens, 3);
+        gSitTargetOffset = <x, y, z>;
+        ddrSetupSitTarget();
+        llOwnerSay("[SLDR] sit offset set to " + (string)gSitTargetOffset + " (re-sit to fully apply)");
+        return TRUE;
+    }
+    if (cmd == "sitreset")
+    {
+        gSitTargetOffset = DDR_SIT_TARGET_OFFSET;
+        gSitTargetRot = DDR_SIT_TARGET_ROT;
+        ddrSetupSitTarget();
+        llOwnerSay("[SLDR] sit target reset to config offset=" + (string)gSitTargetOffset);
         return TRUE;
     }
     return FALSE;
@@ -580,6 +662,7 @@ integer ddrEndSession(string reason)
     ddrDebug("SESSION", "end reason=" + reason + " player=" + (string)gActivePlayer);
 
     ddrInputStopCapture();
+    ddrIdleAnimationStop();
     ddrClearRuntimePermissions();
     ddrSendRuntimeReset();
 
@@ -589,6 +672,7 @@ integer ddrEndSession(string reason)
     gActivePlayer = NULL_KEY;
     gLastPlayRequestSignature = "";
     gPlayingMediaPath = "";
+    gDirectionHeldMask = 0;
 
     ddrTransition(DDR_STATE_SPLASH, "session-end", "status=idle");
     return TRUE;
@@ -615,6 +699,7 @@ integer ddrStartSession(key playerId)
     gGameplayActive = FALSE;
     gLastPlayRequestSignature = "";
     gPlayingMediaPath = "";
+    gDirectionHeldMask = 0;
     ddrInputStopCapture();
     ddrClearRuntimePermissions();
     ddrSendRuntimeReset();
@@ -658,6 +743,9 @@ integer ddrBoot()
     gControlsCaptured = FALSE;
     gLastPlayRequestSignature = "";
     gPlayingMediaPath = "";
+    gDirectionHeldMask = 0;
+    gSitTargetOffset = DDR_SIT_TARGET_OFFSET;
+    gSitTargetRot = DDR_SIT_TARGET_ROT;
     ddrSetupSitTarget();
 
     if (gListenHandle != 0)
@@ -707,7 +795,8 @@ default
             return;
         }
         ddrHandleRuntimePermissions(permissions);
-        if (ddrHasPermission(PERMISSION_TAKE_CONTROLS) && gState == DDR_STATE_PLAYING)
+        ddrSyncIdleAnimationFromHeld(gDirectionHeldMask);
+        if (ddrHasPermission(PERMISSION_TAKE_CONTROLS))
         {
             ddrInputStartCapture();
         }
@@ -756,10 +845,17 @@ default
 
     control(key controller, integer held, integer changedMask)
     {
-        if (ddrIsActivePlayer(controller) && gState == DDR_STATE_PLAYING && gGameplayActive)
+        if (ddrIsActivePlayer(controller) && gSessionActive)
         {
-            ddrPlayAnimationsForPresses(held, changedMask);
-            ddrSendRuntimeControl(held, changedMask);
+            integer logicalHeld = ddrDirectionHeldMask(held);
+            integer logicalChanged = logicalHeld ^ gDirectionHeldMask;
+            gDirectionHeldMask = logicalHeld;
+            ddrSyncIdleAnimationFromHeld(logicalHeld);
+            ddrPlayAnimationsForPresses(logicalHeld, logicalChanged);
+            if (gState == DDR_STATE_PLAYING && gGameplayActive)
+            {
+                ddrSendRuntimeControl(logicalHeld, logicalChanged);
+            }
         }
     }
 

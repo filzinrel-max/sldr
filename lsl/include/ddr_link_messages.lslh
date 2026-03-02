@@ -2,26 +2,40 @@
 #define DDR_LINK_MESSAGES_LSLH
 
 // Main -> runtime
-integer DDR_LM_RUNTIME_RESET = 7100;
-integer DDR_LM_RUNTIME_START = 7101;
-integer DDR_LM_RUNTIME_CONTROL = 7102;
-integer DDR_LM_RUNTIME_DEBUG = 7103;
-integer DDR_LM_RUNTIME_RESCAN_LINKS = 7104;
-integer DDR_LM_RUNTIME_STATUS = 7105;
+#define DDR_LM_RUNTIME_RESET 7100
+#define DDR_LM_RUNTIME_START 7101
+#define DDR_LM_RUNTIME_CONTROL 7102
+#define DDR_LM_RUNTIME_DEBUG 7103
+#define DDR_LM_RUNTIME_RESCAN_LINKS 7104
+#define DDR_LM_RUNTIME_STATUS 7105
 
 // Runtime -> main
-integer DDR_LM_MAIN_READY = 7200;
-integer DDR_LM_MAIN_FAIL = 7201;
-integer DDR_LM_MAIN_COMPLETE = 7202;
-integer DDR_LM_MAIN_STATUS = 7203;
+#define DDR_LM_MAIN_READY 7200
+#define DDR_LM_MAIN_FAIL 7201
+#define DDR_LM_MAIN_COMPLETE 7202
+#define DDR_LM_MAIN_STATUS 7203
 
 // Runtime engine -> FX
-integer DDR_LM_FX_RESET = 7300;
-integer DDR_LM_FX_NOTE = 7301;        // payload: "<judgement>|<combo>"
-integer DDR_LM_FX_HOLD = 7302;        // payload: "<holdState>|<combo>"
-integer DDR_LM_FX_JUDGE = 7303;       // payload: "<judgement>"
-integer DDR_LM_FX_HOLD_JUDGE = 7304;  // payload: "<holdState>"
-integer DDR_LM_FX_HIDE_COMBO = 7305;
-integer DDR_LM_FX_HIDE_JUDGE = 7306;
+#define DDR_LM_FX_RESET 7300
+#define DDR_LM_FX_NOTE 7301        // payload: "<judgement>|<combo>"
+#define DDR_LM_FX_HOLD 7302        // payload: "<holdState>|<combo>"
+#define DDR_LM_FX_JUDGE 7303       // payload: "<judgement>"
+#define DDR_LM_FX_HOLD_JUDGE 7304  // payload: "<holdState>"
+#define DDR_LM_FX_HIDE_COMBO 7305
+#define DDR_LM_FX_HIDE_JUDGE 7306
+
+// Runtime engine <-> score service
+#define DDR_LM_SCORE_RESET 7400
+#define DDR_LM_SCORE_START 7401    // payload: chart+song metadata json
+#define DDR_LM_SCORE_NOTE 7402     // payload: "<judgement>|<flags>"
+#define DDR_LM_SCORE_HOLD 7403     // payload: "<holdState>"
+#define DDR_LM_SCORE_FINISH 7404   // payload: ""
+#define DDR_LM_SCORE_STATUS 7405
+
+// Runtime engine <-> chart loader service
+#define DDR_LM_CHART_LOAD 7500     // payload: chart URL
+#define DDR_LM_CHART_CANCEL 7501   // payload: ""
+#define DDR_LM_CHART_READY 7510    // payload: metadata json
+#define DDR_LM_CHART_FAIL 7511     // payload: failure reason
 
 #endif

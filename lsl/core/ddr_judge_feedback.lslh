@@ -4,14 +4,48 @@
 integer gJudgeFeedbackEnabled = FALSE;
 integer gJudgeFeedbackVisible = FALSE;
 float gJudgeFeedbackHideAt = 0.0;
+integer gJudgeFeedbackLink = 0;
+
+integer ddrJudgeFeedbackFindLinkByName(string targetName)
+{
+    string wanted = llToLower(llStringTrim(targetName, STRING_TRIM));
+    if (wanted == "")
+    {
+        return 0;
+    }
+
+    integer linkNum = 1;
+    integer primCount = llGetNumberOfPrims();
+    for (; linkNum <= primCount; ++linkNum)
+    {
+        string current = llToLower(llStringTrim(llGetLinkName(linkNum), STRING_TRIM));
+        if (current == wanted)
+        {
+            return linkNum;
+        }
+    }
+    return 0;
+}
+
+integer ddrJudgeFeedbackResolveLink()
+{
+    integer byName = ddrJudgeFeedbackFindLinkByName(DDR_JUDGE_FEEDBACK_PRIM_NAME);
+    if (byName > 0)
+    {
+        return byName;
+    }
+
+    if (DDR_JUDGE_FEEDBACK_LINK > 0 && DDR_JUDGE_FEEDBACK_LINK <= llGetNumberOfPrims())
+    {
+        return DDR_JUDGE_FEEDBACK_LINK;
+    }
+    return 0;
+}
 
 integer ddrJudgeFeedbackValidLink()
 {
-    if (DDR_JUDGE_FEEDBACK_LINK <= 0)
-    {
-        return FALSE;
-    }
-    return DDR_JUDGE_FEEDBACK_LINK <= llGetNumberOfPrims();
+    gJudgeFeedbackLink = ddrJudgeFeedbackResolveLink();
+    return gJudgeFeedbackLink > 0;
 }
 
 integer ddrJudgeFeedbackTextureIndexForJudge(integer judgement)
@@ -68,7 +102,7 @@ integer ddrJudgeFeedbackHide()
         return FALSE;
     }
     llSetLinkPrimitiveParamsFast(
-        DDR_JUDGE_FEEDBACK_LINK,
+        gJudgeFeedbackLink,
         [
             PRIM_COLOR, DDR_JUDGE_FEEDBACK_FACE, <1.0, 1.0, 1.0>, 0.0
         ]
@@ -89,7 +123,7 @@ integer ddrJudgeFeedbackShowTexture(string textureNameOrUuid)
     }
 
     llSetLinkPrimitiveParamsFast(
-        DDR_JUDGE_FEEDBACK_LINK,
+        gJudgeFeedbackLink,
         [
             PRIM_TEXTURE, DDR_JUDGE_FEEDBACK_FACE, textureNameOrUuid, <1.0, 1.0, 0.0>, <0.0, 0.0, 0.0>, 0.0,
             PRIM_FULLBRIGHT, DDR_JUDGE_FEEDBACK_FACE, TRUE,
@@ -146,7 +180,7 @@ integer ddrJudgeFeedbackInit()
     if (gJudgeFeedbackEnabled)
     {
         ddrJudgeFeedbackHide();
-        ddrDebug("FX", "judge feedback enabled link=" + (string)DDR_JUDGE_FEEDBACK_LINK);
+        ddrDebug("FX", "judge feedback enabled link=" + (string)gJudgeFeedbackLink);
     }
     else
     {
@@ -156,4 +190,3 @@ integer ddrJudgeFeedbackInit()
 }
 
 #endif
-

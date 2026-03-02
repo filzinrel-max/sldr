@@ -7,12 +7,25 @@ float gArrowTravelSeconds = 1.0;
 
 list gLaneSlotLinks = []; // [lane0slot0, lane0slot1, ...]
 list gLaneSlotActive = []; // [0/1, ...]
-list gLaneSlotNotePos = []; // note event list index, or -1
+list gLaneSlotNotePos = []; // note index, or -1
 list gLaneSlotEndTimes = []; // absolute song times
+list gLaneSlotFrozen = []; // [0/1, ...] texture animation halted near receptor
+list gLaneNextSlotStart = [0, 0, 0, 0];
+integer gRendererNextSpawnIndex = 0;
 
 integer ddrRendererListIndex(integer lane, integer slot)
 {
     return (lane * DDR_ARROW_SLOTS_PER_LANE) + slot;
+}
+
+integer ddrRendererStartsWith(string text, string prefix)
+{
+    integer prefixLen = llStringLength(prefix);
+    if (llStringLength(text) < prefixLen)
+    {
+        return FALSE;
+    }
+    return llGetSubString(text, 0, prefixLen - 1) == prefix;
 }
 
 integer ddrRendererLaneFromName(string linkName)
@@ -22,7 +35,7 @@ integer ddrRendererLaneFromName(string linkName)
     for (; lane < DDR_LANE_COUNT; ++lane)
     {
         string prefix = llToLower(llList2String(DDR_LANE_LINK_PREFIXES, lane));
-        if (prefix != "" && ddrStringStartsWith(lowered, prefix))
+        if (prefix != "" && ddrRendererStartsWith(lowered, prefix))
         {
             return lane;
         }
@@ -97,10 +110,11 @@ integer ddrRendererStopSlot(integer lane, integer slot)
     gLaneSlotActive = llListReplaceList(gLaneSlotActive, [FALSE], idx, idx);
     gLaneSlotNotePos = llListReplaceList(gLaneSlotNotePos, [-1], idx, idx);
     gLaneSlotEndTimes = llListReplaceList(gLaneSlotEndTimes, [0.0], idx, idx);
+    gLaneSlotFrozen = llListReplaceList(gLaneSlotFrozen, [FALSE], idx, idx);
     return TRUE;
 }
 
-integer ddrRendererStartSlot(integer lane, integer slot, integer noteEventPos, float noteTime)
+integer ddrRendererStartSlot(integer lane, integer slot, integer noteIndex, float noteTime)
 {
     integer idx = ddrRendererListIndex(lane, slot);
     integer linkNum = ddrRendererSlotLink(lane, slot);
@@ -142,31 +156,40 @@ integer ddrRendererStartSlot(integer lane, integer slot, integer noteEventPos, f
         gArrowAnimRate
     );
 
+    float despawnGrace = DDR_ARROW_DESPAWN_GRACE_SECONDS;
+    if (despawnGrace < DDR_WINDOW_MISS)
+    {
+        despawnGrace = DDR_WINDOW_MISS;
+    }
+
     gLaneSlotActive = llListReplaceList(gLaneSlotActive, [TRUE], idx, idx);
-    gLaneSlotNotePos = llListReplaceList(gLaneSlotNotePos, [noteEventPos], idx, idx);
-    gLaneSlotEndTimes = llListReplaceList(gLaneSlotEndTimes, [noteTime + DDR_WINDOW_MISS], idx, idx);
+    gLaneSlotNotePos = llListReplaceList(gLaneSlotNotePos, [noteIndex], idx, idx);
+    gLaneSlotEndTimes = llListReplaceList(gLaneSlotEndTimes, [noteTime + despawnGrace], idx, idx);
+    gLaneSlotFrozen = llListReplaceList(gLaneSlotFrozen, [FALSE], idx, idx);
     return TRUE;
 }
 
 integer ddrRendererFindFreeSlot(integer lane)
 {
-    integer slot = 0;
-    for (; slot < DDR_ARROW_SLOTS_PER_LANE; ++slot)
+    integer start = llList2Integer(gLaneNextSlotStart, lane);
+    if (start < 0 || start >= DDR_ARROW_SLOTS_PER_LANE)
     {
+        start = 0;
+    }
+
+    integer offset = 0;
+    for (; offset < DDR_ARROW_SLOTS_PER_LANE; ++offset)
+    {
+        integer slot = (start + offset) % DDR_ARROW_SLOTS_PER_LANE;
         integer idx = ddrRendererListIndex(lane, slot);
         if (llList2Integer(gLaneSlotActive, idx) == FALSE && ddrRendererSlotLink(lane, slot) > 0)
         {
+            integer nextStart = (slot + 1) % DDR_ARROW_SLOTS_PER_LANE;
+            gLaneNextSlotStart = llListReplaceList(gLaneNextSlotStart, [nextStart], lane, lane);
             return slot;
         }
     }
     return -1;
-}
-
-integer ddrRendererMarkRendered(integer notePos, integer noteFlags)
-{
-    integer newFlags = noteFlags | DDR_NOTE_FLAG_RENDERED;
-    gNoteEvents = llListReplaceList(gNoteEvents, [newFlags], notePos + 4, notePos + 4);
-    return TRUE;
 }
 
 integer ddrRendererDiscoverSlots()
@@ -176,6 +199,7 @@ integer ddrRendererDiscoverSlots()
     gLaneSlotActive = [];
     gLaneSlotNotePos = [];
     gLaneSlotEndTimes = [];
+    gLaneSlotFrozen = [];
 
     integer i = 0;
     for (; i < totalSlots; ++i)
@@ -184,6 +208,7 @@ integer ddrRendererDiscoverSlots()
         gLaneSlotActive += [FALSE];
         gLaneSlotNotePos += [-1];
         gLaneSlotEndTimes += [0.0];
+        gLaneSlotFrozen += [FALSE];
     }
 
     list laneOverflow0 = [];
@@ -317,6 +342,8 @@ integer ddrRendererInit()
 integer ddrRendererReset()
 {
     ddrRendererDiscoverSlots();
+    gLaneNextSlotStart = [0, 0, 0, 0];
+    gRendererNextSpawnIndex = 0;
 
     integer lane = 0;
     for (; lane < DDR_LANE_COUNT; ++lane)
@@ -328,17 +355,6 @@ integer ddrRendererReset()
         }
     }
 
-    integer noteLen = llGetListLength(gNoteEvents);
-    integer notePos = 0;
-    for (; notePos < noteLen; notePos += 5)
-    {
-        integer flags = llList2Integer(gNoteEvents, notePos + 4);
-        if (flags & DDR_NOTE_FLAG_RENDERED)
-        {
-            flags = flags & ~DDR_NOTE_FLAG_RENDERED;
-            gNoteEvents = llListReplaceList(gNoteEvents, [flags], notePos + 4, notePos + 4);
-        }
-    }
     return TRUE;
 }
 
@@ -355,19 +371,35 @@ integer ddrRendererCleanupSlots(float songTime)
             {
                 integer notePos = llList2Integer(gLaneSlotNotePos, idx);
                 float endTime = llList2Float(gLaneSlotEndTimes, idx);
+                integer isFrozen = llList2Integer(gLaneSlotFrozen, idx);
                 integer shouldStop = FALSE;
+
+                if (!isFrozen && notePos >= 0 && notePos < ddrChartNoteCount())
+                {
+                    float noteTime = (float)ddrNoteTimeCsAt(notePos) * 0.01;
+                    float freezeCutoff = noteTime - DDR_ARROW_FREEZE_EARLY_SECONDS;
+                    if (songTime >= freezeCutoff)
+                    {
+                        integer linkNum = ddrRendererSlotLink(lane, slot);
+                        if (linkNum > 0)
+                        {
+                            // Freeze before wrap-around so old arrows do not appear as new spawns.
+                            llSetLinkTextureAnim(linkNum, 0, DDR_ARROW_FACE, 0, 0, 0.0, 0.0, 0.0);
+                            // Hide immediately once frozen to avoid seeing a stuck frame.
+                            llSetLinkPrimitiveParamsFast(
+                                linkNum,
+                                [
+                                    PRIM_COLOR, DDR_ARROW_FACE, DDR_ARROW_TINT, 0.0
+                                ]
+                            );
+                        }
+                        gLaneSlotFrozen = llListReplaceList(gLaneSlotFrozen, [TRUE], idx, idx);
+                    }
+                }
 
                 if (songTime >= endTime)
                 {
                     shouldStop = TRUE;
-                }
-                else if (notePos >= 0 && notePos < llGetListLength(gNoteEvents))
-                {
-                    integer judge = llList2Integer(gNoteEvents, notePos + 3);
-                    if (judge != DDR_JUDGE_NONE)
-                    {
-                        shouldStop = TRUE;
-                    }
                 }
 
                 if (shouldStop)
@@ -383,25 +415,16 @@ integer ddrRendererCleanupSlots(float songTime)
 integer ddrRendererTrySpawnNotes(float songTime)
 {
     integer noteCount = ddrChartNoteCount();
-    integer noteIndex = 0;
+    if (gRendererNextSpawnIndex < 0)
+    {
+        gRendererNextSpawnIndex = 0;
+    }
+
+    integer noteIndex = gRendererNextSpawnIndex;
     for (; noteIndex < noteCount; ++noteIndex)
     {
-        integer notePos = noteIndex * 5;
-        float noteTime = (float)llList2Integer(gNoteEvents, notePos) * 0.01;
-        integer lane = llList2Integer(gNoteEvents, notePos + 1);
-        integer judge = llList2Integer(gNoteEvents, notePos + 3);
-        integer flags = llList2Integer(gNoteEvents, notePos + 4);
-
-        if (flags & DDR_NOTE_FLAG_RENDERED)
-        {
-            jump continue_note;
-        }
-
-        if (judge != DDR_JUDGE_NONE)
-        {
-            ddrRendererMarkRendered(notePos, flags);
-            jump continue_note;
-        }
+        float noteTime = (float)ddrNoteTimeCsAt(noteIndex) * 0.01;
+        integer lane = ddrNoteLaneAt(noteIndex);
 
         float spawnTime = noteTime - gArrowTravelSeconds;
         if (songTime < spawnTime)
@@ -413,10 +436,14 @@ integer ddrRendererTrySpawnNotes(float songTime)
         integer freeSlot = ddrRendererFindFreeSlot(lane);
         if (freeSlot >= 0)
         {
-            ddrRendererStartSlot(lane, freeSlot, notePos, noteTime);
-            ddrRendererMarkRendered(notePos, flags);
+            ddrRendererStartSlot(lane, freeSlot, noteIndex, noteTime);
+            gRendererNextSpawnIndex = noteIndex + 1;
         }
-@continue_note;
+        else
+        {
+            // Preserve order and avoid skipping a note forever when a lane is saturated.
+            jump done_spawn_loop;
+        }
     }
 @done_spawn_loop;
     return TRUE;

@@ -1,0 +1,47 @@
+#ifndef DDR_CONFIG_FX_LSLH
+#define DDR_CONFIG_FX_LSLH
+
+#ifndef DDR_DEBUG
+#define DDR_DEBUG 1
+#endif
+
+// Runtime cadence
+#define DDR_TICK_SECONDS 0.05
+
+// Judge feedback prim (set link number for the separate prim that shows hit result art).
+// Set to 0 or a negative number to disable.
+#define DDR_JUDGE_FEEDBACK_LINK -1
+#define DDR_JUDGE_FEEDBACK_FACE ALL_SIDES
+#define DDR_JUDGE_FEEDBACK_SECONDS 0.30
+
+// Texture names or UUIDs in this exact order:
+// [PERFECT, GREAT, GOOD, BOO, MISS, HOLD_OK, HOLD_NG]
+list DDR_JUDGE_FEEDBACK_TEXTURES = [
+    "409c3b32-d0b6-66cf-cc63-a2851e06beb8",
+    "0a2c8d72-34bf-48ab-30d4-78203dafa119",
+    "f078614c-7ce3-81b2-8d06-75021a476762",
+    "f77d4c66-d350-11e2-4a27-f1d37619b4ea",
+    "0923b15b-0e8d-b62d-8a52-31c9216aeeb0",
+    "409c3b32-d0b6-66cf-cc63-a2851e06beb8",
+    "409c3b32-d0b6-66cf-cc63-a2851e06beb8"
+];
+
+// Combo popup prim (set link number for separate prim that shows combo text).
+// Set to 0 or a negative number to disable.
+#define DDR_COMBO_FEEDBACK_LINK -1
+#define DDR_COMBO_FEEDBACK_PRIM_NAME "COMBO"
+#define DDR_COMBO_FEEDBACK_SECONDS 0.55
+#define DDR_COMBO_FEEDBACK_MIN_COMBO 2
+#define DDR_COMBO_FEEDBACK_ALPHA 1.0
+
+// Judge feedback prim name override (recommended).
+// When set, name lookup is used first, then DDR_JUDGE_FEEDBACK_LINK as fallback.
+#define DDR_JUDGE_FEEDBACK_PRIM_NAME "FEEDBACK"
+
+// Combo popup colors by threshold.
+#define DDR_COMBO_COLOR_LOW <0.82, 0.95, 1.00>    // 2-24
+#define DDR_COMBO_COLOR_MID <0.76, 1.00, 0.66>    // 25-49
+#define DDR_COMBO_COLOR_HIGH <1.00, 0.91, 0.52>   // 50-99
+#define DDR_COMBO_COLOR_MAX <1.00, 0.50, 0.50>    // 100+
+
+#endif
