@@ -1,0 +1,237 @@
+:root {
+  --bg: #f4fbff;
+  --panel: #ffffff;
+  --line: #cfe6f0;
+  --ink: #0f2530;
+  --muted: #486979;
+  --teal: #15cbd5;
+  --pink: #ff5caa;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  color: var(--ink);
+  background:
+    radial-gradient(80vmax 55vmax at -8% 115%, rgba(21, 203, 213, 0.2), transparent 60%),
+    radial-gradient(90vmax 55vmax at 108% -8%, rgba(255, 92, 170, 0.18), transparent 62%),
+    linear-gradient(165deg, #fbfdff, var(--bg) 58%, #fdf7fb);
+  font-family: "Rajdhani", "Segoe UI", sans-serif;
+}
+
+.page {
+  width: min(1400px, 100%);
+  margin: 0 auto;
+  padding: 16px clamp(12px, 2.6vw, 26px) 24px;
+  display: grid;
+  gap: 12px;
+}
+
+.header h1 {
+  margin: 0;
+  font: 800 clamp(26px, 5vw, 48px) "Orbitron", "Rajdhani", sans-serif;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.header p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: clamp(14px, 2vw, 18px);
+}
+
+.controls,
+.playback,
+.status-row,
+.debug {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: linear-gradient(130deg, rgba(255, 255, 255, 0.96), rgba(245, 252, 255, 0.9));
+  box-shadow: 0 8px 20px rgba(30, 101, 126, 0.08);
+  padding: 10px 12px;
+}
+
+.controls,
+.playback {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.field-group {
+  display: grid;
+  gap: 4px;
+}
+
+.field-group label {
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.chart-path-group {
+  flex: 1 1 560px;
+}
+
+.slider-group {
+  flex: 1 1 260px;
+}
+
+select,
+input[type="text"] {
+  min-height: 38px;
+  border: 1px solid #b9d8e5;
+  border-radius: 10px;
+  padding: 0 10px;
+  background: #ffffff;
+  color: var(--ink);
+  font: 700 16px "Rajdhani", "Segoe UI", sans-serif;
+}
+
+select {
+  min-width: 220px;
+}
+
+input[type="text"] {
+  width: 100%;
+}
+
+input[type="range"] {
+  width: 100%;
+}
+
+button {
+  border: 1px solid #8fd7dc;
+  border-radius: 10px;
+  background: linear-gradient(120deg, #17ced5, #4fdce3);
+  color: #ffffff;
+  min-height: 38px;
+  padding: 0 14px;
+  font: 800 14px "Rajdhani", "Segoe UI", sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(1.05);
+}
+
+#playPauseBtn {
+  background: linear-gradient(120deg, #ff63ad, #ff8dc4);
+  border-color: #f38dbf;
+}
+
+.value-pill {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid #b7dce7;
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--muted);
+  font: 700 13px "Rajdhani", sans-serif;
+}
+
+.status-row {
+  display: grid;
+  gap: 8px;
+}
+
+.status {
+  margin: 0;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.status.is-error {
+  color: #c94f00;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid #c8e3ed;
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.stat strong {
+  color: var(--ink);
+}
+
+.chart-shell {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #041018;
+  overflow: hidden;
+  box-shadow: 0 14px 30px rgba(6, 19, 26, 0.3);
+  min-height: min(68vh, 740px);
+}
+
+#chartCanvas {
+  width: 100%;
+  height: min(68vh, 740px);
+  display: block;
+}
+
+.debug h2 {
+  margin: 0 0 6px;
+  font: 800 18px "Rajdhani", sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+#eventPreview {
+  margin: 0;
+  max-height: 280px;
+  overflow: auto;
+  border: 1px solid #cbe3ec;
+  border-radius: 10px;
+  padding: 10px;
+  background: #f8fdff;
+  font: 600 12px/1.38 Consolas, "Courier New", monospace;
+  color: #234656;
+}
+
+@media (max-width: 900px) {
+  .controls,
+  .playback {
+    align-items: stretch;
+  }
+
+  select {
+    min-width: 0;
+  }
+
+  .slider-group {
+    flex: 1 1 100%;
+  }
+
+  #chartCanvas {
+    height: min(62vh, 620px);
+  }
+}

@@ -49,6 +49,35 @@ These pages are loaded on the media texture by `lsl/core/sldr_game_main.lsl`.
 `score.html`
 - `result` (escaped JSON payload from LSL)
 
+## Local Chart Tester
+
+Use `chart-tester.html` to validate condensed chunked charts locally.
+
+- Page: `web/chart-tester.html`
+- Arrow texture: `web/assets/arrow.gif` (rotated per lane in canvas)
+- Input chart format:
+  - index: `game-data/charts/<song>/<difficulty>.chart.idx.json`
+  - chunks: `game-data/charts/<song>/<difficulty>.chart.cNNN.txt`
+
+Suggested local run (from repo root):
+
+```bash
+python -m http.server 8000
+```
+
+Then open:
+
+```text
+http://localhost:8000/web/chart-tester.html
+```
+
+Notes:
+- The tester decodes condensed rows in the same order as LSL:
+  - apply hold-end mask
+  - apply hold-start mask
+  - apply press mask
+- It also finalizes unclosed holds at `latest_note + 25cs`, matching the loader behavior.
+
 ## Score Payload Fields
 
 Expected JSON (from LSL):
