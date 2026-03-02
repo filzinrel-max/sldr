@@ -1,0 +1,436 @@
+#ifndef DDR_LANE_RENDERER_LSLH
+#define DDR_LANE_RENDERER_LSLH
+
+integer gRendererInitialized = FALSE;
+float gArrowAnimRate = 0.0;
+float gArrowTravelSeconds = 1.0;
+
+list gLaneSlotLinks = []; // [lane0slot0, lane0slot1, ...]
+list gLaneSlotActive = []; // [0/1, ...]
+list gLaneSlotNotePos = []; // note event list index, or -1
+list gLaneSlotEndTimes = []; // absolute song times
+
+integer ddrRendererListIndex(integer lane, integer slot)
+{
+    return (lane * DDR_ARROW_SLOTS_PER_LANE) + slot;
+}
+
+integer ddrRendererLaneFromName(string linkName)
+{
+    string lowered = llToLower(linkName);
+    integer lane = 0;
+    for (; lane < DDR_LANE_COUNT; ++lane)
+    {
+        string prefix = llToLower(llList2String(DDR_LANE_LINK_PREFIXES, lane));
+        if (prefix != "" && ddrStringStartsWith(lowered, prefix))
+        {
+            return lane;
+        }
+    }
+    return -1;
+}
+
+integer ddrRendererTrailingNumber(string text)
+{
+    integer len = llStringLength(text);
+    if (len <= 0)
+    {
+        return -1;
+    }
+
+    integer end = len - 1;
+    while (end >= 0)
+    {
+        string c = llGetSubString(text, end, end);
+        if (llSubStringIndex("0123456789", c) != -1)
+        {
+            --end;
+        }
+        else
+        {
+            jump digits_done;
+        }
+    }
+@digits_done;
+
+    integer digitsStart = end + 1;
+    if (digitsStart >= len)
+    {
+        return -1;
+    }
+    return (integer)llGetSubString(text, digitsStart, len - 1);
+}
+
+integer ddrRendererSlotLink(integer lane, integer slot)
+{
+    integer idx = ddrRendererListIndex(lane, slot);
+    if (idx < 0 || idx >= llGetListLength(gLaneSlotLinks))
+    {
+        return 0;
+    }
+    return llList2Integer(gLaneSlotLinks, idx);
+}
+
+string ddrRendererLaneTexture(integer lane)
+{
+    if (lane < 0 || lane >= llGetListLength(DDR_LANE_ARROW_TEXTURES))
+    {
+        return "";
+    }
+    return llStringTrim(llList2String(DDR_LANE_ARROW_TEXTURES, lane), STRING_TRIM);
+}
+
+integer ddrRendererStopSlot(integer lane, integer slot)
+{
+    integer idx = ddrRendererListIndex(lane, slot);
+    integer linkNum = ddrRendererSlotLink(lane, slot);
+    if (linkNum > 0)
+    {
+        llSetLinkTextureAnim(linkNum, 0, DDR_ARROW_FACE, 0, 0, 0.0, 0.0, 0.0);
+        llSetLinkPrimitiveParamsFast(
+            linkNum,
+            [
+                PRIM_COLOR, DDR_ARROW_FACE, DDR_ARROW_TINT, 0.0
+            ]
+        );
+    }
+    gLaneSlotActive = llListReplaceList(gLaneSlotActive, [FALSE], idx, idx);
+    gLaneSlotNotePos = llListReplaceList(gLaneSlotNotePos, [-1], idx, idx);
+    gLaneSlotEndTimes = llListReplaceList(gLaneSlotEndTimes, [0.0], idx, idx);
+    return TRUE;
+}
+
+integer ddrRendererStartSlot(integer lane, integer slot, integer noteEventPos, float noteTime)
+{
+    integer idx = ddrRendererListIndex(lane, slot);
+    integer linkNum = ddrRendererSlotLink(lane, slot);
+    if (linkNum <= 0)
+    {
+        return FALSE;
+    }
+
+    string textureValue = ddrRendererLaneTexture(lane);
+    float rot = DDR_ARROW_TEXTURE_ROTATE_DEGREES * DEG_TO_RAD;
+    if (textureValue != "")
+    {
+        llSetLinkPrimitiveParamsFast(
+            linkNum,
+            [
+                PRIM_TEXTURE, DDR_ARROW_FACE, textureValue, <DDR_ARROW_TEXTURE_REPEAT_X, DDR_ARROW_TEXTURE_REPEAT_Y, 0.0>, <0.0, 0.0, 0.0>, rot,
+                PRIM_COLOR, DDR_ARROW_FACE, DDR_ARROW_TINT, DDR_ARROW_ALPHA
+            ]
+        );
+    }
+    else
+    {
+        llSetLinkPrimitiveParamsFast(
+            linkNum,
+            [
+                PRIM_COLOR, DDR_ARROW_FACE, DDR_ARROW_TINT, DDR_ARROW_ALPHA
+            ]
+        );
+    }
+
+    llSetLinkTextureAnim(
+        linkNum,
+        ANIM_ON | SMOOTH,
+        DDR_ARROW_FACE,
+        1,
+        1,
+        DDR_ARROW_ANIM_START,
+        DDR_ARROW_ANIM_LENGTH,
+        gArrowAnimRate
+    );
+
+    gLaneSlotActive = llListReplaceList(gLaneSlotActive, [TRUE], idx, idx);
+    gLaneSlotNotePos = llListReplaceList(gLaneSlotNotePos, [noteEventPos], idx, idx);
+    gLaneSlotEndTimes = llListReplaceList(gLaneSlotEndTimes, [noteTime + DDR_WINDOW_MISS], idx, idx);
+    return TRUE;
+}
+
+integer ddrRendererFindFreeSlot(integer lane)
+{
+    integer slot = 0;
+    for (; slot < DDR_ARROW_SLOTS_PER_LANE; ++slot)
+    {
+        integer idx = ddrRendererListIndex(lane, slot);
+        if (llList2Integer(gLaneSlotActive, idx) == FALSE && ddrRendererSlotLink(lane, slot) > 0)
+        {
+            return slot;
+        }
+    }
+    return -1;
+}
+
+integer ddrRendererMarkRendered(integer notePos, integer noteFlags)
+{
+    integer newFlags = noteFlags | DDR_NOTE_FLAG_RENDERED;
+    gNoteEvents = llListReplaceList(gNoteEvents, [newFlags], notePos + 4, notePos + 4);
+    return TRUE;
+}
+
+integer ddrRendererDiscoverSlots()
+{
+    integer totalSlots = DDR_LANE_COUNT * DDR_ARROW_SLOTS_PER_LANE;
+    gLaneSlotLinks = [];
+    gLaneSlotActive = [];
+    gLaneSlotNotePos = [];
+    gLaneSlotEndTimes = [];
+
+    integer i = 0;
+    for (; i < totalSlots; ++i)
+    {
+        gLaneSlotLinks += [0];
+        gLaneSlotActive += [FALSE];
+        gLaneSlotNotePos += [-1];
+        gLaneSlotEndTimes += [0.0];
+    }
+
+    list laneOverflow0 = [];
+    list laneOverflow1 = [];
+    list laneOverflow2 = [];
+    list laneOverflow3 = [];
+
+    integer linkNum = 1;
+    integer primCount = llGetNumberOfPrims();
+    for (; linkNum <= primCount; ++linkNum)
+    {
+        string linkName = llStringTrim(llGetLinkName(linkNum), STRING_TRIM);
+        integer lane = ddrRendererLaneFromName(linkName);
+        if (lane >= 0)
+        {
+            integer numberedSlot = ddrRendererTrailingNumber(linkName) - 1;
+            if (numberedSlot >= 0 && numberedSlot < DDR_ARROW_SLOTS_PER_LANE)
+            {
+                integer idx = ddrRendererListIndex(lane, numberedSlot);
+                if (llList2Integer(gLaneSlotLinks, idx) == 0)
+                {
+                    gLaneSlotLinks = llListReplaceList(gLaneSlotLinks, [linkNum], idx, idx);
+                }
+                else
+                {
+                    if (lane == DDR_LANE_LEFT)
+                    {
+                        laneOverflow0 += [linkNum];
+                    }
+                    else if (lane == DDR_LANE_DOWN)
+                    {
+                        laneOverflow1 += [linkNum];
+                    }
+                    else if (lane == DDR_LANE_UP)
+                    {
+                        laneOverflow2 += [linkNum];
+                    }
+                    else
+                    {
+                        laneOverflow3 += [linkNum];
+                    }
+                }
+            }
+            else
+            {
+                if (lane == DDR_LANE_LEFT)
+                {
+                    laneOverflow0 += [linkNum];
+                }
+                else if (lane == DDR_LANE_DOWN)
+                {
+                    laneOverflow1 += [linkNum];
+                }
+                else if (lane == DDR_LANE_UP)
+                {
+                    laneOverflow2 += [linkNum];
+                }
+                else
+                {
+                    laneOverflow3 += [linkNum];
+                }
+            }
+        }
+    }
+
+    integer lane = 0;
+    for (; lane < DDR_LANE_COUNT; ++lane)
+    {
+        list overflow = [];
+        if (lane == DDR_LANE_LEFT)
+        {
+            overflow = laneOverflow0;
+        }
+        else if (lane == DDR_LANE_DOWN)
+        {
+            overflow = laneOverflow1;
+        }
+        else if (lane == DDR_LANE_UP)
+        {
+            overflow = laneOverflow2;
+        }
+        else
+        {
+            overflow = laneOverflow3;
+        }
+
+        integer overflowIndex = 0;
+        integer slot = 0;
+        for (; slot < DDR_ARROW_SLOTS_PER_LANE; ++slot)
+        {
+            integer idx = ddrRendererListIndex(lane, slot);
+            if (llList2Integer(gLaneSlotLinks, idx) == 0 && overflowIndex < llGetListLength(overflow))
+            {
+                gLaneSlotLinks = llListReplaceList(gLaneSlotLinks, [llList2Integer(overflow, overflowIndex)], idx, idx);
+                ++overflowIndex;
+            }
+        }
+
+        list laneLinks = [];
+        for (slot = 0; slot < DDR_ARROW_SLOTS_PER_LANE; ++slot)
+        {
+            laneLinks += [ddrRendererSlotLink(lane, slot)];
+        }
+        ddrDebug("RENDER", "lane " + (string)lane + " links=" + llDumpList2String(laneLinks, ","));
+    }
+
+    return TRUE;
+}
+
+integer ddrRendererInit()
+{
+    ddrRendererDiscoverSlots();
+    gArrowTravelSeconds = DDR_ARROW_TRAVEL_SECONDS;
+    if (gArrowTravelSeconds <= 0.0)
+    {
+        gArrowTravelSeconds = 1.0;
+    }
+    gArrowAnimRate = llFabs(DDR_ARROW_ANIM_LENGTH) / gArrowTravelSeconds;
+    if (gArrowAnimRate <= 0.0)
+    {
+        gArrowAnimRate = 1.0;
+    }
+    if (DDR_ARROW_ANIM_REVERSE)
+    {
+        gArrowAnimRate = -gArrowAnimRate;
+    }
+    gRendererInitialized = TRUE;
+    return TRUE;
+}
+
+integer ddrRendererReset()
+{
+    ddrRendererDiscoverSlots();
+
+    integer lane = 0;
+    for (; lane < DDR_LANE_COUNT; ++lane)
+    {
+        integer slot = 0;
+        for (; slot < DDR_ARROW_SLOTS_PER_LANE; ++slot)
+        {
+            ddrRendererStopSlot(lane, slot);
+        }
+    }
+
+    integer noteLen = llGetListLength(gNoteEvents);
+    integer notePos = 0;
+    for (; notePos < noteLen; notePos += 5)
+    {
+        integer flags = llList2Integer(gNoteEvents, notePos + 4);
+        if (flags & DDR_NOTE_FLAG_RENDERED)
+        {
+            flags = flags & ~DDR_NOTE_FLAG_RENDERED;
+            gNoteEvents = llListReplaceList(gNoteEvents, [flags], notePos + 4, notePos + 4);
+        }
+    }
+    return TRUE;
+}
+
+integer ddrRendererCleanupSlots(float songTime)
+{
+    integer lane = 0;
+    for (; lane < DDR_LANE_COUNT; ++lane)
+    {
+        integer slot = 0;
+        for (; slot < DDR_ARROW_SLOTS_PER_LANE; ++slot)
+        {
+            integer idx = ddrRendererListIndex(lane, slot);
+            if (llList2Integer(gLaneSlotActive, idx))
+            {
+                integer notePos = llList2Integer(gLaneSlotNotePos, idx);
+                float endTime = llList2Float(gLaneSlotEndTimes, idx);
+                integer shouldStop = FALSE;
+
+                if (songTime >= endTime)
+                {
+                    shouldStop = TRUE;
+                }
+                else if (notePos >= 0 && notePos < llGetListLength(gNoteEvents))
+                {
+                    integer judge = llList2Integer(gNoteEvents, notePos + 3);
+                    if (judge != DDR_JUDGE_NONE)
+                    {
+                        shouldStop = TRUE;
+                    }
+                }
+
+                if (shouldStop)
+                {
+                    ddrRendererStopSlot(lane, slot);
+                }
+            }
+        }
+    }
+    return TRUE;
+}
+
+integer ddrRendererTrySpawnNotes(float songTime)
+{
+    integer noteCount = ddrChartNoteCount();
+    integer noteIndex = 0;
+    for (; noteIndex < noteCount; ++noteIndex)
+    {
+        integer notePos = noteIndex * 5;
+        float noteTime = (float)llList2Integer(gNoteEvents, notePos) * 0.01;
+        integer lane = llList2Integer(gNoteEvents, notePos + 1);
+        integer judge = llList2Integer(gNoteEvents, notePos + 3);
+        integer flags = llList2Integer(gNoteEvents, notePos + 4);
+
+        if (flags & DDR_NOTE_FLAG_RENDERED)
+        {
+            jump continue_note;
+        }
+
+        if (judge != DDR_JUDGE_NONE)
+        {
+            ddrRendererMarkRendered(notePos, flags);
+            jump continue_note;
+        }
+
+        float spawnTime = noteTime - gArrowTravelSeconds;
+        if (songTime < spawnTime)
+        {
+            // Note list is in time order; once future notes are not ready, later ones are not ready either.
+            jump done_spawn_loop;
+        }
+
+        integer freeSlot = ddrRendererFindFreeSlot(lane);
+        if (freeSlot >= 0)
+        {
+            ddrRendererStartSlot(lane, freeSlot, notePos, noteTime);
+            ddrRendererMarkRendered(notePos, flags);
+        }
+@continue_note;
+    }
+@done_spawn_loop;
+    return TRUE;
+}
+
+integer ddrRendererTick(float songTime)
+{
+    if (!gRendererInitialized)
+    {
+        return FALSE;
+    }
+    ddrRendererTrySpawnNotes(songTime);
+    ddrRendererCleanupSlots(songTime);
+    return TRUE;
+}
+
+#endif

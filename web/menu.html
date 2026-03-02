@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SLDR Main Menu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet" />
+    <script src="./assets/common.js" defer></script>
+    <style>
+      :root {
+        --ink: #0e2a35;
+        --muted: #5a7b86;
+        --line: #cde7ef;
+        --teal: #1ad4d8;
+        --teal-strong: #00aeb7;
+        --pink: #ff4f9a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        color: var(--ink);
+        font-family: "Rajdhani", "Segoe UI", sans-serif;
+        background:
+          radial-gradient(100vmax 70vmax at -10% 115%, rgba(26, 212, 216, 0.22), transparent 60%),
+          radial-gradient(90vmax 60vmax at 110% -5%, rgba(255, 79, 154, 0.2), transparent 64%),
+          linear-gradient(160deg, #fdfeff, #f3fbff 46%, #fdf8ff);
+        overflow: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background:
+          repeating-linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.022) 0,
+            rgba(0, 0, 0, 0.022) 2px,
+            transparent 2px,
+            transparent 7px
+          );
+        mix-blend-mode: soft-light;
+        opacity: 0.48;
+      }
+
+      .menu-root {
+        position: relative;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: clamp(14px, 3vw, 30px);
+      }
+
+      .menu-bg {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .bg-arrow {
+        position: absolute;
+        bottom: -24vh;
+        width: clamp(72px, 8.2vw, 150px);
+        opacity: 0;
+        filter: hue-rotate(0deg) saturate(1.22) brightness(1.06);
+        will-change: transform, opacity, filter;
+        animation-name: floatUp, tintShift;
+        animation-timing-function: linear, ease-in-out;
+        animation-iteration-count: infinite, infinite;
+      }
+
+      @keyframes floatUp {
+        0% {
+          opacity: 0;
+          transform: translate3d(0, 0, 0) rotate(var(--turn)) scale(var(--scale));
+        }
+        10% {
+          opacity: var(--alpha);
+        }
+        88% {
+          opacity: var(--alpha);
+        }
+        100% {
+          opacity: 0;
+          transform: translate3d(var(--driftX), -132vh, 0) rotate(var(--turn)) scale(calc(var(--scale) * 1.07));
+        }
+      }
+
+      @keyframes tintShift {
+        0% {
+          filter: hue-rotate(0deg) saturate(1.2) brightness(1.06);
+        }
+        50% {
+          filter: hue-rotate(185deg) saturate(1.5) brightness(1.18);
+        }
+        100% {
+          filter: hue-rotate(360deg) saturate(1.2) brightness(1.06);
+        }
+      }
+
+      .menu-card {
+        width: min(940px, 100%);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(244, 252, 255, 0.9));
+        box-shadow: 0 18px 46px rgba(36, 108, 133, 0.13);
+        text-align: center;
+        padding: clamp(22px, 4vw, 52px);
+        z-index: 2;
+      }
+
+      .menu-kicker {
+        margin: 0;
+        font: 700 clamp(12px, 1.7vw, 15px) "Rajdhani", sans-serif;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .menu-title {
+        margin: clamp(8px, 1.2vw, 12px) 0 clamp(16px, 2.4vw, 26px);
+        font: 800 clamp(78px, 17vw, 220px) "Orbitron", sans-serif;
+        letter-spacing: 0.08em;
+        line-height: 0.8;
+        text-transform: uppercase;
+        color: transparent;
+        background: linear-gradient(180deg, #17d4d8 0%, #00afb7 45%, #ff4f9a 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        text-shadow:
+          0 0 18px rgba(26, 212, 216, 0.3),
+          0 0 24px rgba(255, 79, 154, 0.24);
+      }
+
+      .menu-sub {
+        margin: -6px 0 clamp(14px, 2vw, 22px);
+        font: 700 clamp(16px, 2.2vw, 24px) "Rajdhani", sans-serif;
+        letter-spacing: 0.08em;
+        color: #3e7688;
+        text-transform: uppercase;
+      }
+
+      .menu-button {
+        border: 1px solid #f06da9;
+        border-radius: 999px;
+        min-width: min(76vw, 340px);
+        background: linear-gradient(110deg, #17d4d8, #ff5ea5);
+        color: #ffffff;
+        padding: 13px 26px;
+        font: 800 clamp(21px, 4.1vw, 36px) "Orbitron", "Rajdhani", sans-serif;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        cursor: pointer;
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.42) inset,
+          0 10px 22px rgba(240, 109, 169, 0.28);
+        transition: transform 0.14s ease, filter 0.14s ease, box-shadow 0.14s ease;
+      }
+
+      .menu-button:hover {
+        transform: translateY(-1px) scale(1.012);
+        filter: brightness(1.04);
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.52) inset,
+          0 14px 28px rgba(240, 109, 169, 0.32);
+      }
+
+      .menu-button:active {
+        transform: translateY(1px) scale(0.992);
+      }
+
+      .menu-error {
+        margin: 14px 0 0;
+        min-height: 1.3em;
+        color: #c25500;
+        font-size: 14px;
+      }
+
+      .screen-wipe {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 9999;
+      }
+
+      .screen-wipe.is-holding {
+        background: #ffffff;
+      }
+
+      .screen-wipe::before {
+        content: "";
+        position: absolute;
+        width: 230vmax;
+        height: 230vmax;
+        left: 50%;
+        top: 50%;
+        background: #ffffff;
+        transform: translate(0%, 0%) rotate(-45deg);
+      }
+
+      .screen-wipe.is-revealing::before {
+        animation: screenRevealDiagonal 1.25s cubic-bezier(0.2, 0.7, 0, 1) forwards;
+      }
+
+      .screen-wipe.is-covering::before {
+        animation: screenCoverDiagonal 1.25s cubic-bezier(0.2, 0.7, 0, 1) forwards;
+      }
+
+      .screen-wipe.is-covering-prep::before {
+        transform: translate(120%, 120%) rotate(-45deg);
+      }
+
+      @keyframes screenRevealDiagonal {
+        0% {
+          transform: translate(0%, 0%) rotate(-45deg);
+        }
+        100% {
+          transform: translate(-120%, -120%) rotate(-45deg);
+        }
+      }
+
+      @keyframes screenCoverDiagonal {
+        0% {
+          transform: translate(120%, 120%) rotate(-45deg);
+        }
+        100% {
+          transform: translate(0%, 0%) rotate(-45deg);
+        }
+      }
+    </style>
+    <script defer>
+      (() => {
+        "use strict";
+
+        const ARROW_COUNT = 22;
+        const ROTATIONS = [0, 90, 180, 270];
+        const REVEAL_DELAY_MS = 1000;
+        let gSelectedAudio = null;
+        let gIntroMusicAudio = null;
+        let gNavigating = false;
+        let gIntroUnlockBound = false;
+        let gIntroPrimeTried = false;
+
+        function rand(min, max) {
+          return min + Math.random() * (max - min);
+        }
+
+        function whole(min, max) {
+          return Math.floor(rand(min, max + 1));
+        }
+
+        function buildBackgroundArrows() {
+          const layer = document.getElementById("menuBg");
+          if (!layer) {
+            return;
+          }
+
+          for (let i = 0; i < ARROW_COUNT; i += 1) {
+            const arrow = document.createElement("img");
+            const durationA = rand(11.0, 20.0);
+            const durationB = rand(5.6, 10.8);
+            const delayA = rand(-durationA, 0.0);
+            const delayB = rand(-durationB, 0.0);
+            const turn = ROTATIONS[whole(0, ROTATIONS.length - 1)];
+            const scale = rand(0.6, 3.2);
+            const alpha = rand(0.12, 0.34);
+            const left = rand(-8, 100);
+            const drift = rand(0, 0);
+
+            arrow.className = "bg-arrow";
+            arrow.src = "./assets/arrow.gif";
+            arrow.alt = "";
+            arrow.setAttribute("aria-hidden", "true");
+            arrow.style.left = `${left}%`;
+            arrow.style.setProperty("--turn", `${turn}deg`);
+            arrow.style.setProperty("--scale", scale.toFixed(3));
+            arrow.style.setProperty("--alpha", alpha.toFixed(3));
+            arrow.style.setProperty("--driftX", `${drift.toFixed(2)}vw`);
+            arrow.style.animationDuration = `${durationA.toFixed(2)}s, ${durationB.toFixed(2)}s`;
+            arrow.style.animationDelay = `${delayA.toFixed(2)}s, ${delayB.toFixed(2)}s`;
+            layer.appendChild(arrow);
+          }
+        }
+
+        function initSelectedAudio() {
+          gSelectedAudio = new Audio("./assets/selected.mp3");
+          gSelectedAudio.preload = "auto";
+          gSelectedAudio.volume = 0.95;
+        }
+
+        function initIntroMusicAudio() {
+          gIntroMusicAudio = new Audio("./assets/intro_music.mp3");
+          gIntroMusicAudio.preload = "auto";
+          gIntroMusicAudio.loop = true;
+          gIntroMusicAudio.volume = 0.75;
+          gIntroMusicAudio.playsInline = true;
+        }
+
+        function onIntroUnlock() {
+          playIntroMusic();
+        }
+
+        function bindIntroUnlock() {
+          if (gIntroUnlockBound) {
+            return;
+          }
+          gIntroUnlockBound = true;
+          window.addEventListener("pointerdown", onIntroUnlock, { passive: true });
+          window.addEventListener("touchstart", onIntroUnlock, { passive: true });
+          window.addEventListener("mousedown", onIntroUnlock, { passive: true });
+          window.addEventListener("keydown", onIntroUnlock);
+          window.addEventListener("focus", onIntroUnlock);
+        }
+
+        function playSelectedSfx() {
+          if (!gSelectedAudio) {
+            return;
+          }
+          try {
+            gSelectedAudio.pause();
+            gSelectedAudio.currentTime = 0;
+            const playResult = gSelectedAudio.play();
+            if (playResult && typeof playResult.catch === "function") {
+              playResult.catch(() => {
+                // Ignore blocked autoplay until user interaction.
+              });
+            }
+          } catch (_err) {
+            // Do not block menu flow if sound fails.
+          }
+        }
+
+        function playIntroMusic() {
+          if (!gIntroMusicAudio) {
+            return;
+          }
+          if (!gIntroMusicAudio.paused) {
+            if (!gIntroMusicAudio.muted) {
+              return;
+            }
+          }
+
+          gIntroMusicAudio.muted = false;
+
+          try {
+            const playResult = gIntroMusicAudio.play();
+            if (playResult && typeof playResult.then === "function") {
+              playResult.catch(() => {
+                bindIntroUnlock();
+              });
+              return;
+            }
+            if (playResult && typeof playResult.catch === "function") {
+              playResult.catch(() => {
+                bindIntroUnlock();
+              });
+            }
+          } catch (_err) {
+            bindIntroUnlock();
+          }
+
+          if (gIntroPrimeTried) {
+            return;
+          }
+          gIntroPrimeTried = true;
+
+          try {
+            gIntroMusicAudio.muted = true;
+            const primeResult = gIntroMusicAudio.play();
+            if (primeResult && typeof primeResult.catch === "function") {
+              primeResult.catch(() => {});
+            }
+          } catch (_err) {
+            // Ignore; unmuted retries continue on user interaction.
+          }
+        }
+
+        function startScreenWipe() {
+          const wipe = document.getElementById("screenWipe");
+          if (!wipe) {
+            return;
+          }
+          wipe.classList.remove("is-holding");
+          wipe.classList.remove("is-revealing");
+          wipe.classList.remove("is-covering");
+          wipe.classList.remove("is-covering-prep");
+          wipe.classList.add("is-covering-prep");
+          void wipe.offsetWidth;
+          wipe.classList.remove("is-covering-prep");
+          wipe.classList.add("is-covering");
+        }
+
+        function startLoadReveal() {
+          const wipe = document.getElementById("screenWipe");
+          if (!wipe) {
+            return;
+          }
+          wipe.classList.remove("is-covering");
+          wipe.classList.remove("is-revealing");
+          void wipe.offsetWidth;
+          wipe.classList.add("is-revealing");
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => {
+              wipe.classList.remove("is-holding");
+            });
+          });
+        }
+
+        function startSelect() {
+          if (gNavigating) {
+            return;
+          }
+          gNavigating = true;
+
+          if (gIntroMusicAudio) {
+            gIntroMusicAudio.pause();
+          }
+
+          const qs = new URLSearchParams();
+          qs.set("ts", String(Date.now()));
+          startScreenWipe();
+          playSelectedSfx();
+          window.setTimeout(() => {
+            window.location.href = `./select.html?${qs.toString()}`;
+          }, 1000);
+        }
+
+        function boot() {
+          const error = SLDR.getParam(SLDR.query(), "error", "");
+          window.setTimeout(() => {
+            startLoadReveal();
+          }, REVEAL_DELAY_MS);
+          initSelectedAudio();
+          initIntroMusicAudio();
+          bindIntroUnlock();
+          buildBackgroundArrows();
+          playIntroMusic();
+          if (error) {
+            SLDR.setText("error", `Last error: ${error}`);
+          }
+
+          const start = document.getElementById("startBtn");
+          if (start) {
+            start.addEventListener("click", startSelect);
+          }
+
+          window.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " " || event.code === "Space") {
+              event.preventDefault();
+              startSelect();
+            }
+          });
+        }
+
+        window.addEventListener("DOMContentLoaded", boot);
+      })();
+    </script>
+  </head>
+  <body>
+    <main class="menu-root">
+      <div id="menuBg" class="menu-bg" aria-hidden="true"></div>
+      <section class="menu-card">
+        <p class="menu-kicker">Second Life Dance Rhythm</p>
+        <h1 class="menu-title">SLDR</h1>
+        <p class="menu-sub">Single Player</p>
+        <button id="startBtn" class="menu-button" type="button">Press Start</button>
+        <p id="error" class="menu-error"></p>
+      </section>
+    </main>
+    <div id="screenWipe" class="screen-wipe is-holding" aria-hidden="true"></div>
+  </body>
+</html>

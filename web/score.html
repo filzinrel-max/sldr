@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SLDR Results</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Teko:wght@500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./assets/app.css" />
+    <script src="./assets/common.js" defer></script>
+    <style>
+      .screen-wipe {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 9999;
+      }
+
+      .screen-wipe.is-holding {
+        background: #ffffff;
+      }
+
+      .screen-wipe::before {
+        content: "";
+        position: absolute;
+        width: 230vmax;
+        height: 230vmax;
+        left: 50%;
+        top: 50%;
+        background: #ffffff;
+        transform: translate(0%, 0%) rotate(-45deg);
+      }
+
+      .screen-wipe.is-revealing::before {
+        animation: screenRevealDiagonal 1.25s cubic-bezier(0.2, 0.7, 0, 1) forwards;
+      }
+
+      @keyframes screenRevealDiagonal {
+        0% {
+          transform: translate(0%, 0%) rotate(-45deg);
+        }
+        100% {
+          transform: translate(-120%, -120%) rotate(-45deg);
+        }
+      }
+    </style>
+    <script defer>
+      (() => {
+        "use strict";
+        const REVEAL_DELAY_MS = 2000;
+
+        function startLoadReveal() {
+          const wipe = document.getElementById("screenWipe");
+          if (!wipe) {
+            return;
+          }
+          wipe.classList.remove("is-revealing");
+          void wipe.offsetWidth;
+          wipe.classList.add("is-revealing");
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => {
+              wipe.classList.remove("is-holding");
+            });
+          });
+        }
+
+        function fallbackResult() {
+          return {
+            title: "No Result Payload",
+            artist: "N/A",
+            difficulty: "-",
+            meter: 0,
+            score: 0,
+            percent: 0,
+            grade: "F",
+            comboMax: 0,
+            judgements: { perfect: 0, great: 0, good: 0, boo: 0, miss: 0 },
+            holds: { ok: 0, ng: 0 },
+            radar: {
+              song: [0, 0, 0, 0, 0],
+              performance: [0, 0, 0, 0, 0]
+            }
+          };
+        }
+
+        function loadResultFromQuery() {
+          const q = SLDR.query();
+          const raw = SLDR.getParam(q, "result", "");
+          const parsed = SLDR.decodeMaybeJson(raw);
+          if (parsed && typeof parsed === "object") return parsed;
+          return fallbackResult();
+        }
+
+        function setCount(id, value) {
+          SLDR.setText(id, String(SLDR.toNumber(value, 0)));
+        }
+
+        function boot() {
+          window.setTimeout(() => {
+            startLoadReveal();
+          }, REVEAL_DELAY_MS);
+          const result = loadResultFromQuery();
+          const seed = `${result.songId || ""}:${result.title || ""}`;
+          SLDR.applyThemeSeed(seed);
+
+          const grade = String(result.grade || "F").toUpperCase();
+          SLDR.setText("title", result.title || "Unknown Song");
+          SLDR.setText("artist", result.artist || "Unknown Artist");
+          SLDR.setText("difficulty", result.difficulty || "-");
+          SLDR.setText("meter", String(SLDR.toNumber(result.meter, 0)));
+          SLDR.setText("score", String(SLDR.toNumber(result.score, 0)));
+          SLDR.setText("percent", SLDR.toPercentText(result.percent));
+          SLDR.setText("combo", String(SLDR.toNumber(result.comboMax, 0)));
+          SLDR.setText("grade", grade);
+          SLDR.setAttr("grade", "data-letter", grade);
+
+          const j = result.judgements || {};
+          setCount("perfect", j.perfect);
+          setCount("great", j.great);
+          setCount("good", j.good);
+          setCount("boo", j.boo);
+          setCount("miss", j.miss);
+
+          const h = result.holds || {};
+          setCount("holdOk", h.ok);
+          setCount("holdNg", h.ng);
+
+          const radar = result.radar || {};
+          const songData = Array.isArray(radar.song) ? radar.song : [0, 0, 0, 0, 0];
+          const perfData = Array.isArray(radar.performance) ? radar.performance : [0, 0, 0, 0, 0];
+          SLDR.drawRadar(document.getElementById("radar"), {
+            labels: ["Stream", "Voltage", "Air", "Freeze", "Chaos"],
+            datasets: [
+              {
+                values: songData,
+                stroke: "rgba(255,193,69,0.95)",
+                fill: "rgba(255,193,69,0.22)"
+              },
+              {
+                values: perfData,
+                stroke: "rgba(21,215,255,0.95)",
+                fill: "rgba(21,215,255,0.22)"
+              }
+            ]
+          });
+        }
+
+        window.addEventListener("DOMContentLoaded", boot);
+      })();
+    </script>
+  </head>
+  <body>
+    <main class="screen">
+      <section class="shell banner">
+        <p class="kicker">Results</p>
+        <h1 id="title" class="title">Song Title</h1>
+        <div class="row">
+          <span class="pill">Artist<strong id="artist">-</strong></span>
+          <span class="pill">Difficulty<strong id="difficulty">-</strong></span>
+          <span class="pill">Meter<strong id="meter">0</strong></span>
+        </div>
+      </section>
+
+      <section class="shell grid cols-2">
+        <article class="panel">
+          <div class="row" style="justify-content: space-between; align-items: flex-end;">
+            <div>
+              <p class="kicker">Grade</p>
+              <p id="grade" class="grade" data-letter="F">F</p>
+            </div>
+            <div class="grid" style="gap: 10px; min-width: 200px;">
+              <div class="kv">
+                <div class="k">Score</div>
+                <div class="v" id="score">0</div>
+              </div>
+              <div class="kv">
+                <div class="k">Percent</div>
+                <div class="v" id="percent">0.00%</div>
+              </div>
+              <div class="kv">
+                <div class="k">Max Combo</div>
+                <div class="v" id="combo">0</div>
+              </div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="judge-grid">
+            <div class="judge"><div class="name">Perfect</div><div class="count" id="perfect">0</div></div>
+            <div class="judge"><div class="name">Great</div><div class="count" id="great">0</div></div>
+            <div class="judge"><div class="name">Good</div><div class="count" id="good">0</div></div>
+            <div class="judge"><div class="name">Boo</div><div class="count" id="boo">0</div></div>
+            <div class="judge"><div class="name">Miss</div><div class="count" id="miss">0</div></div>
+            <div class="judge"><div class="name">Hold OK</div><div class="count" id="holdOk">0</div></div>
+            <div class="judge"><div class="name">Hold NG</div><div class="count" id="holdNg">0</div></div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <p class="kicker">DDR Radar</p>
+          <canvas id="radar" class="radar" aria-label="radar chart"></canvas>
+          <div class="legend">
+            <span><span class="dot" style="background: rgba(255,193,69,0.95)"></span>Song Profile</span>
+            <span><span class="dot" style="background: rgba(21,215,255,0.95)"></span>Performance</span>
+          </div>
+        </article>
+      </section>
+    </main>
+    <div id="screenWipe" class="screen-wipe is-holding" aria-hidden="true"></div>
+  </body>
+</html>

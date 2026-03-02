@@ -1,0 +1,129 @@
+#ifndef DDR_CONFIG_LSLH
+#define DDR_CONFIG_LSLH
+
+// Compile-time global debug default. Override in build if needed.
+#ifndef DDR_DEBUG
+#define DDR_DEBUG 1
+#endif
+
+// Hosted content root (GitHub Pages or raw static host)
+#ifndef DDR_BASE_URL
+#define DDR_BASE_URL "https://filzinrel-max.github.io/sldr"
+#endif
+
+// Relative web/screen endpoints
+string DDR_PATH_SPLASH = "/web/splash.html";
+string DDR_PATH_MENU = "/web/menu.html";
+string DDR_PATH_SELECT = "/web/select.html";
+string DDR_PATH_PLAY = "/web/play.html";
+string DDR_PATH_SCORE = "/web/score.html";
+
+// Manifest and content paths
+string DDR_MANIFEST_PATH = "/game-data/song-manifest.lsl.json";
+
+// Prim/media settings
+integer DDR_MEDIA_FACE = 7;
+integer DDR_ARROW_SLOTS_PER_LANE = 10;
+string DDR_SIT_TEXT = "Dance";
+vector DDR_SIT_TARGET_OFFSET = <0.0, 0.0, 0.45>;
+rotation DDR_SIT_TARGET_ROT = ZERO_ROTATION;
+
+// Arrow lane renderer (stacked prim + client texture animation).
+integer DDR_ARROW_FACE = 1; // face index on arrow lane prims (0-based)
+list DDR_LANE_LINK_PREFIXES = [
+    "ARROW_LANE_LEFT",
+    "ARROW_LANE_DOWN",
+    "ARROW_LANE_UP",
+    "ARROW_LANE_RIGHT"
+];
+list DDR_LANE_ARROW_TEXTURES = [
+    "e7e8a952-9b55-b641-e906-5d549a0099a8",
+    "3ae1705f-acb7-88f8-bc1b-3be065e560d4",
+    "933879ff-7c3d-7c77-d72b-b7f973c4ea32",
+    "big_sldr_arrow_slide_right"
+];
+vector DDR_ARROW_TINT = <1.0, 1.0, 1.0>;
+float DDR_ARROW_ALPHA = 1.0;
+float DDR_ARROW_TEXTURE_REPEAT_X = 1.0;
+float DDR_ARROW_TEXTURE_REPEAT_Y = 1.0;
+float DDR_ARROW_TEXTURE_ROTATE_DEGREES = 90.0;
+float DDR_ARROW_ANIM_START = 1.0;
+float DDR_ARROW_ANIM_LENGTH = 1.0;
+integer DDR_ARROW_ANIM_REVERSE = TRUE;
+float DDR_ARROW_TRAVEL_SECONDS = 1.0;
+
+// Judge feedback prim (set link number for the separate prim that shows hit result art).
+// Set to 0 or a negative number to disable.
+integer DDR_JUDGE_FEEDBACK_LINK = 0;
+integer DDR_JUDGE_FEEDBACK_FACE = ALL_SIDES;
+float DDR_JUDGE_FEEDBACK_SECONDS = 0.30;
+
+// Texture names or UUIDs in this exact order:
+// [PERFECT, GREAT, GOOD, BOO, MISS, HOLD_OK, HOLD_NG]
+list DDR_JUDGE_FEEDBACK_TEXTURES = [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+];
+
+// Combo popup prim (set link number for separate prim that shows combo text).
+// Set to 0 or a negative number to disable.
+integer DDR_COMBO_FEEDBACK_LINK = 0;
+float DDR_COMBO_FEEDBACK_SECONDS = 0.55;
+integer DDR_COMBO_FEEDBACK_MIN_COMBO = 2;
+float DDR_COMBO_FEEDBACK_ALPHA = 1.0;
+
+// Combo popup colors by threshold.
+vector DDR_COMBO_COLOR_LOW = <0.82, 0.95, 1.00>;    // 2-24
+vector DDR_COMBO_COLOR_MID = <0.76, 1.00, 0.66>;    // 25-49
+vector DDR_COMBO_COLOR_HIGH = <1.00, 0.91, 0.52>;   // 50-99
+vector DDR_COMBO_COLOR_MAX = <1.00, 0.50, 0.50>;    // 100+
+
+// Arrow motion / renderer behavior
+float DDR_RENDER_LOOKAHEAD_SECONDS = 2.8;
+
+// Runtime cadence
+float DDR_TICK_SECONDS = 0.05;
+float DDR_SPLASH_SECONDS = 5.0;
+float DDR_PLAY_START_DELAY = 0.75;
+float DDR_POST_SONG_GRACE_SECONDS = 1.25;
+
+// Judgement windows (seconds)
+float DDR_WINDOW_PERFECT = 0.045;
+float DDR_WINDOW_GREAT = 0.090;
+float DDR_WINDOW_GOOD = 0.135;
+float DDR_WINDOW_BOO = 0.180;
+float DDR_WINDOW_MISS = 0.180;
+
+// Scoring weights
+integer DDR_POINTS_PERFECT = 3;
+integer DDR_POINTS_GREAT = 2;
+integer DDR_POINTS_GOOD = 1;
+integer DDR_POINTS_BOO = 0;
+integer DDR_POINTS_MISS = -4;
+integer DDR_POINTS_HOLD_OK = 2;
+integer DDR_POINTS_HOLD_NG = -2;
+
+// Grade thresholds (%)
+float DDR_GRADE_A = 93.0;
+float DDR_GRADE_B = 80.0;
+float DDR_GRADE_C = 65.0;
+float DDR_GRADE_D = 45.0;
+float DDR_GRADE_E = 30.0;
+
+// Command channel (owner only)
+integer DDR_COMMAND_CHANNEL = 9919;
+
+// Lane -> animation names. Replace with your existing animation names.
+list DDR_LANE_ANIMATIONS = [
+    "DDR_Left",
+    "DDR_Down",
+    "DDR_Up",
+    "DDR_Right"
+];
+
+#endif

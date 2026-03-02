@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SLDR Splash</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap" rel="stylesheet" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #ffffff;
+        color: #000000;
+        font-family: "Rajdhani", "Segoe UI", sans-serif;
+      }
+
+      .loading {
+        margin: 0;
+        font-size: clamp(44px, 10vw, 120px);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        animation: pulse 1.05s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(0.96);
+          opacity: 0.58;
+        }
+        50% {
+          transform: scale(1.02);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(0.96);
+          opacity: 0.58;
+        }
+      }
+
+      .screen-wipe {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 9999;
+      }
+
+      .screen-wipe.is-holding {
+        background: #ffffff;
+      }
+
+      .screen-wipe::before {
+        content: "";
+        position: absolute;
+        width: 230vmax;
+        height: 230vmax;
+        left: 50%;
+        top: 50%;
+        background: #ffffff;
+        transform: translate(0%, 0%) rotate(-45deg);
+      }
+
+      .screen-wipe.is-revealing::before {
+        animation: screenRevealDiagonal 1.25s cubic-bezier(0.2, 0.7, 0, 1) forwards;
+      }
+
+      .screen-wipe.is-covering::before {
+        animation: screenCoverDiagonal 1.25s cubic-bezier(0.2, 0.7, 0, 1) forwards;
+      }
+
+      .screen-wipe.is-covering-prep::before {
+        transform: translate(120%, 120%) rotate(-45deg);
+      }
+
+      @keyframes screenRevealDiagonal {
+        0% {
+          transform: translate(0%, 0%) rotate(-45deg);
+        }
+        100% {
+          transform: translate(-120%, -120%) rotate(-45deg);
+        }
+      }
+
+      @keyframes screenCoverDiagonal {
+        0% {
+          transform: translate(120%, 120%) rotate(-45deg);
+        }
+        100% {
+          transform: translate(0%, 0%) rotate(-45deg);
+        }
+      }
+    </style>
+    <script defer>
+      const REVEAL_DELAY_MS = 100;
+      let gWelcomeAudio = null;
+      let gWelcomeUnlockBound = false;
+      let gWelcomePrimeTried = false;
+
+      function initWelcomeAudio() {
+        gWelcomeAudio = new Audio("./assets/welcome.mp3");
+        gWelcomeAudio.preload = "auto";
+        gWelcomeAudio.volume = 0.95;
+        gWelcomeAudio.playsInline = true;
+      }
+
+      function onWelcomeUnlock() {
+        playWelcomeAudio();
+      }
+
+      function bindWelcomeUnlock() {
+        if (gWelcomeUnlockBound) {
+          return;
+        }
+        gWelcomeUnlockBound = true;
+        window.addEventListener("pointerdown", onWelcomeUnlock, { passive: true });
+        window.addEventListener("touchstart", onWelcomeUnlock, { passive: true });
+        window.addEventListener("mousedown", onWelcomeUnlock, { passive: true });
+        window.addEventListener("keydown", onWelcomeUnlock);
+        window.addEventListener("focus", onWelcomeUnlock);
+      }
+
+      function playWelcomeAudio() {
+        if (!gWelcomeAudio) {
+          return;
+        }
+        if (!gWelcomeAudio.paused) {
+          if (!gWelcomeAudio.muted) {
+            return;
+          }
+        }
+
+        gWelcomeAudio.muted = false;
+
+        try {
+          const playResult = gWelcomeAudio.play();
+          if (playResult && typeof playResult.then === "function") {
+            playResult.catch(() => {
+              bindWelcomeUnlock();
+            });
+            return;
+          }
+          if (playResult && typeof playResult.catch === "function") {
+            playResult.catch(() => {
+              bindWelcomeUnlock();
+            });
+          }
+        } catch (_err) {
+          bindWelcomeUnlock();
+        }
+
+        if (gWelcomePrimeTried) {
+          return;
+        }
+        gWelcomePrimeTried = true;
+
+        try {
+          gWelcomeAudio.muted = true;
+          const primeResult = gWelcomeAudio.play();
+          if (primeResult && typeof primeResult.catch === "function") {
+            primeResult.catch(() => {});
+          }
+        } catch (_err) {
+          // Ignore; unmuted retries continue on user interaction.
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        initWelcomeAudio();
+        bindWelcomeUnlock();
+        playWelcomeAudio();
+
+        const wipe = document.getElementById("screenWipe");
+        window.setTimeout(() => {
+          if (wipe) {
+            wipe.classList.remove("is-revealing");
+            void wipe.offsetWidth;
+            wipe.classList.add("is-revealing");
+            window.requestAnimationFrame(() => {
+              window.requestAnimationFrame(() => {
+                wipe.classList.remove("is-holding");
+              });
+            });
+          }
+        }, REVEAL_DELAY_MS);
+        window.setTimeout(() => {
+          if (!wipe) {
+            return;
+          }
+          wipe.classList.remove("is-holding");
+          wipe.classList.remove("is-revealing");
+          wipe.classList.remove("is-covering");
+          wipe.classList.remove("is-covering-prep");
+          wipe.classList.add("is-covering-prep");
+          void wipe.offsetWidth;
+          wipe.classList.remove("is-covering-prep");
+          wipe.classList.add("is-covering");
+        }, 4000);
+        window.setTimeout(() => {
+          if (gWelcomeAudio) {
+            gWelcomeAudio.pause();
+          }
+          window.location.href = "./menu.html";
+        }, 5000);
+      });
+    </script>
+  </head>
+  <body>
+    <h1 class="loading">Loading...</h1>
+    <div id="screenWipe" class="screen-wipe is-holding" aria-hidden="true"></div>
+  </body>
+</html>

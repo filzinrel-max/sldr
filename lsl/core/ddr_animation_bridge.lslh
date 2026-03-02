@@ -1,0 +1,57 @@
+#ifndef DDR_ANIMATION_BRIDGE_LSLH
+#define DDR_ANIMATION_BRIDGE_LSLH
+
+integer gRuntimePerms = 0;
+key gRuntimePermsAgent = NULL_KEY;
+
+integer ddrHasPermission(integer permissionFlag)
+{
+    return (gRuntimePerms & permissionFlag) != 0;
+}
+
+integer ddrRequestRuntimePermissionsFor(key agentId)
+{
+    if (agentId == NULL_KEY)
+    {
+        return FALSE;
+    }
+    llRequestPermissions(agentId, PERMISSION_TRIGGER_ANIMATION | PERMISSION_TAKE_CONTROLS);
+    return TRUE;
+}
+
+integer ddrHandleRuntimePermissions(integer permissions)
+{
+    gRuntimePerms = permissions;
+    gRuntimePermsAgent = llGetPermissionsKey();
+    ddrDebug("PERM", "permissions=" + (string)permissions);
+    return TRUE;
+}
+
+integer ddrClearRuntimePermissions()
+{
+    gRuntimePerms = 0;
+    gRuntimePermsAgent = NULL_KEY;
+    return TRUE;
+}
+
+integer ddrPlayLaneAnimation(integer lane)
+{
+    if (!ddrHasPermission(PERMISSION_TRIGGER_ANIMATION))
+    {
+        return FALSE;
+    }
+    if (lane < 0 || lane >= llGetListLength(DDR_LANE_ANIMATIONS))
+    {
+        return FALSE;
+    }
+
+    string animationName = llStringTrim(llList2String(DDR_LANE_ANIMATIONS, lane), STRING_TRIM);
+    if (animationName == "")
+    {
+        return FALSE;
+    }
+    llStartAnimation(animationName);
+    return TRUE;
+}
+
+#endif

@@ -1,0 +1,93 @@
+#ifndef DDR_DEBUG_LSLH
+#define DDR_DEBUG_LSLH
+
+integer gDebugEnabled = DDR_DEBUG;
+string gDebugPrefix = "[SLDR]";
+
+integer ddrClampInt(integer value, integer minValue, integer maxValue)
+{
+    if (value < minValue)
+    {
+        return minValue;
+    }
+    if (value > maxValue)
+    {
+        return maxValue;
+    }
+    return value;
+}
+
+float ddrClampFloat(float value, float minValue, float maxValue)
+{
+    if (value < minValue)
+    {
+        return minValue;
+    }
+    if (value > maxValue)
+    {
+        return maxValue;
+    }
+    return value;
+}
+
+integer ddrStringStartsWith(string text, string prefix)
+{
+    integer prefixLen = llStringLength(prefix);
+    if (llStringLength(text) < prefixLen)
+    {
+        return FALSE;
+    }
+    return llGetSubString(text, 0, prefixLen - 1) == prefix;
+}
+
+string ddrJoinUrl(string baseUrl, string path)
+{
+    if (ddrStringStartsWith(path, "http://") || ddrStringStartsWith(path, "https://"))
+    {
+        return path;
+    }
+
+    string base = baseUrl;
+    if (llGetSubString(base, -1, -1) == "/")
+    {
+        base = llGetSubString(base, 0, -2);
+    }
+
+    string rel = path;
+    if (llGetSubString(rel, 0, 0) != "/")
+    {
+        rel = "/" + rel;
+    }
+    return base + rel;
+}
+
+string ddrEncodePathForUrl(string path)
+{
+    // llEscapeURL also encodes '/', so restore it for path separators.
+    string encoded = llEscapeURL(path);
+    return llDumpList2String(llParseStringKeepNulls(encoded, ["%2F"], []), "/");
+}
+
+float ddrNow()
+{
+    return llGetTime();
+}
+
+integer ddrDebug(string channel, string message)
+{
+    if (!gDebugEnabled)
+    {
+        return FALSE;
+    }
+    llOwnerSay(gDebugPrefix + "[" + channel + "] " + message);
+    return TRUE;
+}
+
+integer ddrDebugSet(integer enabled)
+{
+    gDebugEnabled = enabled;
+    llOwnerSay(gDebugPrefix + "[DEBUG] " + (string)enabled);
+    return TRUE;
+}
+
+#endif

@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SLDR Play</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Teko:wght@500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./assets/app.css" />
+    <script src="./assets/common.js" defer></script>
+    <style>
+      .screen-wipe {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 9999;
+      }
+
+      .screen-wipe.is-holding {
+        background: #ffffff;
+      }
+
+      .screen-wipe::before {
+        content: "";
+        position: absolute;
+        width: 230vmax;
+        height: 230vmax;
+        left: 50%;
+        top: 50%;
+        background: #ffffff;
+        transform: translate(0%, 0%) rotate(-45deg);
+      }
+
+      .screen-wipe.is-revealing::before {
+        animation: screenRevealDiagonal 1.25s cubic-bezier(0.2, 0.7, 0, 1) forwards;
+      }
+
+      @keyframes screenRevealDiagonal {
+        0% {
+          transform: translate(0%, 0%) rotate(-45deg);
+        }
+        100% {
+          transform: translate(-120%, -120%) rotate(-45deg);
+        }
+      }
+    </style>
+    <script defer>
+      (() => {
+        "use strict";
+        const REVEAL_DELAY_MS = 2000;
+
+        function startLoadReveal() {
+          const wipe = document.getElementById("screenWipe");
+          if (!wipe) {
+            return;
+          }
+          wipe.classList.remove("is-revealing");
+          void wipe.offsetWidth;
+          wipe.classList.add("is-revealing");
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => {
+              wipe.classList.remove("is-holding");
+            });
+          });
+        }
+
+        function resolveMediaUrl(mediaParam) {
+          if (!mediaParam) {
+            return "";
+          }
+          try {
+            return new URL(mediaParam, window.location.href).toString();
+          } catch (_err) {
+            return mediaParam;
+          }
+        }
+
+        function boot() {
+          window.setTimeout(() => {
+            startLoadReveal();
+          }, REVEAL_DELAY_MS);
+          const q = SLDR.query();
+          const loading = SLDR.getParam(q, "loading", "1") === "1";
+          const id = SLDR.getParam(q, "id", "song-unknown");
+          const title = SLDR.getParam(q, "title", "Unknown Song");
+          const artist = SLDR.getParam(q, "artist", "Unknown Artist");
+          const difficulty = SLDR.getParam(q, "difficulty", "Unknown");
+          const meter = SLDR.getParam(q, "meter", "-");
+          const media = SLDR.getParam(q, "media", "");
+          const mediaUrl = resolveMediaUrl(media);
+          const player = document.getElementById("songAudio");
+
+          SLDR.applyThemeSeed(id);
+          SLDR.setText("songTitle", title);
+          SLDR.setText("artist", artist);
+          SLDR.setText("difficulty", difficulty);
+          SLDR.setText("meter", meter);
+          SLDR.setText("songId", id);
+          SLDR.setText("media", media || "(none)");
+
+          const status = loading ? "Loading Chart..." : "Ready";
+          const statusClass = loading ? "loading" : "ready";
+          SLDR.setText("status", status);
+          SLDR.setAttr("status", "class", `status ${statusClass}`);
+          SLDR.setText("marqueeText", `${title} | ${artist} | ${difficulty} ${meter}`);
+
+          function tryStartPlayback() {
+            if (!player || loading) {
+              return;
+            }
+            if (!mediaUrl) {
+              SLDR.setText("status", "Ready (No media URL)");
+              SLDR.setAttr("status", "class", "status loading");
+              return;
+            }
+            if (player.src !== mediaUrl) {
+              player.src = mediaUrl;
+            }
+            const playResult = player.play();
+            if (playResult && typeof playResult.catch === "function") {
+              playResult.catch(() => {
+                SLDR.setText("status", "Tap screen to start audio");
+                SLDR.setAttr("status", "class", "status loading");
+              });
+            }
+          }
+
+          if (player) {
+            player.pause();
+            player.removeAttribute("src");
+            player.load();
+          }
+          tryStartPlayback();
+
+          window.addEventListener(
+            "pointerdown",
+            () => {
+              tryStartPlayback();
+            },
+            { passive: true }
+          );
+
+          const start = Date.now();
+          const timer = document.getElementById("timer");
+          const loop = () => {
+            if (loading) {
+              timer.textContent = "--:--";
+            } else {
+              let elapsedSeconds = Math.floor((Date.now() - start) / 1000);
+              if (player && Number.isFinite(player.currentTime) && player.currentTime > 0) {
+                elapsedSeconds = Math.floor(player.currentTime);
+              }
+              const mm = String(Math.floor(elapsedSeconds / 60)).padStart(2, "0");
+              const ss = String(elapsedSeconds % 60).padStart(2, "0");
+              timer.textContent = `${mm}:${ss}`;
+            }
+            requestAnimationFrame(loop);
+          };
+          loop();
+        }
+
+        window.addEventListener("DOMContentLoaded", boot);
+      })();
+    </script>
+  </head>
+  <body>
+    <main class="screen">
+      <section class="shell banner">
+        <p class="kicker">Now Playing</p>
+        <h1 id="songTitle" class="title">Loading Song</h1>
+        <div class="row">
+          <span class="pill">Artist<strong id="artist">-</strong></span>
+          <span class="pill">Difficulty<strong id="difficulty">-</strong></span>
+          <span class="pill">Meter<strong id="meter">-</strong></span>
+          <span class="pill">Song ID<strong id="songId">-</strong></span>
+        </div>
+      </section>
+
+      <section class="shell panel">
+        <div class="row" style="justify-content: space-between;">
+          <h2 id="status" class="status loading">Loading Chart...</h2>
+          <div class="kv">
+            <div class="k">Elapsed</div>
+            <div class="v" id="timer">--:--</div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <audio id="songAudio" preload="auto"></audio>
+        <div class="lanes" aria-label="lane-visual">
+          <div class="lane-target"></div>
+        </div>
+        <p class="subtle">Media <span id="media">(none)</span></p>
+        <p class="subtle marquee"><span id="marqueeText">Preparing lane data...</span></p>
+      </section>
+    </main>
+    <div id="screenWipe" class="screen-wipe is-holding" aria-hidden="true"></div>
+  </body>
+</html>

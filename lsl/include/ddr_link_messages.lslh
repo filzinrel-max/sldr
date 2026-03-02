@@ -1,0 +1,18 @@
+#ifndef DDR_LINK_MESSAGES_LSLH
+#define DDR_LINK_MESSAGES_LSLH
+
+// Main -> runtime
+integer DDR_LM_RUNTIME_RESET = 7100;
+integer DDR_LM_RUNTIME_START = 7101;
+integer DDR_LM_RUNTIME_CONTROL = 7102;
+integer DDR_LM_RUNTIME_DEBUG = 7103;
+integer DDR_LM_RUNTIME_RESCAN_LINKS = 7104;
+integer DDR_LM_RUNTIME_STATUS = 7105;
+
+// Runtime -> main
+integer DDR_LM_MAIN_READY = 7200;
+integer DDR_LM_MAIN_FAIL = 7201;
+integer DDR_LM_MAIN_COMPLETE = 7202;
+integer DDR_LM_MAIN_STATUS = 7203;
+
+#endif

@@ -1,0 +1,159 @@
+#ifndef DDR_JUDGE_FEEDBACK_LSLH
+#define DDR_JUDGE_FEEDBACK_LSLH
+
+integer gJudgeFeedbackEnabled = FALSE;
+integer gJudgeFeedbackVisible = FALSE;
+float gJudgeFeedbackHideAt = 0.0;
+
+integer ddrJudgeFeedbackValidLink()
+{
+    if (DDR_JUDGE_FEEDBACK_LINK <= 0)
+    {
+        return FALSE;
+    }
+    return DDR_JUDGE_FEEDBACK_LINK <= llGetNumberOfPrims();
+}
+
+integer ddrJudgeFeedbackTextureIndexForJudge(integer judgement)
+{
+    if (judgement == DDR_JUDGE_PERFECT)
+    {
+        return 0;
+    }
+    if (judgement == DDR_JUDGE_GREAT)
+    {
+        return 1;
+    }
+    if (judgement == DDR_JUDGE_GOOD)
+    {
+        return 2;
+    }
+    if (judgement == DDR_JUDGE_BOO)
+    {
+        return 3;
+    }
+    if (judgement == DDR_JUDGE_MISS)
+    {
+        return 4;
+    }
+    return -1;
+}
+
+integer ddrJudgeFeedbackTextureIndexForHold(integer holdState)
+{
+    if (holdState == DDR_HOLD_STATE_OK)
+    {
+        return 5;
+    }
+    if (holdState == DDR_HOLD_STATE_NG)
+    {
+        return 6;
+    }
+    return -1;
+}
+
+string ddrJudgeFeedbackTextureByIndex(integer textureIndex)
+{
+    if (textureIndex < 0 || textureIndex >= llGetListLength(DDR_JUDGE_FEEDBACK_TEXTURES))
+    {
+        return "";
+    }
+    return llStringTrim(llList2String(DDR_JUDGE_FEEDBACK_TEXTURES, textureIndex), STRING_TRIM);
+}
+
+integer ddrJudgeFeedbackHide()
+{
+    if (!gJudgeFeedbackEnabled)
+    {
+        return FALSE;
+    }
+    llSetLinkPrimitiveParamsFast(
+        DDR_JUDGE_FEEDBACK_LINK,
+        [
+            PRIM_COLOR, DDR_JUDGE_FEEDBACK_FACE, <1.0, 1.0, 1.0>, 0.0
+        ]
+    );
+    gJudgeFeedbackVisible = FALSE;
+    return TRUE;
+}
+
+integer ddrJudgeFeedbackShowTexture(string textureNameOrUuid)
+{
+    if (!gJudgeFeedbackEnabled)
+    {
+        return FALSE;
+    }
+    if (textureNameOrUuid == "")
+    {
+        return FALSE;
+    }
+
+    llSetLinkPrimitiveParamsFast(
+        DDR_JUDGE_FEEDBACK_LINK,
+        [
+            PRIM_TEXTURE, DDR_JUDGE_FEEDBACK_FACE, textureNameOrUuid, <1.0, 1.0, 0.0>, <0.0, 0.0, 0.0>, 0.0,
+            PRIM_FULLBRIGHT, DDR_JUDGE_FEEDBACK_FACE, TRUE,
+            PRIM_COLOR, DDR_JUDGE_FEEDBACK_FACE, <1.0, 1.0, 1.0>, 1.0
+        ]
+    );
+    gJudgeFeedbackVisible = TRUE;
+    gJudgeFeedbackHideAt = ddrNow() + DDR_JUDGE_FEEDBACK_SECONDS;
+    return TRUE;
+}
+
+integer ddrJudgeFeedbackShowJudge(integer judgement)
+{
+    integer textureIndex = ddrJudgeFeedbackTextureIndexForJudge(judgement);
+    string textureValue = ddrJudgeFeedbackTextureByIndex(textureIndex);
+    if (textureValue == "")
+    {
+        return FALSE;
+    }
+    return ddrJudgeFeedbackShowTexture(textureValue);
+}
+
+integer ddrJudgeFeedbackShowHold(integer holdState)
+{
+    integer textureIndex = ddrJudgeFeedbackTextureIndexForHold(holdState);
+    string textureValue = ddrJudgeFeedbackTextureByIndex(textureIndex);
+    if (textureValue == "")
+    {
+        return FALSE;
+    }
+    return ddrJudgeFeedbackShowTexture(textureValue);
+}
+
+integer ddrJudgeFeedbackTick()
+{
+    if (!gJudgeFeedbackEnabled || !gJudgeFeedbackVisible)
+    {
+        return FALSE;
+    }
+    if (ddrNow() >= gJudgeFeedbackHideAt)
+    {
+        ddrJudgeFeedbackHide();
+        return TRUE;
+    }
+    return FALSE;
+}
+
+integer ddrJudgeFeedbackInit()
+{
+    gJudgeFeedbackEnabled = ddrJudgeFeedbackValidLink();
+    gJudgeFeedbackVisible = FALSE;
+    gJudgeFeedbackHideAt = 0.0;
+
+    if (gJudgeFeedbackEnabled)
+    {
+        ddrJudgeFeedbackHide();
+        ddrDebug("FX", "judge feedback enabled link=" + (string)DDR_JUDGE_FEEDBACK_LINK);
+    }
+    else
+    {
+        ddrDebug("FX", "judge feedback disabled (set DDR_JUDGE_FEEDBACK_LINK)");
+    }
+    return gJudgeFeedbackEnabled;
+}
+
+#endif
+

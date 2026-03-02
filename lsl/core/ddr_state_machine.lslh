@@ -1,0 +1,145 @@
+#ifndef DDR_STATE_MACHINE_LSLH
+#define DDR_STATE_MACHINE_LSLH
+
+integer gState = -1;
+float gStateEnteredAt = 0.0;
+string gCurrentMediaUrl = "";
+
+integer gSelectedSongIndex = 0;
+string gSelectedDifficulty = "Easy";
+
+string gPlayingSongId = "";
+string gPlayingSongTitle = "";
+string gPlayingSongArtist = "";
+string gPlayingDifficulty = "";
+
+integer gSongClockStarted = FALSE;
+float gSongClockStartAt = 0.0;
+
+string gLastScorePayload = "{}";
+
+string ddrStateName(integer stateValue)
+{
+    if (stateValue == DDR_STATE_SPLASH)
+    {
+        return "SPLASH";
+    }
+    if (stateValue == DDR_STATE_MAIN_MENU)
+    {
+        return "MAIN_MENU";
+    }
+    if (stateValue == DDR_STATE_SONG_SELECT)
+    {
+        return "SONG_SELECT";
+    }
+    if (stateValue == DDR_STATE_PLAYING)
+    {
+        return "PLAYING";
+    }
+    if (stateValue == DDR_STATE_SCORE)
+    {
+        return "SCORE";
+    }
+    return "UNKNOWN";
+}
+
+string ddrScreenPathForState(integer stateValue)
+{
+    if (stateValue == DDR_STATE_SPLASH)
+    {
+        return DDR_PATH_SPLASH;
+    }
+    if (stateValue == DDR_STATE_MAIN_MENU)
+    {
+        return DDR_PATH_MENU;
+    }
+    if (stateValue == DDR_STATE_SONG_SELECT)
+    {
+        return DDR_PATH_SELECT;
+    }
+    if (stateValue == DDR_STATE_PLAYING)
+    {
+        return DDR_PATH_PLAY;
+    }
+    return DDR_PATH_SCORE;
+}
+
+string ddrUrlWithQuery(string url, string query)
+{
+    if (query == "")
+    {
+        return url;
+    }
+    if (llSubStringIndex(url, "?") >= 0)
+    {
+        return url + "&" + query;
+    }
+    return url + "?" + query;
+}
+
+string ddrBuildScreenUrl(integer stateValue, string query)
+{
+    return ddrUrlWithQuery(ddrJoinUrl(DDR_BASE_URL, ddrScreenPathForState(stateValue)), query);
+}
+
+integer ddrSetMediaUrl(string url)
+{
+    gCurrentMediaUrl = url;
+    llSetPrimMediaParams(
+        DDR_MEDIA_FACE,
+        [
+            PRIM_MEDIA_CURRENT_URL, url,
+            PRIM_MEDIA_HOME_URL, url,
+            PRIM_MEDIA_AUTO_PLAY, TRUE,
+            PRIM_MEDIA_AUTO_SCALE, TRUE
+        ]
+    );
+    ddrDebug("UI", "media=" + url);
+    return TRUE;
+}
+
+integer ddrTransition(integer nextState, string reason, string query)
+{
+    integer oldState = gState;
+    gState = nextState;
+    gStateEnteredAt = ddrNow();
+    ddrDebug("STATE", ddrStateName(oldState) + " -> " + ddrStateName(nextState) + " (" + reason + ")");
+    return ddrSetMediaUrl(ddrBuildScreenUrl(nextState, query));
+}
+
+float ddrStateAge()
+{
+    return ddrNow() - gStateEnteredAt;
+}
+
+integer ddrSongClockReset()
+{
+    gSongClockStarted = FALSE;
+    gSongClockStartAt = 0.0;
+    return TRUE;
+}
+
+integer ddrSongClockStart()
+{
+    gSongClockStartAt = ddrNow() + DDR_PLAY_START_DELAY;
+    gSongClockStarted = TRUE;
+    ddrDebug("PLAY", "song clock starts in " + (string)DDR_PLAY_START_DELAY + "s");
+    return TRUE;
+}
+
+integer ddrSongClockStop()
+{
+    gSongClockStarted = FALSE;
+    return TRUE;
+}
+
+float ddrSongTimeNow()
+{
+    if (!gSongClockStarted)
+    {
+        return -9999.0;
+    }
+    return ddrNow() - gSongClockStartAt;
+}
+
+#endif

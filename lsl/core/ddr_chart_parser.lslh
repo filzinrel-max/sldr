@@ -1,0 +1,468 @@
+#ifndef DDR_CHART_PARSER_LSLH
+#define DDR_CHART_PARSER_LSLH
+
+list gNoteEvents = []; // [time, lane, type, refId, judge, flags, ...]
+list gHoldEvents = []; // [holdId, lane, startTime, endTime, state, ...]
+
+list gChartBpmPairs = []; // [beat, bpm, ...]
+float gChartOffsetSeconds = 0.0;
+
+string gChartDifficultyName = "";
+integer gChartMeter = 0;
+float gChartDurationSeconds = 0.0;
+
+integer gChartTotalRows = 0;
+integer gChartTotalNotes = 0;
+integer gChartTotalHolds = 0;
+integer gChartChordRows = 0;
+integer gChartMaxSimultaneous = 0;
+integer gChartOffbeatNotes = 0;
+
+list gChartSongRadar = [0.0, 0.0, 0.0, 0.0, 0.0];
+
+integer ddrFindFrom(string haystack, string needle, integer startIndex)
+{
+    if (startIndex < 0)
+    {
+        startIndex = 0;
+    }
+    integer hayLen = llStringLength(haystack);
+    if (startIndex >= hayLen)
+    {
+        return -1;
+    }
+    integer relative = llSubStringIndex(llGetSubString(haystack, startIndex, -1), needle);
+    if (relative < 0)
+    {
+        return -1;
+    }
+    return startIndex + relative;
+}
+
+string ddrSmExtractTag(string smText, string tagName)
+{
+    string needle = "#" + tagName + ":";
+    integer start = ddrFindFrom(smText, needle, 0);
+    if (start < 0)
+    {
+        needle = "#" + llToLower(tagName) + ":";
+        start = ddrFindFrom(smText, needle, 0);
+        if (start < 0)
+        {
+            return "";
+        }
+    }
+    integer valueStart = start + llStringLength(needle);
+    integer valueEnd = ddrFindFrom(smText, ";", valueStart);
+    if (valueEnd < 0)
+    {
+        return "";
+    }
+    return llStringTrim(llGetSubString(smText, valueStart, valueEnd - 1), STRING_TRIM);
+}
+
+list ddrParseBpmPairs(string rawBpmText)
+{
+    list pairs = [];
+    if (rawBpmText == "")
+    {
+        return [0.0, 120.0];
+    }
+
+    list pieces = llParseStringKeepNulls(rawBpmText, [","], []);
+    integer count = llGetListLength(pieces);
+    integer i = 0;
+    for (; i < count; ++i)
+    {
+        string piece = llStringTrim(llList2String(pieces, i), STRING_TRIM);
+        if (piece != "")
+        {
+            list kv = llParseStringKeepNulls(piece, ["="], []);
+            if (llGetListLength(kv) >= 2)
+            {
+                float beatValue = (float)llStringTrim(llList2String(kv, 0), STRING_TRIM);
+                float bpmValue = (float)llStringTrim(llList2String(kv, 1), STRING_TRIM);
+                if (bpmValue > 0.0)
+                {
+                    pairs += [beatValue, bpmValue];
+                }
+            }
+        }
+    }
+
+    if (llGetListLength(pairs) < 2)
+    {
+        return [0.0, 120.0];
+    }
+    return pairs;
+}
+
+float ddrBeatToSeconds(float beatValue)
+{
+    integer pairCount = llGetListLength(gChartBpmPairs);
+    if (pairCount < 2)
+    {
+        return beatValue * 0.5;
+    }
+
+    float previousBeat = llList2Float(gChartBpmPairs, 0);
+    float previousBpm = llList2Float(gChartBpmPairs, 1);
+    float seconds = 0.0;
+
+    if (beatValue < previousBeat)
+    {
+        return (beatValue - previousBeat) * (60.0 / previousBpm);
+    }
+
+    integer i = 2;
+    for (; i < pairCount; i += 2)
+    {
+        float segmentBeat = llList2Float(gChartBpmPairs, i);
+        float segmentBpm = llList2Float(gChartBpmPairs, i + 1);
+        if (beatValue <= segmentBeat)
+        {
+            seconds += (beatValue - previousBeat) * (60.0 / previousBpm);
+            return seconds;
+        }
+
+        seconds += (segmentBeat - previousBeat) * (60.0 / previousBpm);
+        previousBeat = segmentBeat;
+        previousBpm = segmentBpm;
+    }
+
+    seconds += (beatValue - previousBeat) * (60.0 / previousBpm);
+    return seconds;
+}
+
+list ddrParseNotesBlock(string blockBody)
+{
+    list fields = [];
+    integer cursor = 0;
+    integer i = 0;
+    for (; i < 5; ++i)
+    {
+        integer separator = ddrFindFrom(blockBody, ":", cursor);
+        if (separator < 0)
+        {
+            return [];
+        }
+        fields += [llStringTrim(llGetSubString(blockBody, cursor, separator - 1), STRING_TRIM)];
+        cursor = separator + 1;
+    }
+
+    string noteData = llStringTrim(llGetSubString(blockBody, cursor, -1), STRING_TRIM);
+    string stepType = llToLower(llList2String(fields, 0));
+    string difficulty = llStringTrim(llList2String(fields, 2), STRING_TRIM);
+    integer meter = (integer)llStringTrim(llList2String(fields, 3), STRING_TRIM);
+    return [stepType, difficulty, meter, noteData];
+}
+
+list ddrCollectSingleSections(string smText)
+{
+    list sections = []; // [difficulty, meter, noteData, ...]
+    integer cursor = 0;
+    integer notesTokenLen = llStringLength("#NOTES:");
+    integer smLen = llStringLength(smText);
+
+    while (cursor < smLen)
+    {
+        integer notesStart = ddrFindFrom(smText, "#NOTES:", cursor);
+        if (notesStart < 0)
+        {
+            jump done_collect;
+        }
+
+        integer bodyStart = notesStart + notesTokenLen;
+        integer blockEnd = ddrFindFrom(smText, ";", bodyStart);
+        if (blockEnd < 0)
+        {
+            jump done_collect;
+        }
+
+        string blockBody = llGetSubString(smText, bodyStart, blockEnd - 1);
+        list parsed = ddrParseNotesBlock(blockBody);
+        if (llGetListLength(parsed) >= 4)
+        {
+            string stepType = llList2String(parsed, 0);
+            if (stepType == "dance-single")
+            {
+                sections += [llList2String(parsed, 1), llList2Integer(parsed, 2), llList2String(parsed, 3)];
+            }
+        }
+        cursor = blockEnd + 1;
+    }
+@done_collect;
+
+    return sections;
+}
+
+list ddrSelectSingleSection(list sections, string preferredDifficulty)
+{
+    integer count = llGetListLength(sections);
+    if (count < 3)
+    {
+        return [];
+    }
+
+    string preferredLower = llToLower(preferredDifficulty);
+    integer i = 0;
+    for (; i < count; i += 3)
+    {
+        string difficulty = llList2String(sections, i);
+        if (llToLower(difficulty) == preferredLower)
+        {
+            return [difficulty, llList2Integer(sections, i + 1), llList2String(sections, i + 2)];
+        }
+    }
+
+    return [llList2String(sections, 0), llList2Integer(sections, 1), llList2String(sections, 2)];
+}
+
+list ddrMeasureRows(string rawMeasure)
+{
+    list rows = [];
+    list lines = llParseStringKeepNulls(rawMeasure, ["\r\n", "\n", "\r"], []);
+    integer count = llGetListLength(lines);
+    integer i = 0;
+    for (; i < count; ++i)
+    {
+        string line = llStringTrim(llList2String(lines, i), STRING_TRIM);
+        if (line != "" && !ddrStringStartsWith(line, "//"))
+        {
+            rows += [line];
+        }
+    }
+    return rows;
+}
+
+integer ddrChartReset()
+{
+    gNoteEvents = [];
+    gHoldEvents = [];
+    gChartBpmPairs = [];
+    gChartOffsetSeconds = 0.0;
+    gChartDifficultyName = "";
+    gChartMeter = 0;
+    gChartDurationSeconds = 0.0;
+    gChartTotalRows = 0;
+    gChartTotalNotes = 0;
+    gChartTotalHolds = 0;
+    gChartChordRows = 0;
+    gChartMaxSimultaneous = 0;
+    gChartOffbeatNotes = 0;
+    gChartSongRadar = [0.0, 0.0, 0.0, 0.0, 0.0];
+    return TRUE;
+}
+
+integer ddrChartAddNote(float noteTime, integer lane, integer noteType, integer refId, integer flags)
+{
+    gNoteEvents += [noteTime, lane, noteType, refId, DDR_JUDGE_NONE, flags];
+    ++gChartTotalNotes;
+    if (noteTime > gChartDurationSeconds)
+    {
+        gChartDurationSeconds = noteTime;
+    }
+    if (flags & DDR_NOTE_FLAG_OFFBEAT)
+    {
+        ++gChartOffbeatNotes;
+    }
+    return TRUE;
+}
+
+integer ddrChartAddHold(integer holdId, integer lane, float startTime, float endTime)
+{
+    if (endTime < startTime)
+    {
+        endTime = startTime;
+    }
+    gHoldEvents += [holdId, lane, startTime, endTime, DDR_HOLD_STATE_PENDING];
+    ++gChartTotalHolds;
+    if (endTime > gChartDurationSeconds)
+    {
+        gChartDurationSeconds = endTime;
+    }
+    return TRUE;
+}
+
+integer ddrChartBuildSongRadar()
+{
+    float duration = gChartDurationSeconds;
+    if (duration < 1.0)
+    {
+        duration = 1.0;
+    }
+
+    float noteRate = (float)gChartTotalNotes / duration;
+    float stream = ddrClampFloat(noteRate / 6.0, 0.0, 1.0);
+    float voltage = ddrClampFloat((float)gChartMaxSimultaneous / 4.0, 0.0, 1.0);
+    float air = 0.0;
+    float freeze = 0.0;
+    float chaos = 0.0;
+
+    if (gChartTotalRows > 0)
+    {
+        air = ddrClampFloat((float)gChartChordRows / (float)gChartTotalRows, 0.0, 1.0);
+    }
+    if (gChartTotalNotes > 0)
+    {
+        freeze = ddrClampFloat((float)gChartTotalHolds / (float)gChartTotalNotes, 0.0, 1.0);
+        chaos = ddrClampFloat((float)gChartOffbeatNotes / (float)gChartTotalNotes, 0.0, 1.0);
+    }
+    gChartSongRadar = [stream, voltage, air, freeze, chaos];
+    return TRUE;
+}
+
+integer ddrChartParse(string smText, string preferredDifficulty)
+{
+    ddrChartReset();
+    if (smText == "")
+    {
+        return FALSE;
+    }
+
+    string offsetRaw = ddrSmExtractTag(smText, "OFFSET");
+    if (offsetRaw != "")
+    {
+        gChartOffsetSeconds = (float)offsetRaw;
+    }
+    gChartBpmPairs = ddrParseBpmPairs(ddrSmExtractTag(smText, "BPMS"));
+
+    list sections = ddrCollectSingleSections(smText);
+    list selected = ddrSelectSingleSection(sections, preferredDifficulty);
+    if (llGetListLength(selected) < 3)
+    {
+        ddrDebug("PARSE", "No dance-single chart found");
+        return FALSE;
+    }
+
+    gChartDifficultyName = llList2String(selected, 0);
+    gChartMeter = llList2Integer(selected, 1);
+    string noteData = llList2String(selected, 2);
+
+    list measures = llParseStringKeepNulls(noteData, [","], []);
+    integer measureCount = llGetListLength(measures);
+    integer measureIndex = 0;
+
+    integer holdSerial = 1;
+    list openHoldIds = [-1, -1, -1, -1];
+    list openHoldStarts = [0.0, 0.0, 0.0, 0.0];
+    float latestNoteTime = 0.0;
+
+    for (; measureIndex < measureCount; ++measureIndex)
+    {
+        list rows = ddrMeasureRows(llList2String(measures, measureIndex));
+        integer rowCount = llGetListLength(rows);
+        if (rowCount > 0)
+        {
+            integer rowIndex = 0;
+            for (; rowIndex < rowCount; ++rowIndex)
+            {
+                string row = llList2String(rows, rowIndex);
+                if (llStringLength(row) >= 4)
+                {
+                    row = llGetSubString(row, 0, 3);
+                    float beat = ((float)measureIndex * 4.0) + ((4.0 * (float)rowIndex) / (float)rowCount);
+                    float noteTime = ddrBeatToSeconds(beat) - gChartOffsetSeconds;
+                    if (noteTime > latestNoteTime)
+                    {
+                        latestNoteTime = noteTime;
+                    }
+
+                    integer startsInRow = 0;
+                    list rowCells = [];
+                    integer lane = 0;
+                    for (; lane < DDR_LANE_COUNT; ++lane)
+                    {
+                        string cell = llGetSubString(row, lane, lane);
+                        rowCells += [cell];
+                        if (cell == "1" || cell == "2" || cell == "4")
+                        {
+                            ++startsInRow;
+                        }
+                    }
+
+                    integer rowFlags = 0;
+                    if (((rowIndex * 4) % rowCount) != 0)
+                    {
+                        rowFlags = rowFlags | DDR_NOTE_FLAG_OFFBEAT;
+                    }
+                    if (startsInRow >= 2)
+                    {
+                        rowFlags = rowFlags | DDR_NOTE_FLAG_CHORD;
+                        ++gChartChordRows;
+                    }
+                    if (startsInRow > gChartMaxSimultaneous)
+                    {
+                        gChartMaxSimultaneous = startsInRow;
+                    }
+                    if (startsInRow > 0)
+                    {
+                        ++gChartTotalRows;
+                    }
+
+                    lane = 0;
+                    for (; lane < DDR_LANE_COUNT; ++lane)
+                    {
+                        string symbol = llList2String(rowCells, lane);
+                        if (symbol == "1")
+                        {
+                            ddrChartAddNote(noteTime, lane, DDR_NOTE_TAP, -1, rowFlags);
+                        }
+                        else if (symbol == "2" || symbol == "4")
+                        {
+                            integer holdId = holdSerial;
+                            ++holdSerial;
+                            openHoldIds = llListReplaceList(openHoldIds, [holdId], lane, lane);
+                            openHoldStarts = llListReplaceList(openHoldStarts, [noteTime], lane, lane);
+                            ddrChartAddNote(noteTime, lane, DDR_NOTE_HOLD_HEAD, holdId, rowFlags);
+                        }
+                        else if (symbol == "3")
+                        {
+                            integer activeHoldId = llList2Integer(openHoldIds, lane);
+                            if (activeHoldId >= 0)
+                            {
+                                float holdStart = llList2Float(openHoldStarts, lane);
+                                ddrChartAddHold(activeHoldId, lane, holdStart, noteTime);
+                                openHoldIds = llListReplaceList(openHoldIds, [-1], lane, lane);
+                                openHoldStarts = llListReplaceList(openHoldStarts, [0.0], lane, lane);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    integer laneIndex = 0;
+    for (; laneIndex < DDR_LANE_COUNT; ++laneIndex)
+    {
+        integer danglingHoldId = llList2Integer(openHoldIds, laneIndex);
+        if (danglingHoldId >= 0)
+        {
+            ddrChartAddHold(danglingHoldId, laneIndex, llList2Float(openHoldStarts, laneIndex), latestNoteTime + 0.25);
+        }
+    }
+
+    ddrChartBuildSongRadar();
+    ddrDebug(
+        "PARSE",
+        "difficulty=" + gChartDifficultyName +
+        " meter=" + (string)gChartMeter +
+        " notes=" + (string)gChartTotalNotes +
+        " holds=" + (string)gChartTotalHolds
+    );
+    return TRUE;
+}
+
+integer ddrChartNoteCount()
+{
+    return llGetListLength(gNoteEvents) / 6;
+}
+
+integer ddrChartHoldCount()
+{
+    return llGetListLength(gHoldEvents) / 5;
+}
+
+#endif
+

@@ -1,0 +1,132 @@
+#ifndef DDR_COMBO_FEEDBACK_LSLH
+#define DDR_COMBO_FEEDBACK_LSLH
+
+integer gComboFeedbackEnabled = FALSE;
+integer gComboFeedbackVisible = FALSE;
+float gComboFeedbackHideAt = 0.0;
+
+integer ddrComboFeedbackValidLink()
+{
+    if (DDR_COMBO_FEEDBACK_LINK <= 0)
+    {
+        return FALSE;
+    }
+    return DDR_COMBO_FEEDBACK_LINK <= llGetNumberOfPrims();
+}
+
+vector ddrComboFeedbackColor(integer comboValue)
+{
+    if (comboValue >= 100)
+    {
+        return DDR_COMBO_COLOR_MAX;
+    }
+    if (comboValue >= 50)
+    {
+        return DDR_COMBO_COLOR_HIGH;
+    }
+    if (comboValue >= 25)
+    {
+        return DDR_COMBO_COLOR_MID;
+    }
+    return DDR_COMBO_COLOR_LOW;
+}
+
+string ddrComboFeedbackText(integer comboValue)
+{
+    return (string)comboValue + "\nCOMBO";
+}
+
+integer ddrComboFeedbackHide()
+{
+    if (!gComboFeedbackEnabled)
+    {
+        return FALSE;
+    }
+    llSetLinkPrimitiveParamsFast(
+        DDR_COMBO_FEEDBACK_LINK,
+        [
+            PRIM_TEXT, "", <1.0, 1.0, 1.0>, 0.0
+        ]
+    );
+    gComboFeedbackVisible = FALSE;
+    return TRUE;
+}
+
+integer ddrComboFeedbackShow(integer comboValue)
+{
+    if (!gComboFeedbackEnabled)
+    {
+        return FALSE;
+    }
+    if (comboValue < DDR_COMBO_FEEDBACK_MIN_COMBO)
+    {
+        return ddrComboFeedbackHide();
+    }
+
+    llSetLinkPrimitiveParamsFast(
+        DDR_COMBO_FEEDBACK_LINK,
+        [
+            PRIM_TEXT, ddrComboFeedbackText(comboValue), ddrComboFeedbackColor(comboValue), DDR_COMBO_FEEDBACK_ALPHA
+        ]
+    );
+    gComboFeedbackVisible = TRUE;
+    gComboFeedbackHideAt = ddrNow() + DDR_COMBO_FEEDBACK_SECONDS;
+    return TRUE;
+}
+
+integer ddrComboFeedbackOnNoteJudge(integer judgement, integer comboValue)
+{
+    if (judgement <= DDR_JUDGE_GOOD)
+    {
+        return ddrComboFeedbackShow(comboValue);
+    }
+    return ddrComboFeedbackHide();
+}
+
+integer ddrComboFeedbackOnHoldResult(integer holdState, integer comboValue)
+{
+    if (holdState == DDR_HOLD_STATE_NG)
+    {
+        return ddrComboFeedbackHide();
+    }
+    if (holdState == DDR_HOLD_STATE_OK && comboValue >= DDR_COMBO_FEEDBACK_MIN_COMBO)
+    {
+        return ddrComboFeedbackShow(comboValue);
+    }
+    return FALSE;
+}
+
+integer ddrComboFeedbackTick()
+{
+    if (!gComboFeedbackEnabled || !gComboFeedbackVisible)
+    {
+        return FALSE;
+    }
+    if (ddrNow() >= gComboFeedbackHideAt)
+    {
+        ddrComboFeedbackHide();
+        return TRUE;
+    }
+    return FALSE;
+}
+
+integer ddrComboFeedbackInit()
+{
+    gComboFeedbackEnabled = ddrComboFeedbackValidLink();
+    gComboFeedbackVisible = FALSE;
+    gComboFeedbackHideAt = 0.0;
+
+    if (gComboFeedbackEnabled)
+    {
+        ddrComboFeedbackHide();
+        ddrDebug("FX", "combo feedback enabled link=" + (string)DDR_COMBO_FEEDBACK_LINK);
+    }
+    else
+    {
+        ddrDebug("FX", "combo feedback disabled (set DDR_COMBO_FEEDBACK_LINK)");
+    }
+    return gComboFeedbackEnabled;
+}
+
+#endif
+

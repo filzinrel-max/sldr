@@ -1,0 +1,5107 @@
+{
+  "version": 1,
+  "generatedUtc": "2026-03-02T18:34:15.787814+00:00",
+  "songCount": 53,
+  "songs": [
+    {
+      "id": "a-minute-extended-mix",
+      "title": "A MINUTE (EXTENDED MIX)",
+      "artist": "X-TREME",
+      "folder": "A MINUTE (EXTENDED MIX)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 128.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/A MINUTE (EXTENDED MIX)/A MINUTE (EXTENDED MIX).sm",
+        "ogg": "songs/A MINUTE (EXTENDED MIX)/A MINUTE (EXTENDED MIX).ogg",
+        "mp3": "songs/A MINUTE (EXTENDED MIX)/A MINUTE (EXTENDED MIX).mp3",
+        "banner": "songs/A MINUTE (EXTENDED MIX)/A MINUTE (EXTENDED MIX).png",
+        "background": "songs/A MINUTE (EXTENDED MIX)/A MINUTE (EXTENDED MIX)-bg.png",
+        "avi": null,
+        "mp4": "songs/A MINUTE (EXTENDED MIX)/A MINUTE (EXTENDED MIX).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 2,
+          "radarRaw": "",
+          "stats": {
+            "measures": 48,
+            "rows": 192,
+            "stepRows": 65,
+            "notes": 76,
+            "taps": 62,
+            "holds": 14,
+            "jumps": 11,
+            "maxSimultaneous": 2,
+            "beatSpan": 192.0,
+            "notesPerBeat": 0.395833
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 4,
+          "radarRaw": "",
+          "stats": {
+            "measures": 49,
+            "rows": 272,
+            "stepRows": 180,
+            "notes": 204,
+            "taps": 192,
+            "holds": 12,
+            "jumps": 24,
+            "maxSimultaneous": 2,
+            "beatSpan": 196.0,
+            "notesPerBeat": 1.040816
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 7,
+          "radarRaw": "",
+          "stats": {
+            "measures": 49,
+            "rows": 348,
+            "stepRows": 258,
+            "notes": 287,
+            "taps": 261,
+            "holds": 26,
+            "jumps": 29,
+            "maxSimultaneous": 2,
+            "beatSpan": 196.0,
+            "notesPerBeat": 1.464286
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Easy": 2,
+        "Medium": 4,
+        "Hard": 7
+      },
+      "chartJsonByDifficulty": {
+        "Easy": "game-data/charts/a-minute-extended-mix/easy.chart.json",
+        "Medium": "game-data/charts/a-minute-extended-mix/medium.chart.json",
+        "Hard": "game-data/charts/a-minute-extended-mix/hard.chart.json"
+      }
+    },
+    {
+      "id": "afronova-from-nonstop-megamix",
+      "title": "AFRONOVA(FROM NONSTOP MEGAMIX)",
+      "artist": "RE-VENGE",
+      "folder": "AFRONOVA(FROM NONSTOP MEGAMIX)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 200.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/AFRONOVA(FROM NONSTOP MEGAMIX)/AFRONOVA(FROM NONSTOP MEGAMIX).sm",
+        "ogg": "songs/AFRONOVA(FROM NONSTOP MEGAMIX)/AFRONOVA(FROM NONSTOP MEGAMIX).ogg",
+        "mp3": "songs/AFRONOVA(FROM NONSTOP MEGAMIX)/AFRONOVA(FROM NONSTOP MEGAMIX).mp3",
+        "banner": "songs/AFRONOVA(FROM NONSTOP MEGAMIX)/AFRONOVA(FROM NONSTOP MEGAMIX).png",
+        "background": "songs/AFRONOVA(FROM NONSTOP MEGAMIX)/AFRONOVA(FROM NONSTOP MEGAMIX)-bg.png",
+        "avi": "songs/AFRONOVA(FROM NONSTOP MEGAMIX)/AFRONOVA(FROM NONSTOP MEGAMIX).avi",
+        "mp4": "songs/AFRONOVA(FROM NONSTOP MEGAMIX)/AFRONOVA(FROM NONSTOP MEGAMIX).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 10,
+          "radarRaw": "",
+          "stats": {
+            "measures": 77,
+            "rows": 492,
+            "stepRows": 355,
+            "notes": 389,
+            "taps": 371,
+            "holds": 18,
+            "jumps": 34,
+            "maxSimultaneous": 2,
+            "beatSpan": 308.0,
+            "notesPerBeat": 1.262987
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 10
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/afronova-from-nonstop-megamix/challenge.chart.json"
+      }
+    },
+    {
+      "id": "am-3p-am-east-mix",
+      "title": "AM-3P (AM EAST mix)",
+      "artist": "KTz",
+      "folder": "AM-3P (AM EAST mix)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 140.078
+        },
+        {
+          "beat": 4.0,
+          "bpm": 140.009
+        }
+      ],
+      "paths": {
+        "sm": "songs/AM-3P (AM EAST mix)/AM-3P (AM EAST mix).sm",
+        "ogg": "songs/AM-3P (AM EAST mix)/AM-3P (AM EAST mix).ogg",
+        "mp3": "songs/AM-3P (AM EAST mix)/AM-3P (AM EAST mix).mp3",
+        "banner": "songs/AM-3P (AM EAST mix)/AM-3P (AM EAST mix).png",
+        "background": "songs/AM-3P (AM EAST mix)/AM-3P (AM EAST mix)-bg.png",
+        "avi": null,
+        "mp4": "songs/AM-3P (AM EAST mix)/AM-3P (AM EAST mix).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 10,
+          "radarRaw": "0.441,0.494,0.092,0.041,0.302",
+          "stats": {
+            "measures": 55,
+            "rows": 856,
+            "stepRows": 289,
+            "notes": 298,
+            "taps": 294,
+            "holds": 4,
+            "jumps": 9,
+            "maxSimultaneous": 2,
+            "beatSpan": 220.0,
+            "notesPerBeat": 1.354545
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 10
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/am-3p-am-east-mix/challenge.chart.json"
+      }
+    },
+    {
+      "id": "b4u-b4-za-beat-mix",
+      "title": "B4U(B4 ZA BEAT MIX)",
+      "artist": "NAOKI",
+      "folder": "B4U(B4 ZA BEAT MIX)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 170.616
+        },
+        {
+          "beat": 4.0,
+          "bpm": 169.999
+        }
+      ],
+      "paths": {
+        "sm": "songs/B4U(B4 ZA BEAT MIX)/B4U(B4 ZA BEAT MIX).sm",
+        "ogg": "songs/B4U(B4 ZA BEAT MIX)/B4U(B4 ZA BEAT MIX).ogg",
+        "mp3": "songs/B4U(B4 ZA BEAT MIX)/B4U(B4 ZA BEAT MIX).mp3",
+        "banner": "songs/B4U(B4 ZA BEAT MIX)/B4U(B4 ZA BEAT MIX).png",
+        "background": "songs/B4U(B4 ZA BEAT MIX)/B4U(B4 ZA BEAT MIX)-bg.png",
+        "avi": null,
+        "mp4": "songs/B4U(B4 ZA BEAT MIX)/B4U(B4 ZA BEAT MIX).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 10,
+          "radarRaw": "0.459,0.547,0.147,0.098,0.018",
+          "stats": {
+            "measures": 58,
+            "rows": 384,
+            "stepRows": 243,
+            "notes": 255,
+            "taps": 247,
+            "holds": 8,
+            "jumps": 12,
+            "maxSimultaneous": 2,
+            "beatSpan": 232.0,
+            "notesPerBeat": 1.099138
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 10
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/b4u-b4-za-beat-mix/challenge.chart.json"
+      }
+    },
+    {
+      "id": "baby-love-me",
+      "title": "BABY LOVE ME",
+      "artist": "JUDY CRYSTAL",
+      "folder": "BABY LOVE ME",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 158.359
+        },
+        {
+          "beat": 4.0,
+          "bpm": 160.006
+        }
+      ],
+      "paths": {
+        "sm": "songs/BABY LOVE ME/BABY LOVE ME.sm",
+        "ogg": "songs/BABY LOVE ME/BABY LOVE ME.ogg",
+        "mp3": "songs/BABY LOVE ME/BABY LOVE ME.mp3",
+        "banner": "songs/BABY LOVE ME/BABY LOVE ME.png",
+        "background": "songs/BABY LOVE ME/BABY LOVE ME-bg.png",
+        "avi": null,
+        "mp4": "songs/BABY LOVE ME/BABY LOVE ME.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 3,
+          "radarRaw": "0.237,0.291,0.148,0.228,0.000",
+          "stats": {
+            "measures": 57,
+            "rows": 228,
+            "stepRows": 113,
+            "notes": 126,
+            "taps": 106,
+            "holds": 20,
+            "jumps": 13,
+            "maxSimultaneous": 2,
+            "beatSpan": 228.0,
+            "notesPerBeat": 0.552632
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 5,
+          "radarRaw": "0.489,0.516,0.512,0.455,0.000",
+          "stats": {
+            "measures": 57,
+            "rows": 292,
+            "stepRows": 216,
+            "notes": 261,
+            "taps": 221,
+            "holds": 40,
+            "jumps": 45,
+            "maxSimultaneous": 2,
+            "beatSpan": 228.0,
+            "notesPerBeat": 1.144737
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 8,
+          "radarRaw": "0.673,0.580,0.273,0.114,0.205",
+          "stats": {
+            "measures": 57,
+            "rows": 580,
+            "stepRows": 380,
+            "notes": 404,
+            "taps": 394,
+            "holds": 10,
+            "jumps": 24,
+            "maxSimultaneous": 2,
+            "beatSpan": 228.0,
+            "notesPerBeat": 1.77193
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Easy": 3,
+        "Medium": 5,
+        "Hard": 8
+      },
+      "chartJsonByDifficulty": {
+        "Easy": "game-data/charts/baby-love-me/easy.chart.json",
+        "Medium": "game-data/charts/baby-love-me/medium.chart.json",
+        "Hard": "game-data/charts/baby-love-me/hard.chart.json"
+      }
+    },
+    {
+      "id": "brek-down",
+      "title": "BRE∀K DOWN！",
+      "artist": "BeForU",
+      "folder": "BREAK DOWN!",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 190.5
+        },
+        {
+          "beat": 4.0,
+          "bpm": 190.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/BREAK DOWN!/BREAK DOWN!.sm",
+        "ogg": "songs/BREAK DOWN!/BREAK DOWN!.ogg",
+        "mp3": "songs/BREAK DOWN!/BREAK DOWN!.mp3",
+        "banner": "songs/BREAK DOWN!/BREAK DOWN!.png",
+        "background": "songs/BREAK DOWN!/BREAK DOWN!-bg.png",
+        "avi": null,
+        "mp4": "songs/BREAK DOWN!/BREAK DOWN!.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 3,
+          "radarRaw": "",
+          "stats": {
+            "measures": 82,
+            "rows": 328,
+            "stepRows": 103,
+            "notes": 105,
+            "taps": 105,
+            "holds": 0,
+            "jumps": 2,
+            "maxSimultaneous": 2,
+            "beatSpan": 328.0,
+            "notesPerBeat": 0.320122
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 5,
+          "radarRaw": "",
+          "stats": {
+            "measures": 82,
+            "rows": 328,
+            "stepRows": 144,
+            "notes": 169,
+            "taps": 162,
+            "holds": 7,
+            "jumps": 25,
+            "maxSimultaneous": 2,
+            "beatSpan": 328.0,
+            "notesPerBeat": 0.515244
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 8,
+          "radarRaw": "",
+          "stats": {
+            "measures": 82,
+            "rows": 356,
+            "stepRows": 279,
+            "notes": 331,
+            "taps": 314,
+            "holds": 17,
+            "jumps": 52,
+            "maxSimultaneous": 2,
+            "beatSpan": 328.0,
+            "notesPerBeat": 1.009146
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 12,
+          "radarRaw": "",
+          "stats": {
+            "measures": 82,
+            "rows": 552,
+            "stepRows": 403,
+            "notes": 457,
+            "taps": 451,
+            "holds": 6,
+            "jumps": 54,
+            "maxSimultaneous": 2,
+            "beatSpan": 328.0,
+            "notesPerBeat": 1.393293
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 15,
+          "radarRaw": "",
+          "stats": {
+            "measures": 82,
+            "rows": 700,
+            "stepRows": 492,
+            "notes": 518,
+            "taps": 484,
+            "holds": 34,
+            "jumps": 26,
+            "maxSimultaneous": 2,
+            "beatSpan": 328.0,
+            "notesPerBeat": 1.579268
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 3,
+        "Easy": 5,
+        "Medium": 8,
+        "Hard": 12,
+        "Challenge": 15
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/brek-down/beginner.chart.json",
+        "Easy": "game-data/charts/brek-down/easy.chart.json",
+        "Medium": "game-data/charts/brek-down/medium.chart.json",
+        "Hard": "game-data/charts/brek-down/hard.chart.json",
+        "Challenge": "game-data/charts/brek-down/challenge.chart.json"
+      }
+    },
+    {
+      "id": "brilliant-2u-k-o-g-g3-mix",
+      "title": "BRILLIANT 2U(K.O.G G3 MIX)",
+      "artist": "NAOKI",
+      "folder": "BRILLIANT 2U(K.O.G G3 MIX)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 170.616
+        },
+        {
+          "beat": 4.0,
+          "bpm": 170.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/BRILLIANT 2U(K.O.G G3 MIX)/BRILLIANT 2U(K.O.G G3 MIX).sm",
+        "ogg": "songs/BRILLIANT 2U(K.O.G G3 MIX)/BRILLIANT 2U(K.O.G G3 MIX).ogg",
+        "mp3": "songs/BRILLIANT 2U(K.O.G G3 MIX)/BRILLIANT 2U(K.O.G G3 MIX).mp3",
+        "banner": "songs/BRILLIANT 2U(K.O.G G3 MIX)/BRILLIANT 2U(K.O.G G3 MIX).png",
+        "background": "songs/BRILLIANT 2U(K.O.G G3 MIX)/BRILLIANT 2U(K.O.G G3 MIX)-bg.png",
+        "avi": "songs/BRILLIANT 2U(K.O.G G3 MIX)/BRILLIANT 2U(K.O.G G3 MIX).avi",
+        "mp4": "songs/BRILLIANT 2U(K.O.G G3 MIX)/BRILLIANT 2U(K.O.G G3 MIX).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 10,
+          "radarRaw": "",
+          "stats": {
+            "measures": 61,
+            "rows": 572,
+            "stepRows": 267,
+            "notes": 302,
+            "taps": 300,
+            "holds": 2,
+            "jumps": 35,
+            "maxSimultaneous": 2,
+            "beatSpan": 244.0,
+            "notesPerBeat": 1.237705
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 10
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/brilliant-2u-k-o-g-g3-mix/challenge.chart.json"
+      }
+    },
+    {
+      "id": "burnin-the-floor-blue-fire-mix",
+      "title": "BURNIN' THE FLOOR (BLUE FIRE mix)",
+      "artist": "NAOKI",
+      "folder": "BURNIN' THE FLOOR (BLUE FIRE mix)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 155.172
+        },
+        {
+          "beat": 4.0,
+          "bpm": 155.048
+        }
+      ],
+      "paths": {
+        "sm": "songs/BURNIN' THE FLOOR (BLUE FIRE mix)/BURNIN' THE FLOOR (BLUE FIRE mix).sm",
+        "ogg": "songs/BURNIN' THE FLOOR (BLUE FIRE mix)/BURNIN' THE FLOOR (BLUE FIRE mix).ogg",
+        "mp3": "songs/BURNIN' THE FLOOR (BLUE FIRE mix)/BURNIN' THE FLOOR (BLUE FIRE mix).mp3",
+        "banner": "songs/BURNIN' THE FLOOR (BLUE FIRE mix)/BURNIN' THE FLOOR (BLUE FIRE mix).png",
+        "background": "songs/BURNIN' THE FLOOR (BLUE FIRE mix)/BURNIN' THE FLOOR (BLUE FIRE mix)-bg.png",
+        "avi": "songs/BURNIN' THE FLOOR (BLUE FIRE mix)/BURNIN' THE FLOOR (BLUE FIRE mix).avi",
+        "mp4": "songs/BURNIN' THE FLOOR (BLUE FIRE mix)/BURNIN' THE FLOOR (BLUE FIRE mix).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 10,
+          "radarRaw": "0.464,0.495,0.333,0.031,0.010",
+          "stats": {
+            "measures": 61,
+            "rows": 416,
+            "stepRows": 277,
+            "notes": 309,
+            "taps": 306,
+            "holds": 3,
+            "jumps": 32,
+            "maxSimultaneous": 2,
+            "beatSpan": 244.0,
+            "notesPerBeat": 1.266393
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 10
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/burnin-the-floor-blue-fire-mix/challenge.chart.json"
+      }
+    },
+    {
+      "id": "burning-heat-3-option-mix",
+      "title": "BURNING HEAT！（3 Option MIX）",
+      "artist": "Mr.T with Motoaki. F",
+      "folder": "BURNING HEAT! (3 Option MIX)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 165.2
+        },
+        {
+          "beat": 4.0,
+          "bpm": 166.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/BURNING HEAT! (3 Option MIX)/BURNING HEAT! (3 Option MIX).sm",
+        "ogg": "songs/BURNING HEAT! (3 Option MIX)/BURNING HEAT! (3 Option MIX).ogg",
+        "mp3": "songs/BURNING HEAT! (3 Option MIX)/BURNING HEAT! (3 Option MIX).mp3",
+        "banner": "songs/BURNING HEAT! (3 Option MIX)/BURNING HEAT! (3 Option MIX).png",
+        "background": "songs/BURNING HEAT! (3 Option MIX)/BURNING HEAT! (3 Option MIX)-bg.png",
+        "avi": null,
+        "mp4": "songs/BURNING HEAT! (3 Option MIX)/BURNING HEAT! (3 Option MIX).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 3,
+          "radarRaw": "",
+          "stats": {
+            "measures": 63,
+            "rows": 252,
+            "stepRows": 96,
+            "notes": 98,
+            "taps": 98,
+            "holds": 0,
+            "jumps": 2,
+            "maxSimultaneous": 2,
+            "beatSpan": 252.0,
+            "notesPerBeat": 0.388889
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 4,
+          "radarRaw": "",
+          "stats": {
+            "measures": 65,
+            "rows": 260,
+            "stepRows": 116,
+            "notes": 127,
+            "taps": 114,
+            "holds": 13,
+            "jumps": 11,
+            "maxSimultaneous": 2,
+            "beatSpan": 260.0,
+            "notesPerBeat": 0.488462
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 8,
+          "radarRaw": "",
+          "stats": {
+            "measures": 65,
+            "rows": 408,
+            "stepRows": 200,
+            "notes": 205,
+            "taps": 175,
+            "holds": 30,
+            "jumps": 5,
+            "maxSimultaneous": 2,
+            "beatSpan": 260.0,
+            "notesPerBeat": 0.788462
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 13,
+          "radarRaw": "",
+          "stats": {
+            "measures": 65,
+            "rows": 712,
+            "stepRows": 413,
+            "notes": 415,
+            "taps": 409,
+            "holds": 6,
+            "jumps": 2,
+            "maxSimultaneous": 2,
+            "beatSpan": 260.0,
+            "notesPerBeat": 1.596154
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 15,
+          "radarRaw": "",
+          "stats": {
+            "measures": 65,
+            "rows": 934,
+            "stepRows": 507,
+            "notes": 518,
+            "taps": 474,
+            "holds": 44,
+            "jumps": 11,
+            "maxSimultaneous": 2,
+            "beatSpan": 260.0,
+            "notesPerBeat": 1.992308
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 3,
+        "Easy": 4,
+        "Medium": 8,
+        "Hard": 13,
+        "Challenge": 15
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/burning-heat-3-option-mix/beginner.chart.json",
+        "Easy": "game-data/charts/burning-heat-3-option-mix/easy.chart.json",
+        "Medium": "game-data/charts/burning-heat-3-option-mix/medium.chart.json",
+        "Hard": "game-data/charts/burning-heat-3-option-mix/hard.chart.json",
+        "Challenge": "game-data/charts/burning-heat-3-option-mix/challenge.chart.json"
+      }
+    },
+    {
+      "id": "candy",
+      "title": "CANDY♥",
+      "artist": "小坂りゆ",
+      "folder": "CANDY HEART",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 179.5
+        },
+        {
+          "beat": 4.0,
+          "bpm": 180.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/CANDY HEART/CANDY HEART.sm",
+        "ogg": "songs/CANDY HEART/CANDY HEART.ogg",
+        "mp3": "songs/CANDY HEART/CANDY HEART.mp3",
+        "banner": "songs/CANDY HEART/CANDY HEART.png",
+        "background": "songs/CANDY HEART/CANDY HEART-bg.png",
+        "avi": "songs/CANDY HEART/CANDY HEART.avi",
+        "mp4": "songs/CANDY HEART/CANDY HEART.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 4,
+          "radarRaw": "",
+          "stats": {
+            "measures": 72,
+            "rows": 288,
+            "stepRows": 139,
+            "notes": 150,
+            "taps": 150,
+            "holds": 0,
+            "jumps": 11,
+            "maxSimultaneous": 2,
+            "beatSpan": 288.0,
+            "notesPerBeat": 0.520833
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 5,
+          "radarRaw": "",
+          "stats": {
+            "measures": 72,
+            "rows": 288,
+            "stepRows": 126,
+            "notes": 150,
+            "taps": 145,
+            "holds": 5,
+            "jumps": 24,
+            "maxSimultaneous": 2,
+            "beatSpan": 288.0,
+            "notesPerBeat": 0.520833
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 7,
+          "radarRaw": "",
+          "stats": {
+            "measures": 72,
+            "rows": 320,
+            "stepRows": 230,
+            "notes": 272,
+            "taps": 250,
+            "holds": 22,
+            "jumps": 42,
+            "maxSimultaneous": 2,
+            "beatSpan": 288.0,
+            "notesPerBeat": 0.944444
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 10,
+          "radarRaw": "",
+          "stats": {
+            "measures": 71,
+            "rows": 508,
+            "stepRows": 317,
+            "notes": 344,
+            "taps": 323,
+            "holds": 21,
+            "jumps": 27,
+            "maxSimultaneous": 2,
+            "beatSpan": 284.0,
+            "notesPerBeat": 1.211268
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 4,
+        "Easy": 5,
+        "Medium": 7,
+        "Hard": 10
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/candy/beginner.chart.json",
+        "Easy": "game-data/charts/candy/easy.chart.json",
+        "Medium": "game-data/charts/candy/medium.chart.json",
+        "Hard": "game-data/charts/candy/hard.chart.json"
+      }
+    },
+    {
+      "id": "celebrate-nite-euro-trance-style",
+      "title": "CELEBRATE NITE(EURO TRANCE STYLE)",
+      "artist": "N.M.R",
+      "folder": "CELEBRATE NITE(EURO TRANCE STYLE)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 144.0
+        },
+        {
+          "beat": 4.0,
+          "bpm": 144.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/CELEBRATE NITE(EURO TRANCE STYLE)/CELEBRATE NITE(EURO TRANCE STYLE).sm",
+        "ogg": "songs/CELEBRATE NITE(EURO TRANCE STYLE)/CELEBRATE NITE(EURO TRANCE STYLE).ogg",
+        "mp3": "songs/CELEBRATE NITE(EURO TRANCE STYLE)/CELEBRATE NITE(EURO TRANCE STYLE).mp3",
+        "banner": "songs/CELEBRATE NITE(EURO TRANCE STYLE)/CELEBRATE NITE(EURO TRANCE STYLE).png",
+        "background": "songs/CELEBRATE NITE(EURO TRANCE STYLE)/CELEBRATE NITE(EURO TRANCE STYLE)-bg.png",
+        "avi": null,
+        "mp4": "songs/CELEBRATE NITE(EURO TRANCE STYLE)/CELEBRATE NITE(EURO TRANCE STYLE).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 11,
+          "radarRaw": "0.459,0.501,0.107,0.021,0.096",
+          "stats": {
+            "measures": 57,
+            "rows": 512,
+            "stepRows": 288,
+            "notes": 298,
+            "taps": 296,
+            "holds": 2,
+            "jumps": 10,
+            "maxSimultaneous": 2,
+            "beatSpan": 228.0,
+            "notesPerBeat": 1.307018
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 11
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/celebrate-nite-euro-trance-style/challenge.chart.json"
+      }
+    },
+    {
+      "id": "d2r",
+      "title": "D2R",
+      "artist": "NAOKI",
+      "folder": "D2R",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 163.0
+        },
+        {
+          "beat": 4.0,
+          "bpm": 160.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/D2R/D2R.sm",
+        "ogg": "songs/D2R/D2R.ogg",
+        "mp3": "songs/D2R/D2R.mp3",
+        "banner": "songs/D2R/D2R.png",
+        "background": "songs/D2R/D2R-bg.png",
+        "avi": null,
+        "mp4": "songs/D2R/D2R.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 3,
+          "radarRaw": "",
+          "stats": {
+            "measures": 64,
+            "rows": 256,
+            "stepRows": 124,
+            "notes": 125,
+            "taps": 125,
+            "holds": 0,
+            "jumps": 1,
+            "maxSimultaneous": 2,
+            "beatSpan": 256.0,
+            "notesPerBeat": 0.488281
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 4,
+          "radarRaw": "",
+          "stats": {
+            "measures": 64,
+            "rows": 256,
+            "stepRows": 147,
+            "notes": 152,
+            "taps": 147,
+            "holds": 5,
+            "jumps": 5,
+            "maxSimultaneous": 2,
+            "beatSpan": 256.0,
+            "notesPerBeat": 0.59375
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 7,
+          "radarRaw": "",
+          "stats": {
+            "measures": 65,
+            "rows": 340,
+            "stepRows": 236,
+            "notes": 267,
+            "taps": 235,
+            "holds": 32,
+            "jumps": 31,
+            "maxSimultaneous": 2,
+            "beatSpan": 260.0,
+            "notesPerBeat": 1.026923
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 11,
+          "radarRaw": "",
+          "stats": {
+            "measures": 65,
+            "rows": 588,
+            "stepRows": 327,
+            "notes": 351,
+            "taps": 340,
+            "holds": 11,
+            "jumps": 24,
+            "maxSimultaneous": 2,
+            "beatSpan": 260.0,
+            "notesPerBeat": 1.35
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 15,
+          "radarRaw": "",
+          "stats": {
+            "measures": 65,
+            "rows": 756,
+            "stepRows": 471,
+            "notes": 511,
+            "taps": 501,
+            "holds": 10,
+            "jumps": 40,
+            "maxSimultaneous": 2,
+            "beatSpan": 260.0,
+            "notesPerBeat": 1.965385
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 3,
+        "Easy": 4,
+        "Medium": 7,
+        "Hard": 11,
+        "Challenge": 15
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/d2r/beginner.chart.json",
+        "Easy": "game-data/charts/d2r/easy.chart.json",
+        "Medium": "game-data/charts/d2r/medium.chart.json",
+        "Hard": "game-data/charts/d2r/hard.chart.json",
+        "Challenge": "game-data/charts/d2r/challenge.chart.json"
+      }
+    },
+    {
+      "id": "destiny",
+      "title": "DESTINY",
+      "artist": "NAOKI feat. PAULA TERRY",
+      "folder": "DESTINY",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 155.172
+        },
+        {
+          "beat": 4.0,
+          "bpm": 154.979
+        }
+      ],
+      "paths": {
+        "sm": "songs/DESTINY/DESTINY.sm",
+        "ogg": "songs/DESTINY/DESTINY.ogg",
+        "mp3": "songs/DESTINY/DESTINY.mp3",
+        "banner": "songs/DESTINY/DESTINY.png",
+        "background": "songs/DESTINY/DESTINY-bg.png",
+        "avi": null,
+        "mp4": "songs/DESTINY/DESTINY.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 3,
+          "radarRaw": "0.169,0.249,0.077,0.000,0.000",
+          "stats": {
+            "measures": 66,
+            "rows": 264,
+            "stepRows": 115,
+            "notes": 123,
+            "taps": 123,
+            "holds": 0,
+            "jumps": 8,
+            "maxSimultaneous": 2,
+            "beatSpan": 264.0,
+            "notesPerBeat": 0.465909
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 3,
+          "radarRaw": "0.168,0.249,0.058,0.000,0.000",
+          "stats": {
+            "measures": 66,
+            "rows": 264,
+            "stepRows": 116,
+            "notes": 122,
+            "taps": 122,
+            "holds": 0,
+            "jumps": 6,
+            "maxSimultaneous": 2,
+            "beatSpan": 264.0,
+            "notesPerBeat": 0.462121
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 7,
+          "radarRaw": "0.379,0.403,0.193,0.154,0.043",
+          "stats": {
+            "measures": 66,
+            "rows": 424,
+            "stepRows": 239,
+            "notes": 259,
+            "taps": 243,
+            "holds": 16,
+            "jumps": 20,
+            "maxSimultaneous": 2,
+            "beatSpan": 264.0,
+            "notesPerBeat": 0.981061
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 10,
+          "radarRaw": "0.548,0.589,0.520,0.116,0.082",
+          "stats": {
+            "measures": 66,
+            "rows": 600,
+            "stepRows": 332,
+            "notes": 386,
+            "taps": 374,
+            "holds": 12,
+            "jumps": 54,
+            "maxSimultaneous": 2,
+            "beatSpan": 264.0,
+            "notesPerBeat": 1.462121
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 3,
+        "Easy": 3,
+        "Medium": 7,
+        "Hard": 10
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/destiny/beginner.chart.json",
+        "Easy": "game-data/charts/destiny/easy.chart.json",
+        "Medium": "game-data/charts/destiny/medium.chart.json",
+        "Hard": "game-data/charts/destiny/hard.chart.json"
+      }
+    },
+    {
+      "id": "dive-to-the-night",
+      "title": "DIVE TO THE NIGHT",
+      "artist": "小坂りゆ",
+      "folder": "DIVE TO THE NIGHT",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 155.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/DIVE TO THE NIGHT/DIVE TO THE NIGHT.sm",
+        "ogg": "songs/DIVE TO THE NIGHT/DIVE TO THE NIGHT.ogg",
+        "mp3": "songs/DIVE TO THE NIGHT/DIVE TO THE NIGHT.mp3",
+        "banner": "songs/DIVE TO THE NIGHT/DIVE TO THE NIGHT.png",
+        "background": "songs/DIVE TO THE NIGHT/DIVE TO THE NIGHT-bg.png",
+        "avi": null,
+        "mp4": "songs/DIVE TO THE NIGHT/DIVE TO THE NIGHT.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 3,
+          "radarRaw": "",
+          "stats": {
+            "measures": 61,
+            "rows": 244,
+            "stepRows": 114,
+            "notes": 135,
+            "taps": 135,
+            "holds": 0,
+            "jumps": 21,
+            "maxSimultaneous": 2,
+            "beatSpan": 244.0,
+            "notesPerBeat": 0.553279
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 4,
+          "radarRaw": "",
+          "stats": {
+            "measures": 62,
+            "rows": 248,
+            "stepRows": 144,
+            "notes": 166,
+            "taps": 161,
+            "holds": 5,
+            "jumps": 22,
+            "maxSimultaneous": 2,
+            "beatSpan": 248.0,
+            "notesPerBeat": 0.669355
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 8,
+          "radarRaw": "",
+          "stats": {
+            "measures": 62,
+            "rows": 352,
+            "stepRows": 253,
+            "notes": 311,
+            "taps": 305,
+            "holds": 6,
+            "jumps": 58,
+            "maxSimultaneous": 2,
+            "beatSpan": 248.0,
+            "notesPerBeat": 1.254032
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 11,
+          "radarRaw": "",
+          "stats": {
+            "measures": 61,
+            "rows": 464,
+            "stepRows": 341,
+            "notes": 391,
+            "taps": 390,
+            "holds": 1,
+            "jumps": 50,
+            "maxSimultaneous": 2,
+            "beatSpan": 244.0,
+            "notesPerBeat": 1.602459
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 3,
+        "Easy": 4,
+        "Medium": 8,
+        "Hard": 11
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/dive-to-the-night/beginner.chart.json",
+        "Easy": "game-data/charts/dive-to-the-night/easy.chart.json",
+        "Medium": "game-data/charts/dive-to-the-night/medium.chart.json",
+        "Hard": "game-data/charts/dive-to-the-night/hard.chart.json"
+      }
+    },
+    {
+      "id": "drifting-away",
+      "title": "DRIFTING AWAY",
+      "artist": "LANGE feat. SKYE",
+      "folder": "DRIFTING AWAY",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 135.19
+        },
+        {
+          "beat": 4.0,
+          "bpm": 135.999
+        }
+      ],
+      "paths": {
+        "sm": "songs/DRIFTING AWAY/DRIFTING AWAY.sm",
+        "ogg": "songs/DRIFTING AWAY/DRIFTING AWAY.ogg",
+        "mp3": "songs/DRIFTING AWAY/DRIFTING AWAY.mp3",
+        "banner": "songs/DRIFTING AWAY/DRIFTING AWAY.png",
+        "background": "songs/DRIFTING AWAY/DRIFTING AWAY-bg.png",
+        "avi": null,
+        "mp4": "songs/DRIFTING AWAY/DRIFTING AWAY.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 1,
+          "radarRaw": "",
+          "stats": {
+            "measures": 55,
+            "rows": 220,
+            "stepRows": 90,
+            "notes": 95,
+            "taps": 95,
+            "holds": 0,
+            "jumps": 5,
+            "maxSimultaneous": 2,
+            "beatSpan": 220.0,
+            "notesPerBeat": 0.431818
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 2,
+          "radarRaw": "",
+          "stats": {
+            "measures": 55,
+            "rows": 220,
+            "stepRows": 114,
+            "notes": 127,
+            "taps": 123,
+            "holds": 4,
+            "jumps": 13,
+            "maxSimultaneous": 2,
+            "beatSpan": 220.0,
+            "notesPerBeat": 0.577273
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 5,
+          "radarRaw": "",
+          "stats": {
+            "measures": 54,
+            "rows": 400,
+            "stepRows": 227,
+            "notes": 234,
+            "taps": 226,
+            "holds": 8,
+            "jumps": 7,
+            "maxSimultaneous": 2,
+            "beatSpan": 216.0,
+            "notesPerBeat": 1.083333
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 8,
+          "radarRaw": "",
+          "stats": {
+            "measures": 54,
+            "rows": 632,
+            "stepRows": 356,
+            "notes": 380,
+            "taps": 373,
+            "holds": 7,
+            "jumps": 24,
+            "maxSimultaneous": 2,
+            "beatSpan": 216.0,
+            "notesPerBeat": 1.759259
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 1,
+        "Easy": 2,
+        "Medium": 5,
+        "Hard": 8
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/drifting-away/beginner.chart.json",
+        "Easy": "game-data/charts/drifting-away/easy.chart.json",
+        "Medium": "game-data/charts/drifting-away/medium.chart.json",
+        "Hard": "game-data/charts/drifting-away/hard.chart.json"
+      }
+    },
+    {
+      "id": "drop-out-from-nonstop-megamix",
+      "title": "DROP OUT(FROM NONSTOP MEGAMIX)",
+      "artist": "NW260",
+      "folder": "DROP OUT(FROM NONSTOP MEGAMIX)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 127.269
+        },
+        {
+          "beat": 4.0,
+          "bpm": 130.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/DROP OUT(FROM NONSTOP MEGAMIX)/DROP OUT(FROM NONSTOP MEGAMIX).sm",
+        "ogg": "songs/DROP OUT(FROM NONSTOP MEGAMIX)/DROP OUT(FROM NONSTOP MEGAMIX).ogg",
+        "mp3": "songs/DROP OUT(FROM NONSTOP MEGAMIX)/DROP OUT(FROM NONSTOP MEGAMIX).mp3",
+        "banner": "songs/DROP OUT(FROM NONSTOP MEGAMIX)/DROP OUT(FROM NONSTOP MEGAMIX).png",
+        "background": "songs/DROP OUT(FROM NONSTOP MEGAMIX)/DROP OUT(FROM NONSTOP MEGAMIX)-bg.png",
+        "avi": null,
+        "mp4": "songs/DROP OUT(FROM NONSTOP MEGAMIX)/DROP OUT(FROM NONSTOP MEGAMIX).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 12,
+          "radarRaw": "0.464,0.834,0.152,0.043,0.206",
+          "stats": {
+            "measures": 48,
+            "rows": 436,
+            "stepRows": 281,
+            "notes": 295,
+            "taps": 291,
+            "holds": 4,
+            "jumps": 14,
+            "maxSimultaneous": 2,
+            "beatSpan": 192.0,
+            "notesPerBeat": 1.536458
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 12
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/drop-out-from-nonstop-megamix/challenge.chart.json"
+      }
+    },
+    {
+      "id": "dynamite-rave-b4-za-beat-mix",
+      "title": "DYNAMITE RAVE (B4 ZA BEAT MIX)",
+      "artist": "NAOKI",
+      "folder": "DYNAMITE RAVE (B4 ZA BEAT MIX)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 170.0
+        },
+        {
+          "beat": 4.0,
+          "bpm": 170.03
+        }
+      ],
+      "paths": {
+        "sm": "songs/DYNAMITE RAVE (B4 ZA BEAT MIX)/DYNAMITE RAVE (B4 ZA BEAT MIX).sm",
+        "ogg": "songs/DYNAMITE RAVE (B4 ZA BEAT MIX)/DYNAMITE RAVE (B4 ZA BEAT MIX).ogg",
+        "mp3": "songs/DYNAMITE RAVE (B4 ZA BEAT MIX)/DYNAMITE RAVE (B4 ZA BEAT MIX).mp3",
+        "banner": "songs/DYNAMITE RAVE (B4 ZA BEAT MIX)/DYNAMITE RAVE (B4 ZA BEAT MIX).png",
+        "background": "songs/DYNAMITE RAVE (B4 ZA BEAT MIX)/DYNAMITE RAVE (B4 ZA BEAT MIX)-bg.png",
+        "avi": "songs/DYNAMITE RAVE (B4 ZA BEAT MIX)/DYNAMITE RAVE (B4 ZA BEAT MIX).avi",
+        "mp4": "songs/DYNAMITE RAVE (B4 ZA BEAT MIX)/DYNAMITE RAVE (B4 ZA BEAT MIX).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 10,
+          "radarRaw": "",
+          "stats": {
+            "measures": 64,
+            "rows": 464,
+            "stepRows": 293,
+            "notes": 328,
+            "taps": 323,
+            "holds": 5,
+            "jumps": 35,
+            "maxSimultaneous": 2,
+            "beatSpan": 256.0,
+            "notesPerBeat": 1.28125
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 10
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/dynamite-rave-b4-za-beat-mix/challenge.chart.json"
+      }
+    },
+    {
+      "id": "ecstasy-midnight-blue-mix",
+      "title": "ECSTASY (midnight blue mix)",
+      "artist": "d-complex",
+      "folder": "ECSTASY (midnight blue mix)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 145.749
+        },
+        {
+          "beat": 4.0,
+          "bpm": 145.268
+        },
+        {
+          "beat": 180.0,
+          "bpm": 150.33
+        }
+      ],
+      "paths": {
+        "sm": "songs/ECSTASY (midnight blue mix)/ECSTASY (midnight blue mix).sm",
+        "ogg": "songs/ECSTASY (midnight blue mix)/ECSTASY (midnight blue mix).ogg",
+        "mp3": "songs/ECSTASY (midnight blue mix)/ECSTASY (midnight blue mix).mp3",
+        "banner": "songs/ECSTASY (midnight blue mix)/ECSTASY (midnight blue mix).png",
+        "background": "songs/ECSTASY (midnight blue mix)/ECSTASY (midnight blue mix)-bg.png",
+        "avi": null,
+        "mp4": "songs/ECSTASY (midnight blue mix)/ECSTASY (midnight blue mix).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 11,
+          "radarRaw": "0.449,0.517,0.267,0.075,0.294",
+          "stats": {
+            "measures": 55,
+            "rows": 632,
+            "stepRows": 262,
+            "notes": 287,
+            "taps": 280,
+            "holds": 7,
+            "jumps": 25,
+            "maxSimultaneous": 2,
+            "beatSpan": 220.0,
+            "notesPerBeat": 1.304545
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 11
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/ecstasy-midnight-blue-mix/challenge.chart.json"
+      }
+    },
+    {
+      "id": "ever-snow",
+      "title": "ever snow",
+      "artist": "ΨΦMA KΦMATSU",
+      "folder": "ever snow",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 143.0
+        },
+        {
+          "beat": 4.0,
+          "bpm": 145.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/ever snow/ever snow.sm",
+        "ogg": "songs/ever snow/ever snow.ogg",
+        "mp3": "songs/ever snow/ever snow.mp3",
+        "banner": "songs/ever snow/ever snow.png",
+        "background": "songs/ever snow/ever snow-bg.png",
+        "avi": null,
+        "mp4": "songs/ever snow/ever snow.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 2,
+          "radarRaw": "",
+          "stats": {
+            "measures": 55,
+            "rows": 220,
+            "stepRows": 72,
+            "notes": 72,
+            "taps": 72,
+            "holds": 0,
+            "jumps": 0,
+            "maxSimultaneous": 1,
+            "beatSpan": 220.0,
+            "notesPerBeat": 0.327273
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 3,
+          "radarRaw": "",
+          "stats": {
+            "measures": 55,
+            "rows": 220,
+            "stepRows": 100,
+            "notes": 108,
+            "taps": 101,
+            "holds": 7,
+            "jumps": 8,
+            "maxSimultaneous": 2,
+            "beatSpan": 220.0,
+            "notesPerBeat": 0.490909
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 7,
+          "radarRaw": "",
+          "stats": {
+            "measures": 55,
+            "rows": 504,
+            "stepRows": 209,
+            "notes": 230,
+            "taps": 223,
+            "holds": 7,
+            "jumps": 21,
+            "maxSimultaneous": 2,
+            "beatSpan": 220.0,
+            "notesPerBeat": 1.045455
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 10,
+          "radarRaw": "",
+          "stats": {
+            "measures": 55,
+            "rows": 656,
+            "stepRows": 334,
+            "notes": 360,
+            "taps": 355,
+            "holds": 5,
+            "jumps": 26,
+            "maxSimultaneous": 2,
+            "beatSpan": 220.0,
+            "notesPerBeat": 1.636364
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 2,
+        "Easy": 3,
+        "Medium": 7,
+        "Hard": 10
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/ever-snow/beginner.chart.json",
+        "Easy": "game-data/charts/ever-snow/easy.chart.json",
+        "Medium": "game-data/charts/ever-snow/medium.chart.json",
+        "Hard": "game-data/charts/ever-snow/hard.chart.json"
+      }
+    },
+    {
+      "id": "fantasy",
+      "title": "FANTASY",
+      "artist": "LOCKOUT",
+      "folder": "FANTASY",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 137.909
+        },
+        {
+          "beat": 4.0,
+          "bpm": 140.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/FANTASY/FANTASY.sm",
+        "ogg": "songs/FANTASY/FANTASY.ogg",
+        "mp3": "songs/FANTASY/FANTASY.mp3",
+        "banner": "songs/FANTASY/FANTASY.png",
+        "background": "songs/FANTASY/FANTASY-bg.png",
+        "avi": null,
+        "mp4": "songs/FANTASY/FANTASY.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 1,
+          "radarRaw": "0.126,0.161,0.072,0.000,0.000",
+          "stats": {
+            "measures": 47,
+            "rows": 188,
+            "stepRows": 68,
+            "notes": 74,
+            "taps": 74,
+            "holds": 0,
+            "jumps": 6,
+            "maxSimultaneous": 2,
+            "beatSpan": 188.0,
+            "notesPerBeat": 0.393617
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 2,
+          "radarRaw": "0.191,0.241,0.072,0.346,0.000",
+          "stats": {
+            "measures": 47,
+            "rows": 188,
+            "stepRows": 77,
+            "notes": 83,
+            "taps": 54,
+            "holds": 29,
+            "jumps": 6,
+            "maxSimultaneous": 2,
+            "beatSpan": 188.0,
+            "notesPerBeat": 0.441489
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 5,
+          "radarRaw": "0.378,0.376,0.203,0.191,0.000",
+          "stats": {
+            "measures": 47,
+            "rows": 288,
+            "stepRows": 189,
+            "notes": 206,
+            "taps": 190,
+            "holds": 16,
+            "jumps": 17,
+            "maxSimultaneous": 2,
+            "beatSpan": 188.0,
+            "notesPerBeat": 1.095745
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 6,
+          "radarRaw": "0.450,0.464,0.417,0.131,0.137",
+          "stats": {
+            "measures": 47,
+            "rows": 428,
+            "stepRows": 218,
+            "notes": 253,
+            "taps": 242,
+            "holds": 11,
+            "jumps": 35,
+            "maxSimultaneous": 2,
+            "beatSpan": 188.0,
+            "notesPerBeat": 1.345745
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 1,
+        "Easy": 2,
+        "Medium": 5,
+        "Hard": 6
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/fantasy/beginner.chart.json",
+        "Easy": "game-data/charts/fantasy/easy.chart.json",
+        "Medium": "game-data/charts/fantasy/medium.chart.json",
+        "Hard": "game-data/charts/fantasy/hard.chart.json"
+      }
+    },
+    {
+      "id": "higher-next-morning-mix",
+      "title": "HIGHER (next morning mix)",
+      "artist": "NM feat. SUNNY",
+      "folder": "HIGHER (next morning mix)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 132.353
+        },
+        {
+          "beat": 4.0,
+          "bpm": 132.08
+        }
+      ],
+      "paths": {
+        "sm": "songs/HIGHER (next morning mix)/HIGHER (next morning mix).sm",
+        "ogg": "songs/HIGHER (next morning mix)/HIGHER (next morning mix).ogg",
+        "mp3": "songs/HIGHER (next morning mix)/HIGHER (next morning mix).mp3",
+        "banner": "songs/HIGHER (next morning mix)/HIGHER (next morning mix).png",
+        "background": "songs/HIGHER (next morning mix)/HIGHER (next morning mix)-bg.png",
+        "avi": null,
+        "mp4": "songs/HIGHER (next morning mix)/HIGHER (next morning mix).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 11,
+          "radarRaw": "0.443,0.442,0.230,0.030,0.080",
+          "stats": {
+            "measures": 54,
+            "rows": 492,
+            "stepRows": 284,
+            "notes": 307,
+            "taps": 304,
+            "holds": 3,
+            "jumps": 23,
+            "maxSimultaneous": 2,
+            "beatSpan": 216.0,
+            "notesPerBeat": 1.421296
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 11
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/higher-next-morning-mix/challenge.chart.json"
+      }
+    },
+    {
+      "id": "hysteria-2001",
+      "title": "HYSTERIA 2001",
+      "artist": "NM",
+      "folder": "HYSTERIA 2001",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 190.15
+        }
+      ],
+      "paths": {
+        "sm": "songs/HYSTERIA 2001/HYSTERIA 2001.sm",
+        "ogg": "songs/HYSTERIA 2001/HYSTERIA 2001.ogg",
+        "mp3": "songs/HYSTERIA 2001/HYSTERIA 2001.mp3",
+        "banner": "songs/HYSTERIA 2001/HYSTERIA 2001.png",
+        "background": "songs/HYSTERIA 2001/HYSTERIA 2001-bg.png",
+        "avi": null,
+        "mp4": "songs/HYSTERIA 2001/HYSTERIA 2001.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 10,
+          "radarRaw": "",
+          "stats": {
+            "measures": 75,
+            "rows": 464,
+            "stepRows": 279,
+            "notes": 333,
+            "taps": 309,
+            "holds": 24,
+            "jumps": 54,
+            "maxSimultaneous": 2,
+            "beatSpan": 300.0,
+            "notesPerBeat": 1.11
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 10
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/hysteria-2001/challenge.chart.json"
+      }
+    },
+    {
+      "id": "i-feel",
+      "title": "i feel...",
+      "artist": "AKIRA YAMAOKA",
+      "folder": "i feel",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 141.176
+        },
+        {
+          "beat": 4.0,
+          "bpm": 140.999
+        }
+      ],
+      "paths": {
+        "sm": "songs/i feel/i feel.sm",
+        "ogg": "songs/i feel/i feel.ogg",
+        "mp3": "songs/i feel/i feel.mp3",
+        "banner": "songs/i feel/i feel.png",
+        "background": "songs/i feel/i feel-bg.png",
+        "avi": null,
+        "mp4": "songs/i feel/i feel.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 3,
+          "radarRaw": "0.131,0.167,0.020,0.000,0.000",
+          "stats": {
+            "measures": 59,
+            "rows": 236,
+            "stepRows": 92,
+            "notes": 94,
+            "taps": 94,
+            "holds": 0,
+            "jumps": 2,
+            "maxSimultaneous": 2,
+            "beatSpan": 236.0,
+            "notesPerBeat": 0.398305
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 4,
+          "radarRaw": "0.203,0.219,0.078,0.049,0.000",
+          "stats": {
+            "measures": 58,
+            "rows": 232,
+            "stepRows": 132,
+            "notes": 140,
+            "taps": 135,
+            "holds": 5,
+            "jumps": 8,
+            "maxSimultaneous": 2,
+            "beatSpan": 232.0,
+            "notesPerBeat": 0.603448
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 8,
+          "radarRaw": "0.358,0.417,0.166,0.362,0.054",
+          "stats": {
+            "measures": 58,
+            "rows": 392,
+            "stepRows": 202,
+            "notes": 219,
+            "taps": 182,
+            "holds": 37,
+            "jumps": 17,
+            "maxSimultaneous": 2,
+            "beatSpan": 232.0,
+            "notesPerBeat": 0.943966
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 12,
+          "radarRaw": "0.471,0.481,0.020,0.039,0.338",
+          "stats": {
+            "measures": 59,
+            "rows": 768,
+            "stepRows": 331,
+            "notes": 333,
+            "taps": 329,
+            "holds": 4,
+            "jumps": 2,
+            "maxSimultaneous": 2,
+            "beatSpan": 236.0,
+            "notesPerBeat": 1.411017
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 3,
+        "Easy": 4,
+        "Medium": 8,
+        "Hard": 12
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/i-feel/beginner.chart.json",
+        "Easy": "game-data/charts/i-feel/easy.chart.json",
+        "Medium": "game-data/charts/i-feel/medium.chart.json",
+        "Hard": "game-data/charts/i-feel/hard.chart.json"
+      }
+    },
+    {
+      "id": "it-s-raining-men-almighty-mix",
+      "title": "IT'S RAINING MEN (Almighty Mix)",
+      "artist": "GERI HALLIWELL",
+      "folder": "IT'S RAINING MEN (Almighty Mix)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 136.5
+        },
+        {
+          "beat": 4.0,
+          "bpm": 136.25
+        },
+        {
+          "beat": 104.0,
+          "bpm": 136.5
+        },
+        {
+          "beat": 108.0,
+          "bpm": 136.25
+        },
+        {
+          "beat": 172.0,
+          "bpm": 135.7
+        }
+      ],
+      "paths": {
+        "sm": "songs/IT'S RAINING MEN (Almighty Mix)/IT'S RAINING MEN (Almighty Mix).sm",
+        "ogg": "songs/IT'S RAINING MEN (Almighty Mix)/IT'S RAINING MEN (Almighty Mix).ogg",
+        "mp3": "songs/IT'S RAINING MEN (Almighty Mix)/IT'S RAINING MEN (Almighty Mix).mp3",
+        "banner": "songs/IT'S RAINING MEN (Almighty Mix)/IT'S RAINING MEN (Almighty Mix).png",
+        "background": "songs/IT'S RAINING MEN (Almighty Mix)/IT'S RAINING MEN (Almighty Mix)-bg.png",
+        "avi": null,
+        "mp4": "songs/IT'S RAINING MEN (Almighty Mix)/IT'S RAINING MEN (Almighty Mix).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 1,
+          "radarRaw": "",
+          "stats": {
+            "measures": 47,
+            "rows": 188,
+            "stepRows": 61,
+            "notes": 65,
+            "taps": 65,
+            "holds": 0,
+            "jumps": 4,
+            "maxSimultaneous": 2,
+            "beatSpan": 188.0,
+            "notesPerBeat": 0.345745
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 2,
+          "radarRaw": "",
+          "stats": {
+            "measures": 47,
+            "rows": 188,
+            "stepRows": 77,
+            "notes": 79,
+            "taps": 71,
+            "holds": 8,
+            "jumps": 2,
+            "maxSimultaneous": 2,
+            "beatSpan": 188.0,
+            "notesPerBeat": 0.420213
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 5,
+          "radarRaw": "",
+          "stats": {
+            "measures": 47,
+            "rows": 264,
+            "stepRows": 136,
+            "notes": 148,
+            "taps": 127,
+            "holds": 21,
+            "jumps": 12,
+            "maxSimultaneous": 2,
+            "beatSpan": 188.0,
+            "notesPerBeat": 0.787234
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 7,
+          "radarRaw": "",
+          "stats": {
+            "measures": 47,
+            "rows": 368,
+            "stepRows": 261,
+            "notes": 280,
+            "taps": 269,
+            "holds": 11,
+            "jumps": 19,
+            "maxSimultaneous": 2,
+            "beatSpan": 188.0,
+            "notesPerBeat": 1.489362
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 1,
+        "Easy": 2,
+        "Medium": 5,
+        "Hard": 7
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/it-s-raining-men-almighty-mix/beginner.chart.json",
+        "Easy": "game-data/charts/it-s-raining-men-almighty-mix/easy.chart.json",
+        "Medium": "game-data/charts/it-s-raining-men-almighty-mix/medium.chart.json",
+        "Hard": "game-data/charts/it-s-raining-men-almighty-mix/hard.chart.json"
+      }
+    },
+    {
+      "id": "song",
+      "title": "革命",
+      "artist": "dj TAKA with NAOKI",
+      "folder": "KAKUMEI",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 148.148
+        },
+        {
+          "beat": 4.0,
+          "bpm": 147.982
+        },
+        {
+          "beat": 26.0,
+          "bpm": 140.625
+        },
+        {
+          "beat": 28.0,
+          "bpm": 143.426
+        },
+        {
+          "beat": 32.0,
+          "bpm": 130.435
+        },
+        {
+          "beat": 33.0,
+          "bpm": 121.622
+        },
+        {
+          "beat": 34.0,
+          "bpm": 109.756
+        },
+        {
+          "beat": 35.0,
+          "bpm": 83.333
+        },
+        {
+          "beat": 36.0,
+          "bpm": 91.837
+        },
+        {
+          "beat": 37.0,
+          "bpm": 112.5
+        },
+        {
+          "beat": 38.0,
+          "bpm": 136.364
+        },
+        {
+          "beat": 39.0,
+          "bpm": 148.026
+        }
+      ],
+      "paths": {
+        "sm": "songs/KAKUMEI/KAKUMEI.sm",
+        "ogg": "songs/KAKUMEI/KAKUMEI.ogg",
+        "mp3": "songs/KAKUMEI/KAKUMEI.mp3",
+        "banner": "songs/KAKUMEI/KAKUMEI.png",
+        "background": "songs/KAKUMEI/KAKUMEI-bg.png",
+        "avi": null,
+        "mp4": "songs/KAKUMEI/KAKUMEI.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 3,
+          "radarRaw": "0.151,0.319,0.135,0.000,0.000",
+          "stats": {
+            "measures": 66,
+            "rows": 264,
+            "stepRows": 103,
+            "notes": 118,
+            "taps": 118,
+            "holds": 0,
+            "jumps": 15,
+            "maxSimultaneous": 2,
+            "beatSpan": 264.0,
+            "notesPerBeat": 0.44697
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 5,
+          "radarRaw": "0.214,0.264,0.045,0.305,0.000",
+          "stats": {
+            "measures": 67,
+            "rows": 276,
+            "stepRows": 128,
+            "notes": 133,
+            "taps": 99,
+            "holds": 34,
+            "jumps": 5,
+            "maxSimultaneous": 2,
+            "beatSpan": 268.0,
+            "notesPerBeat": 0.496269
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 9,
+          "radarRaw": "0.330,0.352,0.036,0.144,0.000",
+          "stats": {
+            "measures": 67,
+            "rows": 452,
+            "stepRows": 237,
+            "notes": 241,
+            "taps": 225,
+            "holds": 16,
+            "jumps": 4,
+            "maxSimultaneous": 2,
+            "beatSpan": 268.0,
+            "notesPerBeat": 0.899254
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 12,
+          "radarRaw": "0.493,0.527,0.054,0.063,0.337",
+          "stats": {
+            "measures": 67,
+            "rows": 836,
+            "stepRows": 371,
+            "notes": 377,
+            "taps": 370,
+            "holds": 7,
+            "jumps": 6,
+            "maxSimultaneous": 2,
+            "beatSpan": 268.0,
+            "notesPerBeat": 1.406716
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 11,
+          "radarRaw": "0.418,0.498,0.018,0.063,0.328",
+          "stats": {
+            "measures": 67,
+            "rows": 812,
+            "stepRows": 317,
+            "notes": 319,
+            "taps": 312,
+            "holds": 7,
+            "jumps": 2,
+            "maxSimultaneous": 2,
+            "beatSpan": 268.0,
+            "notesPerBeat": 1.190299
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 3,
+        "Easy": 5,
+        "Medium": 9,
+        "Hard": 12,
+        "Challenge": 11
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/song/beginner.chart.json",
+        "Easy": "game-data/charts/song/easy.chart.json",
+        "Medium": "game-data/charts/song/medium.chart.json",
+        "Hard": "game-data/charts/song/hard.chart.json",
+        "Challenge": "game-data/charts/song/challenge.chart.json"
+      }
+    },
+    {
+      "id": "little-boy-boy-on-boy-mix",
+      "title": "LITTLE BOY(BOY ON BOY MIX)",
+      "artist": "CAPTAIN JACK",
+      "folder": "LITTLE BOY (BOY ON BOY MIX)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 149.177
+        },
+        {
+          "beat": 4.0,
+          "bpm": 149.926
+        }
+      ],
+      "paths": {
+        "sm": "songs/LITTLE BOY (BOY ON BOY MIX)/LITTLE BOY (BOY ON BOY MIX).sm",
+        "ogg": "songs/LITTLE BOY (BOY ON BOY MIX)/LITTLE BOY (BOY ON BOY MIX).ogg",
+        "mp3": "songs/LITTLE BOY (BOY ON BOY MIX)/LITTLE BOY (BOY ON BOY MIX).mp3",
+        "banner": "songs/LITTLE BOY (BOY ON BOY MIX)/LITTLE BOY (BOY ON BOY MIX).png",
+        "background": "songs/LITTLE BOY (BOY ON BOY MIX)/LITTLE BOY (BOY ON BOY MIX)-bg.png",
+        "avi": null,
+        "mp4": "songs/LITTLE BOY (BOY ON BOY MIX)/LITTLE BOY (BOY ON BOY MIX).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 1,
+          "radarRaw": "0.140,0.207,0.092,0.000,0.000",
+          "stats": {
+            "measures": 60,
+            "rows": 240,
+            "stepRows": 87,
+            "notes": 96,
+            "taps": 96,
+            "holds": 0,
+            "jumps": 9,
+            "maxSimultaneous": 2,
+            "beatSpan": 240.0,
+            "notesPerBeat": 0.4
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 3,
+          "radarRaw": "0.200,0.295,0.041,0.194,0.000",
+          "stats": {
+            "measures": 59,
+            "rows": 236,
+            "stepRows": 114,
+            "notes": 118,
+            "taps": 99,
+            "holds": 19,
+            "jumps": 4,
+            "maxSimultaneous": 2,
+            "beatSpan": 236.0,
+            "notesPerBeat": 0.5
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 6,
+          "radarRaw": "0.371,0.475,0.184,0.204,0.000",
+          "stats": {
+            "measures": 60,
+            "rows": 432,
+            "stepRows": 216,
+            "notes": 234,
+            "taps": 214,
+            "holds": 20,
+            "jumps": 18,
+            "maxSimultaneous": 2,
+            "beatSpan": 240.0,
+            "notesPerBeat": 0.975
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 8,
+          "radarRaw": "0.603,0.562,0.644,0.286,0.000",
+          "stats": {
+            "measures": 59,
+            "rows": 440,
+            "stepRows": 322,
+            "notes": 385,
+            "taps": 357,
+            "holds": 28,
+            "jumps": 63,
+            "maxSimultaneous": 2,
+            "beatSpan": 236.0,
+            "notesPerBeat": 1.631356
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 1,
+        "Easy": 3,
+        "Medium": 6,
+        "Hard": 8
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/little-boy-boy-on-boy-mix/beginner.chart.json",
+        "Easy": "game-data/charts/little-boy-boy-on-boy-mix/easy.chart.json",
+        "Medium": "game-data/charts/little-boy-boy-on-boy-mix/medium.chart.json",
+        "Hard": "game-data/charts/little-boy-boy-on-boy-mix/hard.chart.json"
+      }
+    },
+    {
+      "id": "living-in-america",
+      "title": "LIVING IN AMERICA",
+      "artist": "ROSE & JOHN",
+      "folder": "LIVING IN AMERICA",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 167.339
+        },
+        {
+          "beat": 4.0,
+          "bpm": 169.008
+        }
+      ],
+      "paths": {
+        "sm": "songs/LIVING IN AMERICA/LIVING IN AMERICA.sm",
+        "ogg": "songs/LIVING IN AMERICA/LIVING IN AMERICA.ogg",
+        "mp3": "songs/LIVING IN AMERICA/LIVING IN AMERICA.mp3",
+        "banner": "songs/LIVING IN AMERICA/LIVING IN AMERICA.png",
+        "background": "songs/LIVING IN AMERICA/LIVING IN AMERICA-bg.png",
+        "avi": null,
+        "mp4": "songs/LIVING IN AMERICA/LIVING IN AMERICA.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 1,
+          "radarRaw": "0.203,0.378,0.178,0.000,0.000",
+          "stats": {
+            "measures": 63,
+            "rows": 252,
+            "stepRows": 112,
+            "notes": 128,
+            "taps": 128,
+            "holds": 0,
+            "jumps": 16,
+            "maxSimultaneous": 2,
+            "beatSpan": 252.0,
+            "notesPerBeat": 0.507937
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 3,
+          "radarRaw": "0.240,0.309,0.133,0.011,0.000",
+          "stats": {
+            "measures": 63,
+            "rows": 256,
+            "stepRows": 138,
+            "notes": 150,
+            "taps": 149,
+            "holds": 1,
+            "jumps": 12,
+            "maxSimultaneous": 2,
+            "beatSpan": 252.0,
+            "notesPerBeat": 0.595238
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 5,
+          "radarRaw": "0.432,0.446,0.400,0.044,0.000",
+          "stats": {
+            "measures": 63,
+            "rows": 356,
+            "stepRows": 232,
+            "notes": 268,
+            "taps": 264,
+            "holds": 4,
+            "jumps": 36,
+            "maxSimultaneous": 2,
+            "beatSpan": 252.0,
+            "notesPerBeat": 1.063492
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 7,
+          "radarRaw": "0.580,0.618,0.400,0.200,0.000",
+          "stats": {
+            "measures": 63,
+            "rows": 444,
+            "stepRows": 311,
+            "notes": 347,
+            "taps": 329,
+            "holds": 18,
+            "jumps": 36,
+            "maxSimultaneous": 2,
+            "beatSpan": 252.0,
+            "notesPerBeat": 1.376984
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 1,
+        "Easy": 3,
+        "Medium": 5,
+        "Hard": 7
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/living-in-america/beginner.chart.json",
+        "Easy": "game-data/charts/living-in-america/easy.chart.json",
+        "Medium": "game-data/charts/living-in-america/medium.chart.json",
+        "Hard": "game-data/charts/living-in-america/hard.chart.json"
+      }
+    },
+    {
+      "id": "long-train-runnin",
+      "title": "LONG TRAIN RUNNIN'",
+      "artist": "BUS STOP",
+      "folder": "LONG TRAIN RUNNIN'",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 125.999
+        },
+        {
+          "beat": 4.0,
+          "bpm": 126.602
+        }
+      ],
+      "paths": {
+        "sm": "songs/LONG TRAIN RUNNIN'/LONG TRAIN RUNNIN'.sm",
+        "ogg": "songs/LONG TRAIN RUNNIN'/LONG TRAIN RUNNIN'.ogg",
+        "mp3": "songs/LONG TRAIN RUNNIN'/LONG TRAIN RUNNIN'.mp3",
+        "banner": "songs/LONG TRAIN RUNNIN'/LONG TRAIN RUNNIN'.png",
+        "background": "songs/LONG TRAIN RUNNIN'/LONG TRAIN RUNNIN'-bg.png",
+        "avi": null,
+        "mp4": "songs/LONG TRAIN RUNNIN'/LONG TRAIN RUNNIN'.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 1,
+          "radarRaw": "0.133,0.223,0.222,0.000,0.000",
+          "stats": {
+            "measures": 46,
+            "rows": 184,
+            "stepRows": 64,
+            "notes": 84,
+            "taps": 84,
+            "holds": 0,
+            "jumps": 20,
+            "maxSimultaneous": 2,
+            "beatSpan": 184.0,
+            "notesPerBeat": 0.456522
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 2,
+          "radarRaw": "0.159,0.199,0.089,0.044,0.000",
+          "stats": {
+            "measures": 46,
+            "rows": 188,
+            "stepRows": 88,
+            "notes": 96,
+            "taps": 92,
+            "holds": 4,
+            "jumps": 8,
+            "maxSimultaneous": 2,
+            "beatSpan": 184.0,
+            "notesPerBeat": 0.521739
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 5,
+          "radarRaw": "0.311,0.423,0.434,0.056,0.067",
+          "stats": {
+            "measures": 46,
+            "rows": 268,
+            "stepRows": 152,
+            "notes": 191,
+            "taps": 186,
+            "holds": 5,
+            "jumps": 39,
+            "maxSimultaneous": 2,
+            "beatSpan": 184.0,
+            "notesPerBeat": 1.038043
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 8,
+          "radarRaw": "0.434,0.448,0.311,0.122,0.334",
+          "stats": {
+            "measures": 46,
+            "rows": 552,
+            "stepRows": 234,
+            "notes": 262,
+            "taps": 251,
+            "holds": 11,
+            "jumps": 28,
+            "maxSimultaneous": 2,
+            "beatSpan": 184.0,
+            "notesPerBeat": 1.423913
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 1,
+        "Easy": 2,
+        "Medium": 5,
+        "Hard": 8
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/long-train-runnin/beginner.chart.json",
+        "Easy": "game-data/charts/long-train-runnin/easy.chart.json",
+        "Medium": "game-data/charts/long-train-runnin/medium.chart.json",
+        "Hard": "game-data/charts/long-train-runnin/hard.chart.json"
+      }
+    },
+    {
+      "id": "look-at-us-daddy-dj-remix",
+      "title": "LOOK AT US (Daddy DJ Remix)",
+      "artist": "SARINA PARIS",
+      "folder": "LOOK AT US (Daddy DJ Remix)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 132.783
+        },
+        {
+          "beat": 4.0,
+          "bpm": 134.697
+        }
+      ],
+      "paths": {
+        "sm": "songs/LOOK AT US (Daddy DJ Remix)/LOOK AT US (Daddy DJ Remix).sm",
+        "ogg": "songs/LOOK AT US (Daddy DJ Remix)/LOOK AT US (Daddy DJ Remix).ogg",
+        "mp3": "songs/LOOK AT US (Daddy DJ Remix)/LOOK AT US (Daddy DJ Remix).mp3",
+        "banner": "songs/LOOK AT US (Daddy DJ Remix)/LOOK AT US (Daddy DJ Remix).png",
+        "background": "songs/LOOK AT US (Daddy DJ Remix)/LOOK AT US (Daddy DJ Remix)-bg.png",
+        "avi": "songs/LOOK AT US (Daddy DJ Remix)/LOOK AT US (Daddy DJ Remix).avi",
+        "mp4": "songs/LOOK AT US (Daddy DJ Remix)/LOOK AT US (Daddy DJ Remix).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 1,
+          "radarRaw": "",
+          "stats": {
+            "measures": 51,
+            "rows": 204,
+            "stepRows": 84,
+            "notes": 84,
+            "taps": 84,
+            "holds": 0,
+            "jumps": 0,
+            "maxSimultaneous": 1,
+            "beatSpan": 204.0,
+            "notesPerBeat": 0.411765
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 2,
+          "radarRaw": "",
+          "stats": {
+            "measures": 51,
+            "rows": 204,
+            "stepRows": 107,
+            "notes": 118,
+            "taps": 118,
+            "holds": 0,
+            "jumps": 11,
+            "maxSimultaneous": 2,
+            "beatSpan": 204.0,
+            "notesPerBeat": 0.578431
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 6,
+          "radarRaw": "",
+          "stats": {
+            "measures": 52,
+            "rows": 284,
+            "stepRows": 177,
+            "notes": 216,
+            "taps": 208,
+            "holds": 8,
+            "jumps": 39,
+            "maxSimultaneous": 2,
+            "beatSpan": 208.0,
+            "notesPerBeat": 1.038462
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 7,
+          "radarRaw": "",
+          "stats": {
+            "measures": 51,
+            "rows": 548,
+            "stepRows": 294,
+            "notes": 306,
+            "taps": 295,
+            "holds": 11,
+            "jumps": 12,
+            "maxSimultaneous": 2,
+            "beatSpan": 204.0,
+            "notesPerBeat": 1.5
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 1,
+        "Easy": 2,
+        "Medium": 6,
+        "Hard": 7
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/look-at-us-daddy-dj-remix/beginner.chart.json",
+        "Easy": "game-data/charts/look-at-us-daddy-dj-remix/easy.chart.json",
+        "Medium": "game-data/charts/look-at-us-daddy-dj-remix/medium.chart.json",
+        "Hard": "game-data/charts/look-at-us-daddy-dj-remix/hard.chart.json"
+      }
+    },
+    {
+      "id": "japan-from-nonstop-megamix",
+      "title": "祭 JAPAN (FROM NONSTOP MEGAMIX)",
+      "artist": "RE-VENGE",
+      "folder": "MATSURI JAPAN (FROM NONSTOP MEGAMIX)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 178.0
+        },
+        {
+          "beat": 4.0,
+          "bpm": 180.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/MATSURI JAPAN (FROM NONSTOP MEGAMIX)/MATSURI JAPAN (FROM NONSTOP MEGAMIX).sm",
+        "ogg": "songs/MATSURI JAPAN (FROM NONSTOP MEGAMIX)/MATSURI JAPAN (FROM NONSTOP MEGAMIX).ogg",
+        "mp3": "songs/MATSURI JAPAN (FROM NONSTOP MEGAMIX)/MATSURI JAPAN (FROM NONSTOP MEGAMIX).mp3",
+        "banner": "songs/MATSURI JAPAN (FROM NONSTOP MEGAMIX)/MATSURI JAPAN (FROM NONSTOP MEGAMIX).png",
+        "background": "songs/MATSURI JAPAN (FROM NONSTOP MEGAMIX)/MATSURI JAPAN (FROM NONSTOP MEGAMIX)-bg.png",
+        "avi": null,
+        "mp4": "songs/MATSURI JAPAN (FROM NONSTOP MEGAMIX)/MATSURI JAPAN (FROM NONSTOP MEGAMIX).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 9,
+          "radarRaw": "",
+          "stats": {
+            "measures": 69,
+            "rows": 396,
+            "stepRows": 279,
+            "notes": 333,
+            "taps": 329,
+            "holds": 4,
+            "jumps": 54,
+            "maxSimultaneous": 2,
+            "beatSpan": 276.0,
+            "notesPerBeat": 1.206522
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 9
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/japan-from-nonstop-megamix/challenge.chart.json"
+      }
+    },
+    {
+      "id": "maximum-overdrive-kc-club-mix",
+      "title": "MAXIMUM OVERDRIVE (KC Club Mix)",
+      "artist": "2 UNLIMITED",
+      "folder": "MAXIMUM OVERDRIVE (KC Club Mix)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 138.291
+        },
+        {
+          "beat": 4.0,
+          "bpm": 140.012
+        }
+      ],
+      "paths": {
+        "sm": "songs/MAXIMUM OVERDRIVE (KC Club Mix)/MAXIMUM OVERDRIVE (KC Club Mix).sm",
+        "ogg": "songs/MAXIMUM OVERDRIVE (KC Club Mix)/MAXIMUM OVERDRIVE (KC Club Mix).ogg",
+        "mp3": "songs/MAXIMUM OVERDRIVE (KC Club Mix)/MAXIMUM OVERDRIVE (KC Club Mix).mp3",
+        "banner": "songs/MAXIMUM OVERDRIVE (KC Club Mix)/MAXIMUM OVERDRIVE (KC Club Mix).png",
+        "background": "songs/MAXIMUM OVERDRIVE (KC Club Mix)/MAXIMUM OVERDRIVE (KC Club Mix)-bg.png",
+        "avi": null,
+        "mp4": "songs/MAXIMUM OVERDRIVE (KC Club Mix)/MAXIMUM OVERDRIVE (KC Club Mix).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 1,
+          "radarRaw": "0.132,0.193,0.193,0.000,0.000",
+          "stats": {
+            "measures": 50,
+            "rows": 200,
+            "stepRows": 64,
+            "notes": 81,
+            "taps": 81,
+            "holds": 0,
+            "jumps": 17,
+            "maxSimultaneous": 2,
+            "beatSpan": 200.0,
+            "notesPerBeat": 0.405
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 2,
+          "radarRaw": "0.132,0.194,0.137,0.068,0.000",
+          "stats": {
+            "measures": 50,
+            "rows": 200,
+            "stepRows": 63,
+            "notes": 75,
+            "taps": 69,
+            "holds": 6,
+            "jumps": 12,
+            "maxSimultaneous": 2,
+            "beatSpan": 200.0,
+            "notesPerBeat": 0.375
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 4,
+          "radarRaw": "0.354,0.417,0.182,0.114,0.000",
+          "stats": {
+            "measures": 50,
+            "rows": 292,
+            "stepRows": 192,
+            "notes": 208,
+            "taps": 198,
+            "holds": 10,
+            "jumps": 16,
+            "maxSimultaneous": 2,
+            "beatSpan": 200.0,
+            "notesPerBeat": 1.04
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 8,
+          "radarRaw": "0.475,0.500,0.284,0.182,0.125",
+          "stats": {
+            "measures": 50,
+            "rows": 464,
+            "stepRows": 251,
+            "notes": 276,
+            "taps": 260,
+            "holds": 16,
+            "jumps": 25,
+            "maxSimultaneous": 2,
+            "beatSpan": 200.0,
+            "notesPerBeat": 1.38
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 1,
+        "Easy": 2,
+        "Medium": 4,
+        "Hard": 8
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/maximum-overdrive-kc-club-mix/beginner.chart.json",
+        "Easy": "game-data/charts/maximum-overdrive-kc-club-mix/easy.chart.json",
+        "Medium": "game-data/charts/maximum-overdrive-kc-club-mix/medium.chart.json",
+        "Hard": "game-data/charts/maximum-overdrive-kc-club-mix/hard.chart.json"
+      }
+    },
+    {
+      "id": "maxx-unlimited",
+      "title": "MAXX UNLIMITED",
+      "artist": "Z",
+      "folder": "MAXX UNLIMITED",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 300.0
+        },
+        {
+          "beat": 4.0,
+          "bpm": 300.0
+        },
+        {
+          "beat": 164.0,
+          "bpm": 279.883
+        },
+        {
+          "beat": 196.0,
+          "bpm": 300.0
+        },
+        {
+          "beat": 228.0,
+          "bpm": 150.0
+        },
+        {
+          "beat": 244.0,
+          "bpm": 300.0
+        },
+        {
+          "beat": 276.0,
+          "bpm": 140.078
+        },
+        {
+          "beat": 284.0,
+          "bpm": 125.0
+        },
+        {
+          "beat": 285.0,
+          "bpm": 48.387
+        },
+        {
+          "beat": 286.0,
+          "bpm": 319.985
+        }
+      ],
+      "paths": {
+        "sm": "songs/MAXX UNLIMITED/MAXX UNLIMITED.sm",
+        "ogg": "songs/MAXX UNLIMITED/MAXX UNLIMITED.ogg",
+        "mp3": "songs/MAXX UNLIMITED/MAXX UNLIMITED.mp3",
+        "banner": "songs/MAXX UNLIMITED/MAXX UNLIMITED.png",
+        "background": "songs/MAXX UNLIMITED/MAXX UNLIMITED-bg.png",
+        "avi": null,
+        "mp4": "songs/MAXX UNLIMITED/MAXX UNLIMITED.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 5,
+          "radarRaw": "0.148,0.227,0.100,0.000,0.000",
+          "stats": {
+            "measures": 115,
+            "rows": 460,
+            "stepRows": 94,
+            "notes": 104,
+            "taps": 104,
+            "holds": 0,
+            "jumps": 10,
+            "maxSimultaneous": 2,
+            "beatSpan": 460.0,
+            "notesPerBeat": 0.226087
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 10,
+          "radarRaw": "0.575,0.807,1.000,0.758,0.000",
+          "stats": {
+            "measures": 117,
+            "rows": 524,
+            "stepRows": 222,
+            "notes": 327,
+            "taps": 251,
+            "holds": 76,
+            "jumps": 105,
+            "maxSimultaneous": 2,
+            "beatSpan": 468.0,
+            "notesPerBeat": 0.698718
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 13,
+          "radarRaw": "0.726,0.980,1.000,0.749,0.060",
+          "stats": {
+            "measures": 117,
+            "rows": 656,
+            "stepRows": 333,
+            "notes": 434,
+            "taps": 359,
+            "holds": 75,
+            "jumps": 101,
+            "maxSimultaneous": 2,
+            "beatSpan": 468.0,
+            "notesPerBeat": 0.92735
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 16,
+          "radarRaw": "0.940,1.000,0.449,0.589,0.080",
+          "stats": {
+            "measures": 117,
+            "rows": 948,
+            "stepRows": 555,
+            "notes": 600,
+            "taps": 541,
+            "holds": 59,
+            "jumps": 45,
+            "maxSimultaneous": 2,
+            "beatSpan": 468.0,
+            "notesPerBeat": 1.282051
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 5,
+        "Easy": 10,
+        "Medium": 13,
+        "Hard": 16
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/maxx-unlimited/beginner.chart.json",
+        "Easy": "game-data/charts/maxx-unlimited/easy.chart.json",
+        "Medium": "game-data/charts/maxx-unlimited/medium.chart.json",
+        "Hard": "game-data/charts/maxx-unlimited/hard.chart.json"
+      }
+    },
+    {
+      "id": "more-than-i-needed-to-know",
+      "title": "MORE THAN I NEEDED TO KNOW",
+      "artist": "SCOOTH",
+      "folder": "MORE THAN I NEEDED TO KNOW",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 136.62
+        },
+        {
+          "beat": 160.0,
+          "bpm": 135.5
+        },
+        {
+          "beat": 164.0,
+          "bpm": 136.7
+        },
+        {
+          "beat": 184.0,
+          "bpm": 120.0
+        },
+        {
+          "beat": 186.0,
+          "bpm": 110.68
+        },
+        {
+          "beat": 187.0,
+          "bpm": 104.0
+        },
+        {
+          "beat": 188.0,
+          "bpm": 46.3
+        },
+        {
+          "beat": 189.0,
+          "bpm": 41.257
+        },
+        {
+          "beat": 189.5,
+          "bpm": 40.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/MORE THAN I NEEDED TO KNOW/MORE THAN I NEEDED TO KNOW.sm",
+        "ogg": "songs/MORE THAN I NEEDED TO KNOW/MORE THAN I NEEDED TO KNOW.ogg",
+        "mp3": "songs/MORE THAN I NEEDED TO KNOW/MORE THAN I NEEDED TO KNOW.mp3",
+        "banner": "songs/MORE THAN I NEEDED TO KNOW/MORE THAN I NEEDED TO KNOW.png",
+        "background": "songs/MORE THAN I NEEDED TO KNOW/MORE THAN I NEEDED TO KNOW-bg.png",
+        "avi": null,
+        "mp4": "songs/MORE THAN I NEEDED TO KNOW/MORE THAN I NEEDED TO KNOW.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 3,
+          "radarRaw": "",
+          "stats": {
+            "measures": 48,
+            "rows": 232,
+            "stepRows": 88,
+            "notes": 105,
+            "taps": 96,
+            "holds": 9,
+            "jumps": 17,
+            "maxSimultaneous": 2,
+            "beatSpan": 192.0,
+            "notesPerBeat": 0.546875
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 5,
+          "radarRaw": "",
+          "stats": {
+            "measures": 48,
+            "rows": 332,
+            "stepRows": 149,
+            "notes": 157,
+            "taps": 121,
+            "holds": 36,
+            "jumps": 8,
+            "maxSimultaneous": 2,
+            "beatSpan": 192.0,
+            "notesPerBeat": 0.817708
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 7,
+          "radarRaw": "",
+          "stats": {
+            "measures": 48,
+            "rows": 520,
+            "stepRows": 227,
+            "notes": 230,
+            "taps": 214,
+            "holds": 16,
+            "jumps": 3,
+            "maxSimultaneous": 2,
+            "beatSpan": 192.0,
+            "notesPerBeat": 1.197917
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Easy": 3,
+        "Medium": 5,
+        "Hard": 7
+      },
+      "chartJsonByDifficulty": {
+        "Easy": "game-data/charts/more-than-i-needed-to-know/easy.chart.json",
+        "Medium": "game-data/charts/more-than-i-needed-to-know/medium.chart.json",
+        "Hard": "game-data/charts/more-than-i-needed-to-know/hard.chart.json"
+      }
+    },
+    {
+      "id": "my-summer-love-tommy-s-smile-mix",
+      "title": "MY SUMMER LOVE(TOMMY'S SMILE MIX)",
+      "artist": "MITSU-O! with GEILA",
+      "folder": "MY SUMMER LOVE(TOMMY'S SMILE MIX)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 100.279
+        },
+        {
+          "beat": 4.0,
+          "bpm": 100.081
+        }
+      ],
+      "paths": {
+        "sm": "songs/MY SUMMER LOVE(TOMMY'S SMILE MIX)/MY SUMMER LOVE(TOMMY'S SMILE MIX).sm",
+        "ogg": "songs/MY SUMMER LOVE(TOMMY'S SMILE MIX)/MY SUMMER LOVE(TOMMY'S SMILE MIX).ogg",
+        "mp3": "songs/MY SUMMER LOVE(TOMMY'S SMILE MIX)/MY SUMMER LOVE(TOMMY'S SMILE MIX).mp3",
+        "banner": "songs/MY SUMMER LOVE(TOMMY'S SMILE MIX)/MY SUMMER LOVE(TOMMY'S SMILE MIX).png",
+        "background": "songs/MY SUMMER LOVE(TOMMY'S SMILE MIX)/MY SUMMER LOVE(TOMMY'S SMILE MIX)-bg.png",
+        "avi": null,
+        "mp4": "songs/MY SUMMER LOVE(TOMMY'S SMILE MIX)/MY SUMMER LOVE(TOMMY'S SMILE MIX).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 12,
+          "radarRaw": "0.451,0.433,0.256,0.104,0.213",
+          "stats": {
+            "measures": 43,
+            "rows": 512,
+            "stepRows": 295,
+            "notes": 322,
+            "taps": 311,
+            "holds": 11,
+            "jumps": 27,
+            "maxSimultaneous": 2,
+            "beatSpan": 172.0,
+            "notesPerBeat": 1.872093
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 12
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/my-summer-love-tommy-s-smile-mix/challenge.chart.json"
+      }
+    },
+    {
+      "id": "nothing-gonna-stop-dance-mania-mix",
+      "title": "NOTHING GONNA STOP (Dance Mania Mix)",
+      "artist": "MICKY",
+      "folder": "NOTHING GONNA STOP (Dance Mania Mix)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 144.562
+        },
+        {
+          "beat": 4.0,
+          "bpm": 145.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/NOTHING GONNA STOP (Dance Mania Mix)/NOTHING GONNA STOP (Dance Mania Mix).sm",
+        "ogg": "songs/NOTHING GONNA STOP (Dance Mania Mix)/NOTHING GONNA STOP (Dance Mania Mix).ogg",
+        "mp3": "songs/NOTHING GONNA STOP (Dance Mania Mix)/NOTHING GONNA STOP (Dance Mania Mix).mp3",
+        "banner": "songs/NOTHING GONNA STOP (Dance Mania Mix)/NOTHING GONNA STOP (Dance Mania Mix).png",
+        "background": "songs/NOTHING GONNA STOP (Dance Mania Mix)/NOTHING GONNA STOP (Dance Mania Mix)-bg.png",
+        "avi": null,
+        "mp4": "songs/NOTHING GONNA STOP (Dance Mania Mix)/NOTHING GONNA STOP (Dance Mania Mix).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 2,
+          "radarRaw": "0.201,0.291,0.061,0.439,0.000",
+          "stats": {
+            "measures": 59,
+            "rows": 236,
+            "stepRows": 89,
+            "notes": 95,
+            "taps": 52,
+            "holds": 43,
+            "jumps": 6,
+            "maxSimultaneous": 2,
+            "beatSpan": 236.0,
+            "notesPerBeat": 0.402542
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 5,
+          "radarRaw": "0.374,0.466,0.204,0.480,0.000",
+          "stats": {
+            "measures": 59,
+            "rows": 328,
+            "stepRows": 189,
+            "notes": 209,
+            "taps": 162,
+            "holds": 47,
+            "jumps": 20,
+            "maxSimultaneous": 2,
+            "beatSpan": 236.0,
+            "notesPerBeat": 0.885593
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 7,
+          "radarRaw": "0.472,0.495,0.245,0.378,0.000",
+          "stats": {
+            "measures": 59,
+            "rows": 404,
+            "stepRows": 262,
+            "notes": 286,
+            "taps": 249,
+            "holds": 37,
+            "jumps": 24,
+            "maxSimultaneous": 2,
+            "beatSpan": 236.0,
+            "notesPerBeat": 1.211864
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Easy": 2,
+        "Medium": 5,
+        "Hard": 7
+      },
+      "chartJsonByDifficulty": {
+        "Easy": "game-data/charts/nothing-gonna-stop-dance-mania-mix/easy.chart.json",
+        "Medium": "game-data/charts/nothing-gonna-stop-dance-mania-mix/medium.chart.json",
+        "Hard": "game-data/charts/nothing-gonna-stop-dance-mania-mix/hard.chart.json"
+      }
+    },
+    {
+      "id": "rain-of-sorrow",
+      "title": "rain of sorrow",
+      "artist": "NM feat. EBONY FAY",
+      "folder": "rain of sorrow",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 140.078
+        },
+        {
+          "beat": 4.0,
+          "bpm": 140.008
+        }
+      ],
+      "paths": {
+        "sm": "songs/rain of sorrow/rain of sorrow.sm",
+        "ogg": "songs/rain of sorrow/rain of sorrow.ogg",
+        "mp3": "songs/rain of sorrow/rain of sorrow.mp3",
+        "banner": "songs/rain of sorrow/rain of sorrow.png",
+        "background": "songs/rain of sorrow/rain of sorrow-bg.png",
+        "avi": null,
+        "mp4": "songs/rain of sorrow/rain of sorrow.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 3,
+          "radarRaw": "0.114,0.166,0.061,0.000,0.000",
+          "stats": {
+            "measures": 56,
+            "rows": 224,
+            "stepRows": 72,
+            "notes": 78,
+            "taps": 78,
+            "holds": 0,
+            "jumps": 6,
+            "maxSimultaneous": 2,
+            "beatSpan": 224.0,
+            "notesPerBeat": 0.348214
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 3,
+          "radarRaw": "0.148,0.198,0.061,0.184,0.000",
+          "stats": {
+            "measures": 57,
+            "rows": 228,
+            "stepRows": 77,
+            "notes": 83,
+            "taps": 65,
+            "holds": 18,
+            "jumps": 6,
+            "maxSimultaneous": 2,
+            "beatSpan": 228.0,
+            "notesPerBeat": 0.364035
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 9,
+          "radarRaw": "0.405,0.442,0.041,0.645,0.046",
+          "stats": {
+            "measures": 56,
+            "rows": 448,
+            "stepRows": 210,
+            "notes": 214,
+            "taps": 151,
+            "holds": 63,
+            "jumps": 4,
+            "maxSimultaneous": 2,
+            "beatSpan": 224.0,
+            "notesPerBeat": 0.955357
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 12,
+          "radarRaw": "0.509,0.565,0.287,0.051,0.312",
+          "stats": {
+            "measures": 57,
+            "rows": 692,
+            "stepRows": 315,
+            "notes": 343,
+            "taps": 338,
+            "holds": 5,
+            "jumps": 28,
+            "maxSimultaneous": 2,
+            "beatSpan": 228.0,
+            "notesPerBeat": 1.504386
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 3,
+        "Easy": 3,
+        "Medium": 9,
+        "Hard": 12
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/rain-of-sorrow/beginner.chart.json",
+        "Easy": "game-data/charts/rain-of-sorrow/easy.chart.json",
+        "Medium": "game-data/charts/rain-of-sorrow/medium.chart.json",
+        "Hard": "game-data/charts/rain-of-sorrow/hard.chart.json"
+      }
+    },
+    {
+      "id": "secret-rendez-vous",
+      "title": "Secret Rendez-vous",
+      "artist": "DIVAS",
+      "folder": "Secret Rendez-vous",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 98.093
+        },
+        {
+          "beat": 4.0,
+          "bpm": 98.004
+        }
+      ],
+      "paths": {
+        "sm": "songs/Secret Rendez-vous/Secret Rendez-vous.sm",
+        "ogg": "songs/Secret Rendez-vous/Secret Rendez-vous.ogg",
+        "mp3": "songs/Secret Rendez-vous/Secret Rendez-vous.mp3",
+        "banner": "songs/Secret Rendez-vous/Secret Rendez-vous.png",
+        "background": "songs/Secret Rendez-vous/Secret Rendez-vous-bg.png",
+        "avi": null,
+        "mp4": "songs/Secret Rendez-vous/Secret Rendez-vous.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 3,
+          "radarRaw": "0.110,0.132,0.060,0.000,0.000",
+          "stats": {
+            "measures": 40,
+            "rows": 160,
+            "stepRows": 71,
+            "notes": 77,
+            "taps": 77,
+            "holds": 0,
+            "jumps": 6,
+            "maxSimultaneous": 2,
+            "beatSpan": 160.0,
+            "notesPerBeat": 0.48125
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 4,
+          "radarRaw": "0.154,0.215,0.120,0.020,0.000",
+          "stats": {
+            "measures": 41,
+            "rows": 164,
+            "stepRows": 94,
+            "notes": 106,
+            "taps": 104,
+            "holds": 2,
+            "jumps": 12,
+            "maxSimultaneous": 2,
+            "beatSpan": 164.0,
+            "notesPerBeat": 0.646341
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 7,
+          "radarRaw": "0.245,0.293,0.219,0.040,0.000",
+          "stats": {
+            "measures": 41,
+            "rows": 260,
+            "stepRows": 146,
+            "notes": 168,
+            "taps": 164,
+            "holds": 4,
+            "jumps": 22,
+            "maxSimultaneous": 2,
+            "beatSpan": 164.0,
+            "notesPerBeat": 1.02439
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 12,
+          "radarRaw": "0.404,0.450,0.329,0.139,0.428",
+          "stats": {
+            "measures": 41,
+            "rows": 504,
+            "stepRows": 237,
+            "notes": 270,
+            "taps": 256,
+            "holds": 14,
+            "jumps": 33,
+            "maxSimultaneous": 2,
+            "beatSpan": 164.0,
+            "notesPerBeat": 1.646341
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 3,
+        "Easy": 4,
+        "Medium": 7,
+        "Hard": 12
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/secret-rendez-vous/beginner.chart.json",
+        "Easy": "game-data/charts/secret-rendez-vous/easy.chart.json",
+        "Medium": "game-data/charts/secret-rendez-vous/medium.chart.json",
+        "Hard": "game-data/charts/secret-rendez-vous/hard.chart.json"
+      }
+    },
+    {
+      "id": "sexy-planet-from-nonstop-megamix",
+      "title": "SEXY PLANET(FROM NONSTOP MEGAMIX)",
+      "artist": "Crystal Aliens",
+      "folder": "SEXY PLANET(FROM NONSTOP MEGAMIX)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 180.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/SEXY PLANET(FROM NONSTOP MEGAMIX)/SEXY PLANET(FROM NONSTOP MEGAMIX).sm",
+        "ogg": "songs/SEXY PLANET(FROM NONSTOP MEGAMIX)/SEXY PLANET(FROM NONSTOP MEGAMIX).ogg",
+        "mp3": "songs/SEXY PLANET(FROM NONSTOP MEGAMIX)/SEXY PLANET(FROM NONSTOP MEGAMIX).mp3",
+        "banner": "songs/SEXY PLANET(FROM NONSTOP MEGAMIX)/SEXY PLANET(FROM NONSTOP MEGAMIX).png",
+        "background": "songs/SEXY PLANET(FROM NONSTOP MEGAMIX)/SEXY PLANET(FROM NONSTOP MEGAMIX)-bg.png",
+        "avi": "songs/SEXY PLANET(FROM NONSTOP MEGAMIX)/SEXY PLANET(FROM NONSTOP MEGAMIX).avi",
+        "mp4": "songs/SEXY PLANET(FROM NONSTOP MEGAMIX)/SEXY PLANET(FROM NONSTOP MEGAMIX).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 10,
+          "radarRaw": "",
+          "stats": {
+            "measures": 73,
+            "rows": 392,
+            "stepRows": 291,
+            "notes": 369,
+            "taps": 358,
+            "holds": 11,
+            "jumps": 78,
+            "maxSimultaneous": 2,
+            "beatSpan": 292.0,
+            "notesPerBeat": 1.263699
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 10
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/sexy-planet-from-nonstop-megamix/challenge.chart.json"
+      }
+    },
+    {
+      "id": "silent-hill-3rd-christmas-mix",
+      "title": "Silent Hill (3rd christmas mix)",
+      "artist": "THOMAS HOWARD",
+      "folder": "Silent Hill (3rd christmas mix)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 125.0
+        },
+        {
+          "beat": 4.0,
+          "bpm": 125.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/Silent Hill (3rd christmas mix)/Silent Hill (3rd christmas mix).sm",
+        "ogg": "songs/Silent Hill (3rd christmas mix)/Silent Hill (3rd christmas mix).ogg",
+        "mp3": "songs/Silent Hill (3rd christmas mix)/Silent Hill (3rd christmas mix).mp3",
+        "banner": "songs/Silent Hill (3rd christmas mix)/Silent Hill (3rd christmas mix).png",
+        "background": "songs/Silent Hill (3rd christmas mix)/Silent Hill (3rd christmas mix)-bg.png",
+        "avi": null,
+        "mp4": "songs/Silent Hill (3rd christmas mix)/Silent Hill (3rd christmas mix).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 10,
+          "radarRaw": "0.429,0.476,0.170,0.511,0.000",
+          "stats": {
+            "measures": 52,
+            "rows": 300,
+            "stepRows": 232,
+            "notes": 249,
+            "taps": 198,
+            "holds": 51,
+            "jumps": 17,
+            "maxSimultaneous": 2,
+            "beatSpan": 208.0,
+            "notesPerBeat": 1.197115
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 10
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/silent-hill-3rd-christmas-mix/challenge.chart.json"
+      }
+    },
+    {
+      "id": "so-fabulous-so-fierce-freak-out",
+      "title": "SO FABULOUS SO FIERCE (FREAK OUT)",
+      "artist": "THUNDERPUSS feat. JOCELYN ENRIQUEZ",
+      "folder": "SO FABULOUS SO FIERCE (FREAK OUT)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 127.095
+        },
+        {
+          "beat": 4.0,
+          "bpm": 128.002
+        }
+      ],
+      "paths": {
+        "sm": "songs/SO FABULOUS SO FIERCE (FREAK OUT)/SO FABULOUS SO FIERCE (FREAK OUT).sm",
+        "ogg": "songs/SO FABULOUS SO FIERCE (FREAK OUT)/SO FABULOUS SO FIERCE (FREAK OUT).ogg",
+        "mp3": "songs/SO FABULOUS SO FIERCE (FREAK OUT)/SO FABULOUS SO FIERCE (FREAK OUT).mp3",
+        "banner": "songs/SO FABULOUS SO FIERCE (FREAK OUT)/SO FABULOUS SO FIERCE (FREAK OUT).png",
+        "background": "songs/SO FABULOUS SO FIERCE (FREAK OUT)/SO FABULOUS SO FIERCE (FREAK OUT)-bg.png",
+        "avi": null,
+        "mp4": "songs/SO FABULOUS SO FIERCE (FREAK OUT)/SO FABULOUS SO FIERCE (FREAK OUT).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 3,
+          "radarRaw": "",
+          "stats": {
+            "measures": 46,
+            "rows": 192,
+            "stepRows": 90,
+            "notes": 97,
+            "taps": 96,
+            "holds": 1,
+            "jumps": 7,
+            "maxSimultaneous": 2,
+            "beatSpan": 184.0,
+            "notesPerBeat": 0.527174
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 5,
+          "radarRaw": "",
+          "stats": {
+            "measures": 46,
+            "rows": 272,
+            "stepRows": 175,
+            "notes": 188,
+            "taps": 185,
+            "holds": 3,
+            "jumps": 13,
+            "maxSimultaneous": 2,
+            "beatSpan": 184.0,
+            "notesPerBeat": 1.021739
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 7,
+          "radarRaw": "",
+          "stats": {
+            "measures": 46,
+            "rows": 420,
+            "stepRows": 256,
+            "notes": 288,
+            "taps": 284,
+            "holds": 4,
+            "jumps": 32,
+            "maxSimultaneous": 2,
+            "beatSpan": 184.0,
+            "notesPerBeat": 1.565217
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Easy": 3,
+        "Medium": 5,
+        "Hard": 7
+      },
+      "chartJsonByDifficulty": {
+        "Easy": "game-data/charts/so-fabulous-so-fierce-freak-out/easy.chart.json",
+        "Medium": "game-data/charts/so-fabulous-so-fierce-freak-out/medium.chart.json",
+        "Hard": "game-data/charts/so-fabulous-so-fierce-freak-out/hard.chart.json"
+      }
+    },
+    {
+      "id": "spin-the-disc",
+      "title": "Spin the disc",
+      "artist": "good-cool",
+      "folder": "Spin the disc",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 129.201
+        },
+        {
+          "beat": 4.0,
+          "bpm": 130.006
+        }
+      ],
+      "paths": {
+        "sm": "songs/Spin the disc/Spin the disc.sm",
+        "ogg": "songs/Spin the disc/Spin the disc.ogg",
+        "mp3": "songs/Spin the disc/Spin the disc.mp3",
+        "banner": "songs/Spin the disc/Spin the disc.png",
+        "background": "songs/Spin the disc/Spin the disc-bg.png",
+        "avi": null,
+        "mp4": "songs/Spin the disc/Spin the disc.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 1,
+          "radarRaw": "0.110,0.152,0.052,0.000,0.000",
+          "stats": {
+            "measures": 50,
+            "rows": 200,
+            "stepRows": 69,
+            "notes": 74,
+            "taps": 74,
+            "holds": 0,
+            "jumps": 5,
+            "maxSimultaneous": 2,
+            "beatSpan": 200.0,
+            "notesPerBeat": 0.37
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 2,
+          "radarRaw": "0.134,0.177,0.052,0.156,0.000",
+          "stats": {
+            "measures": 50,
+            "rows": 200,
+            "stepRows": 70,
+            "notes": 75,
+            "taps": 60,
+            "holds": 15,
+            "jumps": 5,
+            "maxSimultaneous": 2,
+            "beatSpan": 200.0,
+            "notesPerBeat": 0.375
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 5,
+          "radarRaw": "0.315,0.365,0.177,0.042,0.000",
+          "stats": {
+            "measures": 52,
+            "rows": 280,
+            "stepRows": 191,
+            "notes": 208,
+            "taps": 204,
+            "holds": 4,
+            "jumps": 17,
+            "maxSimultaneous": 2,
+            "beatSpan": 208.0,
+            "notesPerBeat": 1.0
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 8,
+          "radarRaw": "0.467,0.469,0.094,0.135,0.052",
+          "stats": {
+            "measures": 52,
+            "rows": 396,
+            "stepRows": 292,
+            "notes": 301,
+            "taps": 288,
+            "holds": 13,
+            "jumps": 9,
+            "maxSimultaneous": 2,
+            "beatSpan": 208.0,
+            "notesPerBeat": 1.447115
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 1,
+        "Easy": 2,
+        "Medium": 5,
+        "Hard": 8
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/spin-the-disc/beginner.chart.json",
+        "Easy": "game-data/charts/spin-the-disc/easy.chart.json",
+        "Medium": "game-data/charts/spin-the-disc/medium.chart.json",
+        "Hard": "game-data/charts/spin-the-disc/hard.chart.json"
+      }
+    },
+    {
+      "id": "stay",
+      "title": "STAY",
+      "artist": "TESS",
+      "folder": "STAY",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 138.842
+        },
+        {
+          "beat": 4.0,
+          "bpm": 139.994
+        }
+      ],
+      "paths": {
+        "sm": "songs/STAY/STAY.sm",
+        "ogg": "songs/STAY/STAY.ogg",
+        "mp3": "songs/STAY/STAY.mp3",
+        "banner": "songs/STAY/STAY.png",
+        "background": "songs/STAY/STAY-bg.png",
+        "avi": null,
+        "mp4": "songs/STAY/STAY.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 2,
+          "radarRaw": "",
+          "stats": {
+            "measures": 51,
+            "rows": 204,
+            "stepRows": 67,
+            "notes": 69,
+            "taps": 47,
+            "holds": 22,
+            "jumps": 2,
+            "maxSimultaneous": 2,
+            "beatSpan": 204.0,
+            "notesPerBeat": 0.338235
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 5,
+          "radarRaw": "",
+          "stats": {
+            "measures": 51,
+            "rows": 356,
+            "stepRows": 162,
+            "notes": 171,
+            "taps": 143,
+            "holds": 28,
+            "jumps": 9,
+            "maxSimultaneous": 2,
+            "beatSpan": 204.0,
+            "notesPerBeat": 0.838235
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 9,
+          "radarRaw": "",
+          "stats": {
+            "measures": 51,
+            "rows": 568,
+            "stepRows": 340,
+            "notes": 369,
+            "taps": 362,
+            "holds": 7,
+            "jumps": 29,
+            "maxSimultaneous": 2,
+            "beatSpan": 204.0,
+            "notesPerBeat": 1.808824
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Easy": 2,
+        "Medium": 5,
+        "Hard": 9
+      },
+      "chartJsonByDifficulty": {
+        "Easy": "game-data/charts/stay/easy.chart.json",
+        "Medium": "game-data/charts/stay/medium.chart.json",
+        "Hard": "game-data/charts/stay/hard.chart.json"
+      }
+    },
+    {
+      "id": "still-in-my-heart-momo-mix",
+      "title": "STILL IN MY HEART (MOMO MIX)",
+      "artist": "NAOKI",
+      "folder": "STILL IN MY HEART (MOMO MIX)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 170.616
+        },
+        {
+          "beat": 4.0,
+          "bpm": 169.979
+        },
+        {
+          "beat": 176.0,
+          "bpm": 85.0
+        },
+        {
+          "beat": 210.0,
+          "bpm": 170.103
+        }
+      ],
+      "paths": {
+        "sm": "songs/STILL IN MY HEART (MOMO MIX)/STILL IN MY HEART (MOMO MIX).sm",
+        "ogg": "songs/STILL IN MY HEART (MOMO MIX)/STILL IN MY HEART (MOMO MIX).ogg",
+        "mp3": "songs/STILL IN MY HEART (MOMO MIX)/STILL IN MY HEART (MOMO MIX).mp3",
+        "banner": "songs/STILL IN MY HEART (MOMO MIX)/STILL IN MY HEART (MOMO MIX).png",
+        "background": "songs/STILL IN MY HEART (MOMO MIX)/STILL IN MY HEART (MOMO MIX)-bg.png",
+        "avi": null,
+        "mp4": "songs/STILL IN MY HEART (MOMO MIX)/STILL IN MY HEART (MOMO MIX).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 11,
+          "radarRaw": "0.515,0.714,0.217,0.019,0.057",
+          "stats": {
+            "measures": 65,
+            "rows": 496,
+            "stepRows": 357,
+            "notes": 380,
+            "taps": 378,
+            "holds": 2,
+            "jumps": 23,
+            "maxSimultaneous": 2,
+            "beatSpan": 260.0,
+            "notesPerBeat": 1.461538
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 11
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/still-in-my-heart-momo-mix/challenge.chart.json"
+      }
+    },
+    {
+      "id": "super-star-from-nonstop-megamix",
+      "title": "SUPER STAR(FROM NONSTOP MEGAMIX)",
+      "artist": "D.J.RICH feat. TAILBROS.",
+      "folder": "SUPER STAR(FROM NONSTOP MEGAMIX)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 128.114
+        },
+        {
+          "beat": 4.0,
+          "bpm": 128.002
+        }
+      ],
+      "paths": {
+        "sm": "songs/SUPER STAR(FROM NONSTOP MEGAMIX)/SUPER STAR(FROM NONSTOP MEGAMIX).sm",
+        "ogg": "songs/SUPER STAR(FROM NONSTOP MEGAMIX)/SUPER STAR(FROM NONSTOP MEGAMIX).ogg",
+        "mp3": "songs/SUPER STAR(FROM NONSTOP MEGAMIX)/SUPER STAR(FROM NONSTOP MEGAMIX).mp3",
+        "banner": "songs/SUPER STAR(FROM NONSTOP MEGAMIX)/SUPER STAR(FROM NONSTOP MEGAMIX).png",
+        "background": "songs/SUPER STAR(FROM NONSTOP MEGAMIX)/SUPER STAR(FROM NONSTOP MEGAMIX)-bg.png",
+        "avi": null,
+        "mp4": "songs/SUPER STAR(FROM NONSTOP MEGAMIX)/SUPER STAR(FROM NONSTOP MEGAMIX).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 10,
+          "radarRaw": "0.445,0.440,0.052,0.115,0.078",
+          "stats": {
+            "measures": 51,
+            "rows": 436,
+            "stepRows": 282,
+            "notes": 287,
+            "taps": 276,
+            "holds": 11,
+            "jumps": 5,
+            "maxSimultaneous": 2,
+            "beatSpan": 204.0,
+            "notesPerBeat": 1.406863
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 10
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/super-star-from-nonstop-megamix/challenge.chart.json"
+      }
+    },
+    {
+      "id": "sweet-sweet-magic",
+      "title": "Sweet Sweet ♥ Magic",
+      "artist": "jun",
+      "folder": "Sweet Sweet Love Magic",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 180.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/Sweet Sweet Love Magic/Sweet Sweet Love Magic.sm",
+        "ogg": "songs/Sweet Sweet Love Magic/Sweet Sweet Love Magic.ogg",
+        "mp3": "songs/Sweet Sweet Love Magic/Sweet Sweet Love Magic.mp3",
+        "banner": "songs/Sweet Sweet Love Magic/Sweet Sweet Love Magic.png",
+        "background": "songs/Sweet Sweet Love Magic/Sweet Sweet Love Magic-bg.png",
+        "avi": "songs/Sweet Sweet Love Magic/Sweet Sweet Love Magic.avi",
+        "mp4": "songs/Sweet Sweet Love Magic/Sweet Sweet Love Magic.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 4,
+          "radarRaw": "",
+          "stats": {
+            "measures": 69,
+            "rows": 276,
+            "stepRows": 128,
+            "notes": 136,
+            "taps": 136,
+            "holds": 0,
+            "jumps": 8,
+            "maxSimultaneous": 2,
+            "beatSpan": 276.0,
+            "notesPerBeat": 0.492754
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 5,
+          "radarRaw": "",
+          "stats": {
+            "measures": 69,
+            "rows": 276,
+            "stepRows": 139,
+            "notes": 188,
+            "taps": 184,
+            "holds": 4,
+            "jumps": 49,
+            "maxSimultaneous": 2,
+            "beatSpan": 276.0,
+            "notesPerBeat": 0.681159
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 9,
+          "radarRaw": "",
+          "stats": {
+            "measures": 69,
+            "rows": 436,
+            "stepRows": 276,
+            "notes": 362,
+            "taps": 334,
+            "holds": 28,
+            "jumps": 86,
+            "maxSimultaneous": 2,
+            "beatSpan": 276.0,
+            "notesPerBeat": 1.311594
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 13,
+          "radarRaw": "",
+          "stats": {
+            "measures": 68,
+            "rows": 688,
+            "stepRows": 372,
+            "notes": 401,
+            "taps": 364,
+            "holds": 37,
+            "jumps": 29,
+            "maxSimultaneous": 2,
+            "beatSpan": 272.0,
+            "notesPerBeat": 1.474265
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 4,
+        "Easy": 5,
+        "Medium": 9,
+        "Hard": 13
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/sweet-sweet-magic/beginner.chart.json",
+        "Easy": "game-data/charts/sweet-sweet-magic/easy.chart.json",
+        "Medium": "game-data/charts/sweet-sweet-magic/medium.chart.json",
+        "Hard": "game-data/charts/sweet-sweet-magic/hard.chart.json"
+      }
+    },
+    {
+      "id": "the-reflex",
+      "title": "THE REFLEX",
+      "artist": "DURAN DURAN",
+      "folder": "THE REFLEX",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 124.352
+        },
+        {
+          "beat": 8.0,
+          "bpm": 125.874
+        },
+        {
+          "beat": 16.0,
+          "bpm": 125.217
+        },
+        {
+          "beat": 24.0,
+          "bpm": 125.984
+        },
+        {
+          "beat": 40.0,
+          "bpm": 125.0
+        },
+        {
+          "beat": 44.0,
+          "bpm": 126.034
+        },
+        {
+          "beat": 88.0,
+          "bpm": 125.0
+        },
+        {
+          "beat": 96.0,
+          "bpm": 125.874
+        },
+        {
+          "beat": 100.0,
+          "bpm": 125.436
+        },
+        {
+          "beat": 104.0,
+          "bpm": 126.404
+        },
+        {
+          "beat": 124.0,
+          "bpm": 128.114
+        },
+        {
+          "beat": 128.0,
+          "bpm": 127.059
+        },
+        {
+          "beat": 140.0,
+          "bpm": 128.114
+        },
+        {
+          "beat": 144.0,
+          "bpm": 123.711
+        },
+        {
+          "beat": 148.0,
+          "bpm": 128.114
+        },
+        {
+          "beat": 152.0,
+          "bpm": 127.208
+        },
+        {
+          "beat": 156.0,
+          "bpm": 125.874
+        },
+        {
+          "beat": 164.0,
+          "bpm": 126.464
+        },
+        {
+          "beat": 176.0,
+          "bpm": 126.021
+        },
+        {
+          "beat": 188.0,
+          "bpm": 127.358
+        },
+        {
+          "beat": 191.0,
+          "bpm": 126.021
+        }
+      ],
+      "paths": {
+        "sm": "songs/THE REFLEX/THE REFLEX.sm",
+        "ogg": "songs/THE REFLEX/THE REFLEX.ogg",
+        "mp3": "songs/THE REFLEX/THE REFLEX.mp3",
+        "banner": "songs/THE REFLEX/THE REFLEX.png",
+        "background": "songs/THE REFLEX/THE REFLEX-bg.png",
+        "avi": null,
+        "mp4": "songs/THE REFLEX/THE REFLEX.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 1,
+          "radarRaw": "",
+          "stats": {
+            "measures": 51,
+            "rows": 204,
+            "stepRows": 56,
+            "notes": 66,
+            "taps": 66,
+            "holds": 0,
+            "jumps": 10,
+            "maxSimultaneous": 2,
+            "beatSpan": 204.0,
+            "notesPerBeat": 0.323529
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 2,
+          "radarRaw": "",
+          "stats": {
+            "measures": 51,
+            "rows": 204,
+            "stepRows": 92,
+            "notes": 97,
+            "taps": 88,
+            "holds": 9,
+            "jumps": 5,
+            "maxSimultaneous": 2,
+            "beatSpan": 204.0,
+            "notesPerBeat": 0.47549
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 5,
+          "radarRaw": "",
+          "stats": {
+            "measures": 51,
+            "rows": 328,
+            "stepRows": 196,
+            "notes": 208,
+            "taps": 206,
+            "holds": 2,
+            "jumps": 12,
+            "maxSimultaneous": 2,
+            "beatSpan": 204.0,
+            "notesPerBeat": 1.019608
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 8,
+          "radarRaw": "",
+          "stats": {
+            "measures": 51,
+            "rows": 528,
+            "stepRows": 292,
+            "notes": 341,
+            "taps": 326,
+            "holds": 15,
+            "jumps": 49,
+            "maxSimultaneous": 2,
+            "beatSpan": 204.0,
+            "notesPerBeat": 1.671569
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 1,
+        "Easy": 2,
+        "Medium": 5,
+        "Hard": 8
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/the-reflex/beginner.chart.json",
+        "Easy": "game-data/charts/the-reflex/easy.chart.json",
+        "Medium": "game-data/charts/the-reflex/medium.chart.json",
+        "Hard": "game-data/charts/the-reflex/hard.chart.json"
+      }
+    },
+    {
+      "id": "the-whistle-song-blow-my-whistle-bitch",
+      "title": "THE WHISTLE SONG (Blow My Whistle Bitch)",
+      "artist": "DJ ALIGATOR PROJECT",
+      "folder": "THE WHISTLE SONG (Blow My Whistle Bitch)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 134.5
+        },
+        {
+          "beat": 1.0,
+          "bpm": 140.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/THE WHISTLE SONG (Blow My Whistle Bitch)/THE WHISTLE SONG (Blow My Whistle Bitch).sm",
+        "ogg": "songs/THE WHISTLE SONG (Blow My Whistle Bitch)/THE WHISTLE SONG (Blow My Whistle Bitch).ogg",
+        "mp3": "songs/THE WHISTLE SONG (Blow My Whistle Bitch)/THE WHISTLE SONG (Blow My Whistle Bitch).mp3",
+        "banner": "songs/THE WHISTLE SONG (Blow My Whistle Bitch)/THE WHISTLE SONG (Blow My Whistle Bitch).png",
+        "background": "songs/THE WHISTLE SONG (Blow My Whistle Bitch)/THE WHISTLE SONG (Blow My Whistle Bitch)-bg.png",
+        "avi": "songs/THE WHISTLE SONG (Blow My Whistle Bitch)/THE WHISTLE SONG (Blow My Whistle Bitch).avi",
+        "mp4": "songs/THE WHISTLE SONG (Blow My Whistle Bitch)/THE WHISTLE SONG (Blow My Whistle Bitch).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 1,
+          "radarRaw": "",
+          "stats": {
+            "measures": 52,
+            "rows": 208,
+            "stepRows": 94,
+            "notes": 96,
+            "taps": 96,
+            "holds": 0,
+            "jumps": 2,
+            "maxSimultaneous": 2,
+            "beatSpan": 208.0,
+            "notesPerBeat": 0.461538
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 3,
+          "radarRaw": "",
+          "stats": {
+            "measures": 52,
+            "rows": 208,
+            "stepRows": 122,
+            "notes": 124,
+            "taps": 120,
+            "holds": 4,
+            "jumps": 2,
+            "maxSimultaneous": 2,
+            "beatSpan": 208.0,
+            "notesPerBeat": 0.596154
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 4,
+          "radarRaw": "",
+          "stats": {
+            "measures": 52,
+            "rows": 244,
+            "stepRows": 199,
+            "notes": 235,
+            "taps": 229,
+            "holds": 6,
+            "jumps": 36,
+            "maxSimultaneous": 2,
+            "beatSpan": 208.0,
+            "notesPerBeat": 1.129808
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 7,
+          "radarRaw": "",
+          "stats": {
+            "measures": 52,
+            "rows": 512,
+            "stepRows": 308,
+            "notes": 363,
+            "taps": 361,
+            "holds": 2,
+            "jumps": 55,
+            "maxSimultaneous": 2,
+            "beatSpan": 208.0,
+            "notesPerBeat": 1.745192
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 1,
+        "Easy": 3,
+        "Medium": 4,
+        "Hard": 7
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/the-whistle-song-blow-my-whistle-bitch/beginner.chart.json",
+        "Easy": "game-data/charts/the-whistle-song-blow-my-whistle-bitch/easy.chart.json",
+        "Medium": "game-data/charts/the-whistle-song-blow-my-whistle-bitch/medium.chart.json",
+        "Hard": "game-data/charts/the-whistle-song-blow-my-whistle-bitch/hard.chart.json"
+      }
+    },
+    {
+      "id": "there-you-ll-be",
+      "title": "THERE YOU'LL BE",
+      "artist": "DJ SPEEDO feat.ANGELICA",
+      "folder": "THERE YOU'LL BE",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 172.009
+        }
+      ],
+      "paths": {
+        "sm": "songs/THERE YOU'LL BE/THERE YOU'LL BE.sm",
+        "ogg": "songs/THERE YOU'LL BE/THERE YOU'LL BE.ogg",
+        "mp3": "songs/THERE YOU'LL BE/THERE YOU'LL BE.mp3",
+        "banner": "songs/THERE YOU'LL BE/THERE YOU'LL BE.png",
+        "background": "songs/THERE YOU'LL BE/THERE YOU'LL BE-bg.png",
+        "avi": null,
+        "mp4": "songs/THERE YOU'LL BE/THERE YOU'LL BE.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 1,
+          "radarRaw": "0.147,0.203,0.011,0.000,0.000",
+          "stats": {
+            "measures": 64,
+            "rows": 256,
+            "stepRows": 93,
+            "notes": 94,
+            "taps": 94,
+            "holds": 0,
+            "jumps": 1,
+            "maxSimultaneous": 2,
+            "beatSpan": 256.0,
+            "notesPerBeat": 0.367188
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 3,
+          "radarRaw": "0.272,0.339,0.120,0.186,0.000",
+          "stats": {
+            "measures": 64,
+            "rows": 256,
+            "stepRows": 146,
+            "notes": 157,
+            "taps": 140,
+            "holds": 17,
+            "jumps": 11,
+            "maxSimultaneous": 2,
+            "beatSpan": 256.0,
+            "notesPerBeat": 0.613281
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 6,
+          "radarRaw": "0.409,0.486,0.197,0.186,0.000",
+          "stats": {
+            "measures": 65,
+            "rows": 344,
+            "stepRows": 227,
+            "notes": 245,
+            "taps": 228,
+            "holds": 17,
+            "jumps": 18,
+            "maxSimultaneous": 2,
+            "beatSpan": 260.0,
+            "notesPerBeat": 0.942308
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 8,
+          "radarRaw": "0.572,0.591,0.175,0.252,0.000",
+          "stats": {
+            "measures": 65,
+            "rows": 460,
+            "stepRows": 327,
+            "notes": 343,
+            "taps": 320,
+            "holds": 23,
+            "jumps": 16,
+            "maxSimultaneous": 2,
+            "beatSpan": 260.0,
+            "notesPerBeat": 1.319231
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 1,
+        "Easy": 3,
+        "Medium": 6,
+        "Hard": 8
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/there-you-ll-be/beginner.chart.json",
+        "Easy": "game-data/charts/there-you-ll-be/easy.chart.json",
+        "Medium": "game-data/charts/there-you-ll-be/medium.chart.json",
+        "Hard": "game-data/charts/there-you-ll-be/hard.chart.json"
+      }
+    },
+    {
+      "id": "trance-de-janeiro-samba-de-janeiro-2002-epic-vocal-remix",
+      "title": "TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix)",
+      "artist": "BELLINI",
+      "folder": "TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 143.612
+        },
+        {
+          "beat": 4.0,
+          "bpm": 145.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix)/TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix).sm",
+        "ogg": "songs/TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix)/TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix).ogg",
+        "mp3": "songs/TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix)/TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix).mp3",
+        "banner": "songs/TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix)/TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix).png",
+        "background": "songs/TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix)/TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix)-bg.png",
+        "avi": null,
+        "mp4": "songs/TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix)/TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 2,
+          "radarRaw": "0.168,0.221,0.115,0.063,0.000",
+          "stats": {
+            "measures": 55,
+            "rows": 220,
+            "stepRows": 96,
+            "notes": 107,
+            "taps": 101,
+            "holds": 6,
+            "jumps": 11,
+            "maxSimultaneous": 2,
+            "beatSpan": 220.0,
+            "notesPerBeat": 0.486364
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 4,
+          "radarRaw": "0.408,0.424,0.771,0.021,0.000",
+          "stats": {
+            "measures": 56,
+            "rows": 224,
+            "stepRows": 198,
+            "notes": 272,
+            "taps": 270,
+            "holds": 2,
+            "jumps": 74,
+            "maxSimultaneous": 2,
+            "beatSpan": 224.0,
+            "notesPerBeat": 1.214286
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 8,
+          "radarRaw": "0.442,0.386,0.094,0.000,0.438",
+          "stats": {
+            "measures": 55,
+            "rows": 776,
+            "stepRows": 288,
+            "notes": 297,
+            "taps": 297,
+            "holds": 0,
+            "jumps": 9,
+            "maxSimultaneous": 2,
+            "beatSpan": 220.0,
+            "notesPerBeat": 1.35
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Easy": 2,
+        "Medium": 4,
+        "Hard": 8
+      },
+      "chartJsonByDifficulty": {
+        "Easy": "game-data/charts/trance-de-janeiro-samba-de-janeiro-2002-epic-vocal-remix/easy.chart.json",
+        "Medium": "game-data/charts/trance-de-janeiro-samba-de-janeiro-2002-epic-vocal-remix/medium.chart.json",
+        "Hard": "game-data/charts/trance-de-janeiro-samba-de-janeiro-2002-epic-vocal-remix/hard.chart.json"
+      }
+    },
+    {
+      "id": "tsugaru",
+      "title": "TSUGARU",
+      "artist": "RevenG vs DE-SIRE",
+      "folder": "TSUGARU",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 165.0
+        },
+        {
+          "beat": 233.0,
+          "bpm": 156.5
+        },
+        {
+          "beat": 237.0,
+          "bpm": 131.0
+        },
+        {
+          "beat": 241.0,
+          "bpm": 123.0
+        },
+        {
+          "beat": 242.0,
+          "bpm": 130.0
+        },
+        {
+          "beat": 243.0,
+          "bpm": 108.5
+        },
+        {
+          "beat": 244.0,
+          "bpm": 94.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/TSUGARU/TSUGARU.sm",
+        "ogg": "songs/TSUGARU/TSUGARU.ogg",
+        "mp3": "songs/TSUGARU/TSUGARU.mp3",
+        "banner": "songs/TSUGARU/TSUGARU.png",
+        "background": "songs/TSUGARU/TSUGARU-bg.png",
+        "avi": null,
+        "mp4": "songs/TSUGARU/TSUGARU.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 3,
+          "radarRaw": "",
+          "stats": {
+            "measures": 63,
+            "rows": 252,
+            "stepRows": 92,
+            "notes": 111,
+            "taps": 111,
+            "holds": 0,
+            "jumps": 19,
+            "maxSimultaneous": 2,
+            "beatSpan": 252.0,
+            "notesPerBeat": 0.440476
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 5,
+          "radarRaw": "",
+          "stats": {
+            "measures": 63,
+            "rows": 252,
+            "stepRows": 107,
+            "notes": 131,
+            "taps": 110,
+            "holds": 21,
+            "jumps": 24,
+            "maxSimultaneous": 2,
+            "beatSpan": 252.0,
+            "notesPerBeat": 0.519841
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 9,
+          "radarRaw": "",
+          "stats": {
+            "measures": 63,
+            "rows": 508,
+            "stepRows": 232,
+            "notes": 264,
+            "taps": 253,
+            "holds": 11,
+            "jumps": 32,
+            "maxSimultaneous": 2,
+            "beatSpan": 252.0,
+            "notesPerBeat": 1.047619
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 12,
+          "radarRaw": "",
+          "stats": {
+            "measures": 62,
+            "rows": 1364,
+            "stepRows": 366,
+            "notes": 392,
+            "taps": 381,
+            "holds": 11,
+            "jumps": 26,
+            "maxSimultaneous": 2,
+            "beatSpan": 248.0,
+            "notesPerBeat": 1.580645
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 3,
+        "Easy": 5,
+        "Medium": 9,
+        "Hard": 12
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/tsugaru/beginner.chart.json",
+        "Easy": "game-data/charts/tsugaru/easy.chart.json",
+        "Medium": "game-data/charts/tsugaru/medium.chart.json",
+        "Hard": "game-data/charts/tsugaru/hard.chart.json"
+      }
+    },
+    {
+      "id": "tsugaru-apple-mix",
+      "title": "TSUGARU (APPLE MIX)",
+      "artist": "RevenG vs DE-SIRE",
+      "folder": "TSUGARU(APPLE MIX)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 165.0
+        },
+        {
+          "beat": 236.0,
+          "bpm": 156.0
+        },
+        {
+          "beat": 240.0,
+          "bpm": 131.0
+        },
+        {
+          "beat": 244.0,
+          "bpm": 127.0
+        },
+        {
+          "beat": 246.0,
+          "bpm": 108.5
+        },
+        {
+          "beat": 247.0,
+          "bpm": 94.0
+        },
+        {
+          "beat": 248.0,
+          "bpm": 80.9
+        }
+      ],
+      "paths": {
+        "sm": "songs/TSUGARU(APPLE MIX)/TSUGARU(APPLE MIX).sm",
+        "ogg": "songs/TSUGARU(APPLE MIX)/TSUGARU(APPLE MIX).ogg",
+        "mp3": "songs/TSUGARU(APPLE MIX)/TSUGARU(APPLE MIX).mp3",
+        "banner": "songs/TSUGARU(APPLE MIX)/TSUGARU(APPLE MIX).png",
+        "background": "songs/TSUGARU(APPLE MIX)/TSUGARU(APPLE MIX)-bg.png",
+        "avi": null,
+        "mp4": "songs/TSUGARU(APPLE MIX)/TSUGARU(APPLE MIX).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 11,
+          "radarRaw": "",
+          "stats": {
+            "measures": 63,
+            "rows": 640,
+            "stepRows": 353,
+            "notes": 370,
+            "taps": 363,
+            "holds": 7,
+            "jumps": 17,
+            "maxSimultaneous": 2,
+            "beatSpan": 252.0,
+            "notesPerBeat": 1.468254
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 11
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/tsugaru-apple-mix/challenge.chart.json"
+      }
+    },
+    {
+      "id": "waka-laka",
+      "title": "WAKA LAKA",
+      "artist": "JENNY ROM vs ZIPPERS",
+      "folder": "WAKA LAKA",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 168.554
+        },
+        {
+          "beat": 4.0,
+          "bpm": 169.996
+        }
+      ],
+      "paths": {
+        "sm": "songs/WAKA LAKA/WAKA LAKA.sm",
+        "ogg": "songs/WAKA LAKA/WAKA LAKA.ogg",
+        "mp3": "songs/WAKA LAKA/WAKA LAKA.mp3",
+        "banner": "songs/WAKA LAKA/WAKA LAKA.png",
+        "background": "songs/WAKA LAKA/WAKA LAKA-bg.png",
+        "avi": null,
+        "mp4": "songs/WAKA LAKA/WAKA LAKA.mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Beginner",
+          "meter": 1,
+          "radarRaw": "0.216,0.420,0.174,0.000,0.000",
+          "stats": {
+            "measures": 66,
+            "rows": 264,
+            "stepRows": 123,
+            "notes": 139,
+            "taps": 139,
+            "holds": 0,
+            "jumps": 16,
+            "maxSimultaneous": 2,
+            "beatSpan": 264.0,
+            "notesPerBeat": 0.526515
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Easy",
+          "meter": 3,
+          "radarRaw": "0.260,0.280,0.142,0.000,0.000",
+          "stats": {
+            "measures": 66,
+            "rows": 264,
+            "stepRows": 154,
+            "notes": 167,
+            "taps": 167,
+            "holds": 0,
+            "jumps": 13,
+            "maxSimultaneous": 2,
+            "beatSpan": 264.0,
+            "notesPerBeat": 0.632576
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Medium",
+          "meter": 6,
+          "radarRaw": "0.531,0.631,0.730,0.338,0.000",
+          "stats": {
+            "measures": 66,
+            "rows": 404,
+            "stepRows": 243,
+            "notes": 310,
+            "taps": 279,
+            "holds": 31,
+            "jumps": 67,
+            "maxSimultaneous": 2,
+            "beatSpan": 264.0,
+            "notesPerBeat": 1.174242
+          }
+        },
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Hard",
+          "meter": 8,
+          "radarRaw": "0.715,0.772,1.000,0.000,0.044",
+          "stats": {
+            "measures": 66,
+            "rows": 536,
+            "stepRows": 361,
+            "notes": 459,
+            "taps": 459,
+            "holds": 0,
+            "jumps": 98,
+            "maxSimultaneous": 2,
+            "beatSpan": 264.0,
+            "notesPerBeat": 1.738636
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Beginner": 1,
+        "Easy": 3,
+        "Medium": 6,
+        "Hard": 8
+      },
+      "chartJsonByDifficulty": {
+        "Beginner": "game-data/charts/waka-laka/beginner.chart.json",
+        "Easy": "game-data/charts/waka-laka/easy.chart.json",
+        "Medium": "game-data/charts/waka-laka/medium.chart.json",
+        "Hard": "game-data/charts/waka-laka/hard.chart.json"
+      }
+    },
+    {
+      "id": "wild-rush-from-nonstop-megamix",
+      "title": "WILD RUSH(FROM NONSTOP MEGAMIX)",
+      "artist": "FACTOR-X",
+      "folder": "WILD RUSH(FROM NONSTOP MEGAMIX)",
+      "offset": 0.0,
+      "bpms": [
+        {
+          "beat": 0.0,
+          "bpm": 125.0
+        },
+        {
+          "beat": 4.0,
+          "bpm": 125.0
+        }
+      ],
+      "paths": {
+        "sm": "songs/WILD RUSH(FROM NONSTOP MEGAMIX)/WILD RUSH(FROM NONSTOP MEGAMIX).sm",
+        "ogg": "songs/WILD RUSH(FROM NONSTOP MEGAMIX)/WILD RUSH(FROM NONSTOP MEGAMIX).ogg",
+        "mp3": "songs/WILD RUSH(FROM NONSTOP MEGAMIX)/WILD RUSH(FROM NONSTOP MEGAMIX).mp3",
+        "banner": "songs/WILD RUSH(FROM NONSTOP MEGAMIX)/WILD RUSH(FROM NONSTOP MEGAMIX).png",
+        "background": "songs/WILD RUSH(FROM NONSTOP MEGAMIX)/WILD RUSH(FROM NONSTOP MEGAMIX)-bg.png",
+        "avi": null,
+        "mp4": "songs/WILD RUSH(FROM NONSTOP MEGAMIX)/WILD RUSH(FROM NONSTOP MEGAMIX).mp4"
+      },
+      "charts": [
+        {
+          "stepType": "dance-single",
+          "description": "",
+          "difficulty": "Challenge",
+          "meter": 9,
+          "radarRaw": "0.309,0.384,0.019,0.145,0.058",
+          "stats": {
+            "measures": 51,
+            "rows": 388,
+            "stepRows": 207,
+            "notes": 209,
+            "taps": 194,
+            "holds": 15,
+            "jumps": 2,
+            "maxSimultaneous": 2,
+            "beatSpan": 204.0,
+            "notesPerBeat": 1.02451
+          }
+        }
+      ],
+      "difficultyMeters": {
+        "Challenge": 9
+      },
+      "chartJsonByDifficulty": {
+        "Challenge": "game-data/charts/wild-rush-from-nonstop-megamix/challenge.chart.json"
+      }
+    }
+  ]
+}

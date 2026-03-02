@@ -1,0 +1,224 @@
+#ifndef DDR_HTTP_LOADER_LSLH
+#define DDR_HTTP_LOADER_LSLH
+
+list gHttpPending = []; // [requestId, type, context, url, ...]
+
+integer gManifestReady = FALSE;
+string gManifestJson = "{}";
+
+integer ddrHttpFindPending(key requestId)
+{
+    integer count = llGetListLength(gHttpPending);
+    integer i = 0;
+    for (; i < count; i += 4)
+    {
+        if ((key)llList2String(gHttpPending, i) == requestId)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+list ddrHttpPopPending(integer index)
+{
+    if (index < 0)
+    {
+        return [];
+    }
+    list row = llList2List(gHttpPending, index, index + 3);
+    gHttpPending = llDeleteSubList(gHttpPending, index, index + 3);
+    return row;
+}
+
+key ddrHttpGet(string requestType, string url, string context)
+{
+    key requestId = llHTTPRequest(
+        url,
+        [
+            HTTP_METHOD, "GET",
+            HTTP_MIMETYPE, "application/json"
+        ],
+        ""
+    );
+    gHttpPending += [requestId, requestType, context, url];
+    ddrDebug("HTTP", requestType + " -> " + url + " (" + (string)requestId + ")");
+    return requestId;
+}
+
+string ddrManifestUrl()
+{
+    return ddrJoinUrl(DDR_BASE_URL, DDR_MANIFEST_PATH);
+}
+
+key ddrFetchManifest()
+{
+    gManifestReady = FALSE;
+    return ddrHttpGet("manifest", ddrManifestUrl(), "");
+}
+
+integer ddrManifestSongCount()
+{
+    if (!gManifestReady)
+    {
+        return 0;
+    }
+    string rawCount = llJsonGetValue(gManifestJson, ["songCount"]);
+    if (rawCount != JSON_INVALID)
+    {
+        return (integer)rawCount;
+    }
+
+    integer count = 0;
+    while (llJsonGetValue(gManifestJson, ["songs", (string)count]) != JSON_INVALID)
+    {
+        ++count;
+    }
+    return count;
+}
+
+string ddrManifestSongField(integer songIndex, string fieldName)
+{
+    if (!gManifestReady || songIndex < 0)
+    {
+        return "";
+    }
+    string value = llJsonGetValue(gManifestJson, ["songs", (string)songIndex, fieldName]);
+    if (value == JSON_INVALID)
+    {
+        return "";
+    }
+    return value;
+}
+
+list ddrManifestSongDifficultyPairs(integer songIndex)
+{
+    string diffObject = llJsonGetValue(gManifestJson, ["songs", (string)songIndex, "d"]);
+    if (diffObject == JSON_INVALID || llJsonValueType(diffObject, []) != JSON_OBJECT)
+    {
+        return [];
+    }
+    return llJson2List(diffObject);
+}
+
+string ddrManifestResolveDifficulty(integer songIndex, string preferredDifficulty)
+{
+    list diffPairs = ddrManifestSongDifficultyPairs(songIndex);
+    integer count = llGetListLength(diffPairs);
+    if (count < 2)
+    {
+        return preferredDifficulty;
+    }
+
+    string preferredLower = llToLower(preferredDifficulty);
+    integer i = 0;
+    for (; i < count; i += 2)
+    {
+        string keyName = llList2String(diffPairs, i);
+        if (llToLower(keyName) == preferredLower)
+        {
+            return keyName;
+        }
+    }
+    return llList2String(diffPairs, 0);
+}
+
+string ddrManifestSongId(integer songIndex)
+{
+    return ddrManifestSongField(songIndex, "id");
+}
+
+string ddrManifestSongTitle(integer songIndex)
+{
+    return ddrManifestSongField(songIndex, "t");
+}
+
+string ddrManifestSongArtist(integer songIndex)
+{
+    return ddrManifestSongField(songIndex, "a");
+}
+
+string ddrManifestSongChartJsonPath(integer songIndex, string preferredDifficulty)
+{
+    if (!gManifestReady || songIndex < 0)
+    {
+        return "";
+    }
+
+    string resolvedDifficulty = ddrManifestResolveDifficulty(songIndex, preferredDifficulty);
+    string chartPath = llJsonGetValue(
+        gManifestJson,
+        ["songs", (string)songIndex, "cj", resolvedDifficulty]
+    );
+    if (chartPath != JSON_INVALID && chartPath != "")
+    {
+        return chartPath;
+    }
+
+    // Fallback: return first chart mapping entry if available.
+    string chartMap = llJsonGetValue(gManifestJson, ["songs", (string)songIndex, "cj"]);
+    if (chartMap == JSON_INVALID || llJsonValueType(chartMap, []) != JSON_OBJECT)
+    {
+        return "";
+    }
+    list pairs = llJson2List(chartMap);
+    if (llGetListLength(pairs) < 2)
+    {
+        return "";
+    }
+    return llList2String(pairs, 1);
+}
+
+integer ddrManifestNormalizeSongIndex(integer songIndex)
+{
+    integer songCount = ddrManifestSongCount();
+    if (songCount <= 0)
+    {
+        return -1;
+    }
+    if (songIndex < 0)
+    {
+        songIndex = songCount - 1;
+    }
+    if (songIndex >= songCount)
+    {
+        songIndex = 0;
+    }
+    return songIndex;
+}
+
+integer ddrHttpHandleResponse(key requestId, integer status, list metadata, string body)
+{
+    integer pendingIdx = ddrHttpFindPending(requestId);
+    if (pendingIdx < 0)
+    {
+        ddrDebug("HTTP", "unexpected response id=" + (string)requestId + " status=" + (string)status);
+        return DDR_HTTP_EVENT_NONE;
+    }
+
+    list pending = ddrHttpPopPending(pendingIdx);
+    string requestType = llList2String(pending, 1);
+    string context = llList2String(pending, 2);
+
+    if (status < 200 || status >= 300)
+    {
+        ddrDebug("HTTP", requestType + " failed status=" + (string)status + " context=" + context);
+        if (requestType == "manifest")
+        {
+            return DDR_HTTP_EVENT_MANIFEST_FAIL;
+        }
+        return DDR_HTTP_EVENT_NONE;
+    }
+
+    if (requestType == "manifest")
+    {
+        gManifestJson = body;
+        gManifestReady = TRUE;
+        ddrDebug("HTTP", "manifest loaded songs=" + (string)ddrManifestSongCount());
+        return DDR_HTTP_EVENT_MANIFEST_OK;
+    }
+
+    return DDR_HTTP_EVENT_NONE;
+}
+
+#endif

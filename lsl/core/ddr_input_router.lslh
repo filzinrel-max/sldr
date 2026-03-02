@@ -1,0 +1,80 @@
+#ifndef DDR_INPUT_ROUTER_LSLH
+#define DDR_INPUT_ROUTER_LSLH
+
+integer gControlsCaptured = FALSE;
+
+integer ddrInputControlMask()
+{
+    return CONTROL_LEFT | CONTROL_DOWN | CONTROL_UP | CONTROL_RIGHT;
+}
+
+integer ddrInputStartCapture()
+{
+    if (!ddrHasPermission(PERMISSION_TAKE_CONTROLS))
+    {
+        ddrDebug("INPUT", "Missing PERMISSION_TAKE_CONTROLS");
+        return FALSE;
+    }
+    llTakeControls(ddrInputControlMask(), TRUE, FALSE);
+    gControlsCaptured = TRUE;
+    return TRUE;
+}
+
+integer ddrInputStopCapture()
+{
+    if (gControlsCaptured)
+    {
+        llReleaseControls();
+    }
+    gControlsCaptured = FALSE;
+    return TRUE;
+}
+
+integer ddrInputSetLaneDown(integer lane, integer isDown)
+{
+    gLaneDown = llListReplaceList(gLaneDown, [isDown], lane, lane);
+    return TRUE;
+}
+
+integer ddrInputHandleControl(integer held, integer changedMask, float songTime)
+{
+    integer lane = DDR_LANE_LEFT;
+    for (; lane < DDR_LANE_COUNT; ++lane)
+    {
+        integer mask = 0;
+        if (lane == DDR_LANE_LEFT)
+        {
+            mask = CONTROL_LEFT;
+        }
+        else if (lane == DDR_LANE_DOWN)
+        {
+            mask = CONTROL_DOWN;
+        }
+        else if (lane == DDR_LANE_UP)
+        {
+            mask = CONTROL_UP;
+        }
+        else
+        {
+            mask = CONTROL_RIGHT;
+        }
+
+        if ((changedMask & mask) != 0)
+        {
+            integer isDown = ((held & mask) != 0);
+            ddrInputSetLaneDown(lane, isDown);
+            if (isDown)
+            {
+                ddrPlayLaneAnimation(lane);
+                ddrJudgeLanePress(lane, songTime);
+            }
+            else
+            {
+                ddrJudgeLaneRelease(lane, songTime);
+            }
+        }
+    }
+    return TRUE;
+}
+
+#endif

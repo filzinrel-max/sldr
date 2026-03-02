@@ -1,0 +1,48 @@
+#ifndef DDR_CONSTANTS_LSLH
+#define DDR_CONSTANTS_LSLH
+
+// Game states
+integer DDR_STATE_SPLASH = 0;
+integer DDR_STATE_MAIN_MENU = 1;
+integer DDR_STATE_SONG_SELECT = 2;
+integer DDR_STATE_PLAYING = 3;
+integer DDR_STATE_SCORE = 4;
+
+// Lanes
+integer DDR_LANE_LEFT = 0;
+integer DDR_LANE_DOWN = 1;
+integer DDR_LANE_UP = 2;
+integer DDR_LANE_RIGHT = 3;
+integer DDR_LANE_COUNT = 4;
+
+// Note types
+integer DDR_NOTE_TAP = 1;
+integer DDR_NOTE_HOLD_HEAD = 2;
+
+// Note flags
+integer DDR_NOTE_FLAG_CHORD = 1;
+integer DDR_NOTE_FLAG_OFFBEAT = 2;
+integer DDR_NOTE_FLAG_RENDERED = 4; // runtime-only flag, not serialized
+
+// Judgements
+integer DDR_JUDGE_NONE = -1;
+integer DDR_JUDGE_PERFECT = 0;
+integer DDR_JUDGE_GREAT = 1;
+integer DDR_JUDGE_GOOD = 2;
+integer DDR_JUDGE_BOO = 3;
+integer DDR_JUDGE_MISS = 4;
+
+// Hold state
+integer DDR_HOLD_STATE_PENDING = 0;
+integer DDR_HOLD_STATE_ACTIVE = 1;
+integer DDR_HOLD_STATE_OK = 2;
+integer DDR_HOLD_STATE_NG = 3;
+
+// HTTP events
+integer DDR_HTTP_EVENT_NONE = 0;
+integer DDR_HTTP_EVENT_MANIFEST_OK = 1;
+integer DDR_HTTP_EVENT_MANIFEST_FAIL = -1;
+integer DDR_HTTP_EVENT_CHART_OK = 2;
+integer DDR_HTTP_EVENT_CHART_FAIL = -2;
+
+#endif
