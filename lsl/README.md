@@ -2,7 +2,9 @@
 
 Primary runtime scripts:
 - [sldr_game_main.lsl](/C:/Users/Michael/source/repos/sldr/lsl/core/sldr_game_main.lsl) (orchestrator: sit/session/UI/input permissions; reads play request from media URL)
-- [sldr_game_runtime.lsl](/C:/Users/Michael/source/repos/sldr/lsl/core/sldr_game_runtime.lsl) (chart fetch/parse/judge/render/score)
+- [sldr_game_runtime.lsl](/C:/Users/Michael/source/repos/sldr/lsl/core/sldr_game_runtime.lsl) (lightweight compatibility stub)
+- [sldr_game_engine.lsl](/C:/Users/Michael/source/repos/sldr/lsl/core/sldr_game_engine.lsl) (chart fetch/parse/judge/score)
+- [sldr_game_renderer.lsl](/C:/Users/Michael/source/repos/sldr/lsl/core/sldr_game_renderer.lsl) (chart fetch + arrow lane rendering)
 
 Included modules:
 - [ddr_state_machine.lslh](/C:/Users/Michael/source/repos/sldr/lsl/core/ddr_state_machine.lslh)
@@ -26,13 +28,15 @@ Test/utility scripts:
 
 ## Firestorm Preprocessor
 
-Both runtime scripts use `#include` paths relative to `lsl/core/`.
+All runtime scripts use `#include` paths relative to `lsl/core/`.
 
 Load/compile:
 1. compile [sldr_game_main.lsl](/C:/Users/Michael/source/repos/sldr/lsl/core/sldr_game_main.lsl) with Firestorm preprocessing enabled
 2. compile [sldr_game_runtime.lsl](/C:/Users/Michael/source/repos/sldr/lsl/core/sldr_game_runtime.lsl) with Firestorm preprocessing enabled
-3. ensure include files are available at their referenced relative paths
-4. ensure both are compiled as `Mono` (not LSO)
+3. compile [sldr_game_engine.lsl](/C:/Users/Michael/source/repos/sldr/lsl/core/sldr_game_engine.lsl) with Firestorm preprocessing enabled
+4. compile [sldr_game_renderer.lsl](/C:/Users/Michael/source/repos/sldr/lsl/core/sldr_game_renderer.lsl) with Firestorm preprocessing enabled
+5. ensure include files are available at their referenced relative paths
+6. ensure all scripts are compiled as `Mono` (not LSO)
 
 ## Arrow Slide Test
 
