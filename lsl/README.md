@@ -5,6 +5,7 @@ Primary runtime scripts:
 - [sldr_game_runtime.lsl](/C:/Users/Michael/source/repos/sldr/lsl/core/sldr_game_runtime.lsl) (lightweight compatibility stub)
 - [sldr_game_engine.lsl](/C:/Users/Michael/source/repos/sldr/lsl/core/sldr_game_engine.lsl) (chart fetch/parse/judge/score)
 - [sldr_game_renderer.lsl](/C:/Users/Michael/source/repos/sldr/lsl/core/sldr_game_renderer.lsl) (chart fetch + arrow lane rendering)
+- [sldr_game_fx.lsl](/C:/Users/Michael/source/repos/sldr/lsl/core/sldr_game_fx.lsl) (combo/judgement popups on dedicated prims)
 
 Included modules:
 - [ddr_state_machine.lslh](/C:/Users/Michael/source/repos/sldr/lsl/core/ddr_state_machine.lslh)
@@ -35,8 +36,9 @@ Load/compile:
 2. compile [sldr_game_runtime.lsl](/C:/Users/Michael/source/repos/sldr/lsl/core/sldr_game_runtime.lsl) with Firestorm preprocessing enabled
 3. compile [sldr_game_engine.lsl](/C:/Users/Michael/source/repos/sldr/lsl/core/sldr_game_engine.lsl) with Firestorm preprocessing enabled
 4. compile [sldr_game_renderer.lsl](/C:/Users/Michael/source/repos/sldr/lsl/core/sldr_game_renderer.lsl) with Firestorm preprocessing enabled
-5. ensure include files are available at their referenced relative paths
-6. ensure all scripts are compiled as `Mono` (not LSO)
+5. compile [sldr_game_fx.lsl](/C:/Users/Michael/source/repos/sldr/lsl/core/sldr_game_fx.lsl) with Firestorm preprocessing enabled
+6. ensure include files are available at their referenced relative paths
+7. ensure all scripts are compiled as `Mono` (not LSO)
 
 ## Arrow Slide Test
 

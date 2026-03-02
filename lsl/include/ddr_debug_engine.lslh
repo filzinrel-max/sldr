@@ -1,0 +1,54 @@
+#ifndef DDR_DEBUG_ENGINE_LSLH
+#define DDR_DEBUG_ENGINE_LSLH
+
+integer gDebugEnabled = DDR_DEBUG;
+
+integer ddrClampInt(integer value, integer minValue, integer maxValue)
+{
+    if (value < minValue)
+    {
+        return minValue;
+    }
+    if (value > maxValue)
+    {
+        return maxValue;
+    }
+    return value;
+}
+
+float ddrClampFloat(float value, float minValue, float maxValue)
+{
+    if (value < minValue)
+    {
+        return minValue;
+    }
+    if (value > maxValue)
+    {
+        return maxValue;
+    }
+    return value;
+}
+
+float ddrNow()
+{
+    return llGetTime();
+}
+
+integer ddrDebug(string channel, string message)
+{
+    if (!gDebugEnabled)
+    {
+        return FALSE;
+    }
+    llOwnerSay("[SLDR][" + channel + "] " + message);
+    return TRUE;
+}
+
+integer ddrDebugSet(integer enabled)
+{
+    gDebugEnabled = enabled;
+    llOwnerSay("[SLDR][DEBUG] " + (string)enabled);
+    return TRUE;
+}
+
+#endif

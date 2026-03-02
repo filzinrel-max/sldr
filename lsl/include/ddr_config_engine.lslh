@@ -1,0 +1,42 @@
+#ifndef DDR_CONFIG_ENGINE_LSLH
+#define DDR_CONFIG_ENGINE_LSLH
+
+// Lightweight config used by sldr_game_engine.lsl to reduce load-time memory.
+// Keep only values needed for chart judging/scoring control flow.
+
+#ifndef DDR_DEBUG
+#define DDR_DEBUG 1
+#endif
+
+// Runtime cadence
+float DDR_TICK_SECONDS = 0.05;
+float DDR_PLAY_START_DELAY = 0.75;
+float DDR_POST_SONG_GRACE_SECONDS = 1.25;
+
+// Render scheduling window (engine still uses this gate for judge timing start)
+float DDR_RENDER_LOOKAHEAD_SECONDS = 2.8;
+
+// Judgement windows (seconds)
+float DDR_WINDOW_PERFECT = 0.045;
+float DDR_WINDOW_GREAT = 0.090;
+float DDR_WINDOW_GOOD = 0.135;
+float DDR_WINDOW_BOO = 0.180;
+float DDR_WINDOW_MISS = 0.180;
+
+// Scoring weights
+integer DDR_POINTS_PERFECT = 3;
+integer DDR_POINTS_GREAT = 2;
+integer DDR_POINTS_GOOD = 1;
+integer DDR_POINTS_BOO = 0;
+integer DDR_POINTS_MISS = -4;
+integer DDR_POINTS_HOLD_OK = 2;
+integer DDR_POINTS_HOLD_NG = -2;
+
+// Grade thresholds (%)
+float DDR_GRADE_A = 93.0;
+float DDR_GRADE_B = 80.0;
+float DDR_GRADE_C = 65.0;
+float DDR_GRADE_D = 45.0;
+float DDR_GRADE_E = 30.0;
+
+#endif

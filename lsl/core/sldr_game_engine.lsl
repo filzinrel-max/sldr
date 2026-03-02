@@ -1,14 +1,30 @@
 //mono
 #include "../include/ddr_constants.lslh"
-#include "../include/ddr_config.lslh"
-#include "../include/ddr_debug.lslh"
+#include "../include/ddr_config_engine.lslh"
+#include "../include/ddr_debug_engine.lslh"
 #include "../include/ddr_link_messages.lslh"
 
 #include "ddr_chart_data_loader.lslh"
-#include "ddr_combo_feedback.lslh"
 #include "ddr_scoring.lslh"
-#include "ddr_judge_feedback.lslh"
 #include "ddr_judgement.lslh"
+
+// Feedback visuals are delegated to sldr_game_fx.lsl via link messages.
+integer ddrFxSend(integer code, string payload)
+{
+    llMessageLinked(LINK_SET, code, payload, NULL_KEY);
+    return TRUE;
+}
+
+integer ddrComboFeedbackInit() { return ddrFxSend(DDR_LM_FX_RESET, ""); }
+integer ddrComboFeedbackHide() { return ddrFxSend(DDR_LM_FX_HIDE_COMBO, ""); }
+integer ddrComboFeedbackTick() { return FALSE; }
+integer ddrComboFeedbackOnNoteJudge(integer judgement, integer comboValue) { return ddrFxSend(DDR_LM_FX_NOTE, (string)judgement + "|" + (string)comboValue); }
+integer ddrComboFeedbackOnHoldResult(integer holdState, integer comboValue) { return ddrFxSend(DDR_LM_FX_HOLD, (string)holdState + "|" + (string)comboValue); }
+integer ddrJudgeFeedbackInit() { return ddrFxSend(DDR_LM_FX_RESET, ""); }
+integer ddrJudgeFeedbackHide() { return ddrFxSend(DDR_LM_FX_HIDE_JUDGE, ""); }
+integer ddrJudgeFeedbackTick() { return FALSE; }
+integer ddrJudgeFeedbackShowJudge(integer judgement) { return ddrFxSend(DDR_LM_FX_JUDGE, (string)judgement); }
+integer ddrJudgeFeedbackShowHold(integer holdState) { return ddrFxSend(DDR_LM_FX_HOLD_JUDGE, (string)holdState); }
 
 integer gRuntimeActive = FALSE;
 integer gRuntimeLoading = FALSE;
@@ -69,7 +85,6 @@ integer ddrRuntimeEnsureSystemsReady()
     ddrComboFeedbackInit();
     ddrJudgeFeedbackInit();
     gRuntimeSystemsReady = TRUE;
-    ddrDebug("RUNTIME", "systems ready; free memory=" + (string)llGetFreeMemory());
     return TRUE;
 }
 
@@ -118,7 +133,6 @@ integer ddrRuntimeRequestChart()
     {
         return FALSE;
     }
-    ddrDebug("RUNTIME", "chart -> " + gRuntimeChartUrl + " (" + (string)gRuntimeChartRequestId + ")");
     return TRUE;
 }
 
@@ -283,7 +297,6 @@ integer ddrRuntimeBoot()
     gPendingHolds = 0;
     gLaneDown = [FALSE, FALSE, FALSE, FALSE];
     llSetTimerEvent(DDR_TICK_SECONDS);
-    ddrDebug("RUNTIME", "booted (deferred init); free memory=" + (string)llGetFreeMemory());
     return TRUE;
 }
 
