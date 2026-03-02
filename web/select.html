@@ -656,31 +656,99 @@
           SLDR.setText("error", text || "");
         }
 
+        function chartMapForSong(song) {
+          if (!song || typeof song !== "object") {
+            return null;
+          }
+          if (song.cj && typeof song.cj === "object") {
+            return song.cj;
+          }
+          if (song.chartJsonByDifficulty && typeof song.chartJsonByDifficulty === "object") {
+            return song.chartJsonByDifficulty;
+          }
+          return null;
+        }
+
+        function slugifyDifficulty(value) {
+          return String(value || "")
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "");
+        }
+
+        function guessChartPathForDifficulty(song, difficulty) {
+          if (!song || typeof song !== "object") {
+            return "";
+          }
+          const songId = typeof song.id === "string" ? song.id.trim() : "";
+          const difficultySlug = slugifyDifficulty(difficulty);
+          if (!songId || !difficultySlug) {
+            return "";
+          }
+          return `game-data/charts/${songId}/${difficultySlug}.chart.json`;
+        }
+
         function difficultyKeys(song) {
           if (!song || typeof song !== "object") {
             return [];
           }
-          if (song.cj && typeof song.cj === "object") {
-            return Object.keys(song.cj);
+          const chartMap = chartMapForSong(song);
+          if (chartMap) {
+            return Object.keys(chartMap);
           }
           if (song.d && typeof song.d === "object") {
             return Object.keys(song.d);
+          }
+          if (song.difficultyMeters && typeof song.difficultyMeters === "object") {
+            return Object.keys(song.difficultyMeters);
           }
           return [];
         }
 
         function chartPathForDifficulty(song, difficulty) {
-          if (!song || !song.cj || typeof song.cj !== "object") {
-            return "";
+          const chartMap = chartMapForSong(song);
+          if (chartMap) {
+            if (difficulty && typeof chartMap[difficulty] === "string" && chartMap[difficulty] !== "") {
+              return chartMap[difficulty];
+            }
+            if (difficulty) {
+              const requested = String(difficulty).toLowerCase();
+              const chartKeys = Object.keys(chartMap);
+              let i = 0;
+              for (; i < chartKeys.length; i += 1) {
+                const key = chartKeys[i];
+                if (String(key).toLowerCase() === requested) {
+                  const matched = chartMap[key];
+                  if (typeof matched === "string" && matched !== "") {
+                    return matched;
+                  }
+                }
+              }
+            }
+            const keys = Object.keys(chartMap);
+            let i = 0;
+            for (; i < keys.length; i += 1) {
+              const key = keys[i];
+              const firstPath = chartMap[key];
+              if (typeof firstPath === "string" && firstPath !== "") {
+                return firstPath;
+              }
+            }
           }
-          if (difficulty && song.cj[difficulty]) {
-            return song.cj[difficulty];
+
+          let guessed = guessChartPathForDifficulty(song, difficulty);
+          if (guessed) {
+            return guessed;
           }
-          const keys = Object.keys(song.cj);
-          if (keys.length <= 0) {
-            return "";
+
+          const difficulties = difficultyKeys(song);
+          if (difficulties.length > 0) {
+            guessed = guessChartPathForDifficulty(song, difficulties[0]);
+            if (guessed) {
+              return guessed;
+            }
           }
-          return song.cj[keys[0]];
+          return "";
         }
 
         function mediaPathForSong(song) {

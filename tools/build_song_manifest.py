@@ -26,6 +26,49 @@ from _songlib import (
 LSL_HTTP_BODY_LIMIT = 16384
 
 
+def discover_chart_json_map(
+    song_id: str,
+    project_root: Path,
+    difficulties: dict[str, int],
+) -> dict[str, str]:
+    chart_map: dict[str, str] = {}
+    chart_dir = (project_root / "game-data" / "charts" / song_id).resolve()
+    if not chart_dir.exists() or not chart_dir.is_dir():
+        return chart_map
+
+    chart_files = sorted(chart_dir.glob("*.chart.json"), key=lambda path: path.name.lower())
+    for chart_file in chart_files:
+        try:
+            chart_payload = json.loads(chart_file.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if not isinstance(chart_payload, dict):
+            continue
+
+        difficulty_raw = chart_payload.get("d")
+        if not isinstance(difficulty_raw, str):
+            continue
+
+        difficulty = difficulty_raw.strip()
+        if difficulty == "" or difficulty in chart_map:
+            continue
+
+        chart_map[difficulty] = relative_posix(chart_file.resolve(), project_root)
+
+    for difficulty in difficulties.keys():
+        if difficulty in chart_map:
+            continue
+        diff_slug = slugify(difficulty)
+        if diff_slug == "":
+            continue
+
+        guessed_file = chart_dir / f"{diff_slug}.chart.json"
+        if guessed_file.exists():
+            chart_map[difficulty] = relative_posix(guessed_file.resolve(), project_root)
+
+    return chart_map
+
+
 def build_song_record(song_dir: Path, project_root: Path, used_ids: set[str]) -> dict[str, Any] | None:
     sm_file = pick_preferred_file(song_dir, ".sm")
     if not sm_file:
@@ -98,6 +141,7 @@ def build_song_record(song_dir: Path, project_root: Path, used_ids: set[str]) ->
         for chart in charts
         if chart["difficulty"] and chart["meter"] is not None
     }
+    chart_json_map = discover_chart_json_map(song_id=song_id, project_root=project_root, difficulties=difficulties)
 
     try:
         offset_value = float(offset_raw) if offset_raw else 0.0
@@ -127,6 +171,7 @@ def build_song_record(song_dir: Path, project_root: Path, used_ids: set[str]) ->
         },
         "charts": charts,
         "difficultyMeters": difficulties,
+        "chartJsonByDifficulty": chart_json_map,
     }
 
 
@@ -158,12 +203,27 @@ def build_compact_manifest(full_manifest: dict[str, Any]) -> dict[str, Any]:
         if preferred_media == "":
             preferred_media = mp3_path
 
+        full_chart_map = song.get("chartJsonByDifficulty", {})
+        compact_chart_map: dict[str, str] = {}
+        if isinstance(full_chart_map, dict):
+            for difficulty, chart_path in full_chart_map.items():
+                if not isinstance(difficulty, str):
+                    continue
+                if not isinstance(chart_path, str):
+                    continue
+                difficulty = difficulty.strip()
+                chart_path = chart_path.strip()
+                if difficulty == "" or chart_path == "":
+                    continue
+                compact_chart_map[difficulty] = chart_path
+
         songs.append(
             {
                 "id": song["id"],
                 "t": song["title"],
                 "a": song["artist"],
                 "d": song["difficultyMeters"],
+                "cj": compact_chart_map,
                 "sm": song["paths"]["sm"],
                 "m4": mp4_path,
                 "m3": mp3_path,

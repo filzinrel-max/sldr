@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedUtc": "2026-03-02T18:34:15.787814+00:00",
+  "generatedUtc": "2026-03-02T20:15:24.270228+00:00",
   "songCount": 53,
   "songs": [
     {
@@ -90,8 +90,8 @@
       },
       "chartJsonByDifficulty": {
         "Easy": "game-data/charts/a-minute-extended-mix/easy.chart.json",
-        "Medium": "game-data/charts/a-minute-extended-mix/medium.chart.json",
-        "Hard": "game-data/charts/a-minute-extended-mix/hard.chart.json"
+        "Hard": "game-data/charts/a-minute-extended-mix/hard.chart.json",
+        "Medium": "game-data/charts/a-minute-extended-mix/medium.chart.json"
       }
     },
     {
@@ -340,8 +340,8 @@
       },
       "chartJsonByDifficulty": {
         "Easy": "game-data/charts/baby-love-me/easy.chart.json",
-        "Medium": "game-data/charts/baby-love-me/medium.chart.json",
-        "Hard": "game-data/charts/baby-love-me/hard.chart.json"
+        "Hard": "game-data/charts/baby-love-me/hard.chart.json",
+        "Medium": "game-data/charts/baby-love-me/medium.chart.json"
       }
     },
     {
@@ -475,10 +475,10 @@
       },
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/brek-down/beginner.chart.json",
+        "Challenge": "game-data/charts/brek-down/challenge.chart.json",
         "Easy": "game-data/charts/brek-down/easy.chart.json",
-        "Medium": "game-data/charts/brek-down/medium.chart.json",
         "Hard": "game-data/charts/brek-down/hard.chart.json",
-        "Challenge": "game-data/charts/brek-down/challenge.chart.json"
+        "Medium": "game-data/charts/brek-down/medium.chart.json"
       }
     },
     {
@@ -718,10 +718,10 @@
       },
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/burning-heat-3-option-mix/beginner.chart.json",
+        "Challenge": "game-data/charts/burning-heat-3-option-mix/challenge.chart.json",
         "Easy": "game-data/charts/burning-heat-3-option-mix/easy.chart.json",
-        "Medium": "game-data/charts/burning-heat-3-option-mix/medium.chart.json",
         "Hard": "game-data/charts/burning-heat-3-option-mix/hard.chart.json",
-        "Challenge": "game-data/charts/burning-heat-3-option-mix/challenge.chart.json"
+        "Medium": "game-data/charts/burning-heat-3-option-mix/medium.chart.json"
       }
     },
     {
@@ -836,8 +836,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/candy/beginner.chart.json",
         "Easy": "game-data/charts/candy/easy.chart.json",
-        "Medium": "game-data/charts/candy/medium.chart.json",
-        "Hard": "game-data/charts/candy/hard.chart.json"
+        "Hard": "game-data/charts/candy/hard.chart.json",
+        "Medium": "game-data/charts/candy/medium.chart.json"
       }
     },
     {
@@ -1024,10 +1024,10 @@
       },
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/d2r/beginner.chart.json",
+        "Challenge": "game-data/charts/d2r/challenge.chart.json",
         "Easy": "game-data/charts/d2r/easy.chart.json",
-        "Medium": "game-data/charts/d2r/medium.chart.json",
         "Hard": "game-data/charts/d2r/hard.chart.json",
-        "Challenge": "game-data/charts/d2r/challenge.chart.json"
+        "Medium": "game-data/charts/d2r/medium.chart.json"
       }
     },
     {
@@ -1142,8 +1142,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/destiny/beginner.chart.json",
         "Easy": "game-data/charts/destiny/easy.chart.json",
-        "Medium": "game-data/charts/destiny/medium.chart.json",
-        "Hard": "game-data/charts/destiny/hard.chart.json"
+        "Hard": "game-data/charts/destiny/hard.chart.json",
+        "Medium": "game-data/charts/destiny/medium.chart.json"
       }
     },
     {
@@ -1254,8 +1254,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/dive-to-the-night/beginner.chart.json",
         "Easy": "game-data/charts/dive-to-the-night/easy.chart.json",
-        "Medium": "game-data/charts/dive-to-the-night/medium.chart.json",
-        "Hard": "game-data/charts/dive-to-the-night/hard.chart.json"
+        "Hard": "game-data/charts/dive-to-the-night/hard.chart.json",
+        "Medium": "game-data/charts/dive-to-the-night/medium.chart.json"
       }
     },
     {
@@ -1370,8 +1370,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/drifting-away/beginner.chart.json",
         "Easy": "game-data/charts/drifting-away/easy.chart.json",
-        "Medium": "game-data/charts/drifting-away/medium.chart.json",
-        "Hard": "game-data/charts/drifting-away/hard.chart.json"
+        "Hard": "game-data/charts/drifting-away/hard.chart.json",
+        "Medium": "game-data/charts/drifting-away/medium.chart.json"
       }
     },
     {
@@ -1649,8 +1649,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/ever-snow/beginner.chart.json",
         "Easy": "game-data/charts/ever-snow/easy.chart.json",
-        "Medium": "game-data/charts/ever-snow/medium.chart.json",
-        "Hard": "game-data/charts/ever-snow/hard.chart.json"
+        "Hard": "game-data/charts/ever-snow/hard.chart.json",
+        "Medium": "game-data/charts/ever-snow/medium.chart.json"
       }
     },
     {
@@ -1765,8 +1765,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/fantasy/beginner.chart.json",
         "Easy": "game-data/charts/fantasy/easy.chart.json",
-        "Medium": "game-data/charts/fantasy/medium.chart.json",
-        "Hard": "game-data/charts/fantasy/hard.chart.json"
+        "Hard": "game-data/charts/fantasy/hard.chart.json",
+        "Medium": "game-data/charts/fantasy/medium.chart.json"
       }
     },
     {
@@ -1983,8 +1983,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/i-feel/beginner.chart.json",
         "Easy": "game-data/charts/i-feel/easy.chart.json",
-        "Medium": "game-data/charts/i-feel/medium.chart.json",
-        "Hard": "game-data/charts/i-feel/hard.chart.json"
+        "Hard": "game-data/charts/i-feel/hard.chart.json",
+        "Medium": "game-data/charts/i-feel/medium.chart.json"
       }
     },
     {
@@ -2111,8 +2111,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/it-s-raining-men-almighty-mix/beginner.chart.json",
         "Easy": "game-data/charts/it-s-raining-men-almighty-mix/easy.chart.json",
-        "Medium": "game-data/charts/it-s-raining-men-almighty-mix/medium.chart.json",
-        "Hard": "game-data/charts/it-s-raining-men-almighty-mix/hard.chart.json"
+        "Hard": "game-data/charts/it-s-raining-men-almighty-mix/hard.chart.json",
+        "Medium": "game-data/charts/it-s-raining-men-almighty-mix/medium.chart.json"
       }
     },
     {
@@ -2286,10 +2286,10 @@
       },
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/song/beginner.chart.json",
+        "Challenge": "game-data/charts/song/challenge.chart.json",
         "Easy": "game-data/charts/song/easy.chart.json",
-        "Medium": "game-data/charts/song/medium.chart.json",
         "Hard": "game-data/charts/song/hard.chart.json",
-        "Challenge": "game-data/charts/song/challenge.chart.json"
+        "Medium": "game-data/charts/song/medium.chart.json"
       }
     },
     {
@@ -2404,8 +2404,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/little-boy-boy-on-boy-mix/beginner.chart.json",
         "Easy": "game-data/charts/little-boy-boy-on-boy-mix/easy.chart.json",
-        "Medium": "game-data/charts/little-boy-boy-on-boy-mix/medium.chart.json",
-        "Hard": "game-data/charts/little-boy-boy-on-boy-mix/hard.chart.json"
+        "Hard": "game-data/charts/little-boy-boy-on-boy-mix/hard.chart.json",
+        "Medium": "game-data/charts/little-boy-boy-on-boy-mix/medium.chart.json"
       }
     },
     {
@@ -2520,8 +2520,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/living-in-america/beginner.chart.json",
         "Easy": "game-data/charts/living-in-america/easy.chart.json",
-        "Medium": "game-data/charts/living-in-america/medium.chart.json",
-        "Hard": "game-data/charts/living-in-america/hard.chart.json"
+        "Hard": "game-data/charts/living-in-america/hard.chart.json",
+        "Medium": "game-data/charts/living-in-america/medium.chart.json"
       }
     },
     {
@@ -2636,8 +2636,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/long-train-runnin/beginner.chart.json",
         "Easy": "game-data/charts/long-train-runnin/easy.chart.json",
-        "Medium": "game-data/charts/long-train-runnin/medium.chart.json",
-        "Hard": "game-data/charts/long-train-runnin/hard.chart.json"
+        "Hard": "game-data/charts/long-train-runnin/hard.chart.json",
+        "Medium": "game-data/charts/long-train-runnin/medium.chart.json"
       }
     },
     {
@@ -2752,8 +2752,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/look-at-us-daddy-dj-remix/beginner.chart.json",
         "Easy": "game-data/charts/look-at-us-daddy-dj-remix/easy.chart.json",
-        "Medium": "game-data/charts/look-at-us-daddy-dj-remix/medium.chart.json",
-        "Hard": "game-data/charts/look-at-us-daddy-dj-remix/hard.chart.json"
+        "Hard": "game-data/charts/look-at-us-daddy-dj-remix/hard.chart.json",
+        "Medium": "game-data/charts/look-at-us-daddy-dj-remix/medium.chart.json"
       }
     },
     {
@@ -2921,8 +2921,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/maximum-overdrive-kc-club-mix/beginner.chart.json",
         "Easy": "game-data/charts/maximum-overdrive-kc-club-mix/easy.chart.json",
-        "Medium": "game-data/charts/maximum-overdrive-kc-club-mix/medium.chart.json",
-        "Hard": "game-data/charts/maximum-overdrive-kc-club-mix/hard.chart.json"
+        "Hard": "game-data/charts/maximum-overdrive-kc-club-mix/hard.chart.json",
+        "Medium": "game-data/charts/maximum-overdrive-kc-club-mix/medium.chart.json"
       }
     },
     {
@@ -3069,8 +3069,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/maxx-unlimited/beginner.chart.json",
         "Easy": "game-data/charts/maxx-unlimited/easy.chart.json",
-        "Medium": "game-data/charts/maxx-unlimited/medium.chart.json",
-        "Hard": "game-data/charts/maxx-unlimited/hard.chart.json"
+        "Hard": "game-data/charts/maxx-unlimited/hard.chart.json",
+        "Medium": "game-data/charts/maxx-unlimited/medium.chart.json"
       }
     },
     {
@@ -3192,8 +3192,8 @@
       },
       "chartJsonByDifficulty": {
         "Easy": "game-data/charts/more-than-i-needed-to-know/easy.chart.json",
-        "Medium": "game-data/charts/more-than-i-needed-to-know/medium.chart.json",
-        "Hard": "game-data/charts/more-than-i-needed-to-know/hard.chart.json"
+        "Hard": "game-data/charts/more-than-i-needed-to-know/hard.chart.json",
+        "Medium": "game-data/charts/more-than-i-needed-to-know/medium.chart.json"
       }
     },
     {
@@ -3340,8 +3340,8 @@
       },
       "chartJsonByDifficulty": {
         "Easy": "game-data/charts/nothing-gonna-stop-dance-mania-mix/easy.chart.json",
-        "Medium": "game-data/charts/nothing-gonna-stop-dance-mania-mix/medium.chart.json",
-        "Hard": "game-data/charts/nothing-gonna-stop-dance-mania-mix/hard.chart.json"
+        "Hard": "game-data/charts/nothing-gonna-stop-dance-mania-mix/hard.chart.json",
+        "Medium": "game-data/charts/nothing-gonna-stop-dance-mania-mix/medium.chart.json"
       }
     },
     {
@@ -3456,8 +3456,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/rain-of-sorrow/beginner.chart.json",
         "Easy": "game-data/charts/rain-of-sorrow/easy.chart.json",
-        "Medium": "game-data/charts/rain-of-sorrow/medium.chart.json",
-        "Hard": "game-data/charts/rain-of-sorrow/hard.chart.json"
+        "Hard": "game-data/charts/rain-of-sorrow/hard.chart.json",
+        "Medium": "game-data/charts/rain-of-sorrow/medium.chart.json"
       }
     },
     {
@@ -3572,8 +3572,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/secret-rendez-vous/beginner.chart.json",
         "Easy": "game-data/charts/secret-rendez-vous/easy.chart.json",
-        "Medium": "game-data/charts/secret-rendez-vous/medium.chart.json",
-        "Hard": "game-data/charts/secret-rendez-vous/hard.chart.json"
+        "Hard": "game-data/charts/secret-rendez-vous/hard.chart.json",
+        "Medium": "game-data/charts/secret-rendez-vous/medium.chart.json"
       }
     },
     {
@@ -3769,8 +3769,8 @@
       },
       "chartJsonByDifficulty": {
         "Easy": "game-data/charts/so-fabulous-so-fierce-freak-out/easy.chart.json",
-        "Medium": "game-data/charts/so-fabulous-so-fierce-freak-out/medium.chart.json",
-        "Hard": "game-data/charts/so-fabulous-so-fierce-freak-out/hard.chart.json"
+        "Hard": "game-data/charts/so-fabulous-so-fierce-freak-out/hard.chart.json",
+        "Medium": "game-data/charts/so-fabulous-so-fierce-freak-out/medium.chart.json"
       }
     },
     {
@@ -3885,8 +3885,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/spin-the-disc/beginner.chart.json",
         "Easy": "game-data/charts/spin-the-disc/easy.chart.json",
-        "Medium": "game-data/charts/spin-the-disc/medium.chart.json",
-        "Hard": "game-data/charts/spin-the-disc/hard.chart.json"
+        "Hard": "game-data/charts/spin-the-disc/hard.chart.json",
+        "Medium": "game-data/charts/spin-the-disc/medium.chart.json"
       }
     },
     {
@@ -3980,8 +3980,8 @@
       },
       "chartJsonByDifficulty": {
         "Easy": "game-data/charts/stay/easy.chart.json",
-        "Medium": "game-data/charts/stay/medium.chart.json",
-        "Hard": "game-data/charts/stay/hard.chart.json"
+        "Hard": "game-data/charts/stay/hard.chart.json",
+        "Medium": "game-data/charts/stay/medium.chart.json"
       }
     },
     {
@@ -4206,8 +4206,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/sweet-sweet-magic/beginner.chart.json",
         "Easy": "game-data/charts/sweet-sweet-magic/easy.chart.json",
-        "Medium": "game-data/charts/sweet-sweet-magic/medium.chart.json",
-        "Hard": "game-data/charts/sweet-sweet-magic/hard.chart.json"
+        "Hard": "game-data/charts/sweet-sweet-magic/hard.chart.json",
+        "Medium": "game-data/charts/sweet-sweet-magic/medium.chart.json"
       }
     },
     {
@@ -4398,8 +4398,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/the-reflex/beginner.chart.json",
         "Easy": "game-data/charts/the-reflex/easy.chart.json",
-        "Medium": "game-data/charts/the-reflex/medium.chart.json",
-        "Hard": "game-data/charts/the-reflex/hard.chart.json"
+        "Hard": "game-data/charts/the-reflex/hard.chart.json",
+        "Medium": "game-data/charts/the-reflex/medium.chart.json"
       }
     },
     {
@@ -4514,8 +4514,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/the-whistle-song-blow-my-whistle-bitch/beginner.chart.json",
         "Easy": "game-data/charts/the-whistle-song-blow-my-whistle-bitch/easy.chart.json",
-        "Medium": "game-data/charts/the-whistle-song-blow-my-whistle-bitch/medium.chart.json",
-        "Hard": "game-data/charts/the-whistle-song-blow-my-whistle-bitch/hard.chart.json"
+        "Hard": "game-data/charts/the-whistle-song-blow-my-whistle-bitch/hard.chart.json",
+        "Medium": "game-data/charts/the-whistle-song-blow-my-whistle-bitch/medium.chart.json"
       }
     },
     {
@@ -4626,8 +4626,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/there-you-ll-be/beginner.chart.json",
         "Easy": "game-data/charts/there-you-ll-be/easy.chart.json",
-        "Medium": "game-data/charts/there-you-ll-be/medium.chart.json",
-        "Hard": "game-data/charts/there-you-ll-be/hard.chart.json"
+        "Hard": "game-data/charts/there-you-ll-be/hard.chart.json",
+        "Medium": "game-data/charts/there-you-ll-be/medium.chart.json"
       }
     },
     {
@@ -4721,8 +4721,8 @@
       },
       "chartJsonByDifficulty": {
         "Easy": "game-data/charts/trance-de-janeiro-samba-de-janeiro-2002-epic-vocal-remix/easy.chart.json",
-        "Medium": "game-data/charts/trance-de-janeiro-samba-de-janeiro-2002-epic-vocal-remix/medium.chart.json",
-        "Hard": "game-data/charts/trance-de-janeiro-samba-de-janeiro-2002-epic-vocal-remix/hard.chart.json"
+        "Hard": "game-data/charts/trance-de-janeiro-samba-de-janeiro-2002-epic-vocal-remix/hard.chart.json",
+        "Medium": "game-data/charts/trance-de-janeiro-samba-de-janeiro-2002-epic-vocal-remix/medium.chart.json"
       }
     },
     {
@@ -4857,8 +4857,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/tsugaru/beginner.chart.json",
         "Easy": "game-data/charts/tsugaru/easy.chart.json",
-        "Medium": "game-data/charts/tsugaru/medium.chart.json",
-        "Hard": "game-data/charts/tsugaru/hard.chart.json"
+        "Hard": "game-data/charts/tsugaru/hard.chart.json",
+        "Medium": "game-data/charts/tsugaru/medium.chart.json"
       }
     },
     {
@@ -5046,8 +5046,8 @@
       "chartJsonByDifficulty": {
         "Beginner": "game-data/charts/waka-laka/beginner.chart.json",
         "Easy": "game-data/charts/waka-laka/easy.chart.json",
-        "Medium": "game-data/charts/waka-laka/medium.chart.json",
-        "Hard": "game-data/charts/waka-laka/hard.chart.json"
+        "Hard": "game-data/charts/waka-laka/hard.chart.json",
+        "Medium": "game-data/charts/waka-laka/medium.chart.json"
       }
     },
     {
