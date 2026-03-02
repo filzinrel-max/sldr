@@ -70,10 +70,20 @@
           if (!mediaParam) {
             return "";
           }
+          const raw = String(mediaParam).trim();
+          if (!raw) {
+            return "";
+          }
           try {
-            return new URL(mediaParam, window.location.href).toString();
+            if (/^(https?:)?\/\//i.test(raw) || raw.startsWith("data:") || raw.startsWith("blob:")) {
+              return raw;
+            }
+
+            const appRoot = new URL("../", window.location.href);
+            const normalizedPath = raw.replace(/^\/+/, "").replace(/^\.\//, "");
+            return new URL(normalizedPath, appRoot).toString();
           } catch (_err) {
-            return mediaParam;
+            return raw;
           }
         }
 
