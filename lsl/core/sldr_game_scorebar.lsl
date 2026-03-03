@@ -97,7 +97,10 @@ integer ddrScorebarSetPercent(float percent)
             PRIM_MEDIA_CURRENT_URL, url,
             PRIM_MEDIA_HOME_URL, url,
             PRIM_MEDIA_AUTO_PLAY, TRUE,
-            PRIM_MEDIA_AUTO_SCALE, TRUE
+            PRIM_MEDIA_AUTO_SCALE, TRUE,
+            PRIM_MEDIA_CONTROLS, DDR_SCOREBAR_MEDIA_CONTROLS,
+            PRIM_MEDIA_PERMS_INTERACT, DDR_SCOREBAR_MEDIA_PERMS_INTERACT,
+            PRIM_MEDIA_PERMS_CONTROL, DDR_SCOREBAR_MEDIA_PERMS_CONTROL
         ]
     );
     gScorebarLastPercent = clamped;
@@ -122,6 +125,7 @@ integer ddrScorebarStart()
     }
     gScorebarActive = TRUE;
     gScorebarLastPercent = -1.0;
+    ddrScorebarSetPercent(0.0);
     llSetTimerEvent(DDR_SCOREBAR_UPDATE_SECONDS);
     ddrScorebarRequestStatus();
     return TRUE;
@@ -192,7 +196,7 @@ default
             ddrScorebarStart();
             return;
         }
-        if (num == DDR_LM_MAIN_FAIL || num == DDR_LM_MAIN_COMPLETE || num == DDR_LM_MAIN_SCORE_DEPLETED)
+        if (num == DDR_LM_MAIN_FAIL || num == DDR_LM_MAIN_COMPLETE)
         {
             ddrScorebarStop();
             return;

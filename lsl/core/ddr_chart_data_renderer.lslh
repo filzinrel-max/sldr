@@ -1,0 +1,101 @@
+#ifndef DDR_CHART_DATA_RENDERER_LSLH
+#define DDR_CHART_DATA_RENDERER_LSLH
+
+// Renderer-only chart reader.
+// Chart note entries are produced by sldr_game_chart_loader.lsl and addressed by seq prefix.
+
+float gChartDurationSeconds = 0.0;
+integer gChartTotalNotes = 0;
+integer gChartStoreSeq = 0;
+string gChartStorePrefix = "";
+
+integer gRenderNoteCacheIndex = -1;
+integer gRenderNoteCachePacked = 0;
+
+#define DDR_PACK_TIME_BIAS 32768
+
+integer ddrPackTimeDecode(integer encodedTime)
+{
+    return encodedTime - DDR_PACK_TIME_BIAS;
+}
+
+string ddrChartPrefixForSeq(integer seq)
+{
+    return "e" + (string)seq + ":";
+}
+
+string ddrChartNoteKey(integer noteIndex)
+{
+    return gChartStorePrefix + "n" + (string)noteIndex;
+}
+
+integer ddrChartDetach()
+{
+    gChartDurationSeconds = 0.0;
+    gChartTotalNotes = 0;
+    gChartStoreSeq = 0;
+    gChartStorePrefix = "";
+    gRenderNoteCacheIndex = -1;
+    gRenderNoteCachePacked = 0;
+    return TRUE;
+}
+
+integer ddrChartSetLoaded(integer seq, string difficulty, integer meter, float duration, integer noteCount, integer holdCount)
+{
+    if (seq <= 0)
+    {
+        return FALSE;
+    }
+    if (noteCount < 0)
+    {
+        noteCount = 0;
+    }
+    if (duration < 0.0)
+    {
+        duration = 0.0;
+    }
+
+    gChartStoreSeq = seq;
+    gChartStorePrefix = ddrChartPrefixForSeq(seq);
+    gChartDurationSeconds = duration;
+    gChartTotalNotes = noteCount;
+    gRenderNoteCacheIndex = -1;
+    gRenderNoteCachePacked = 0;
+
+    // Unused in renderer, kept for interface compatibility.
+    return TRUE;
+}
+
+integer ddrChartNoteCount()
+{
+    return gChartTotalNotes;
+}
+
+integer ddrNotePackedAt(integer noteIndex)
+{
+    if (noteIndex == gRenderNoteCacheIndex)
+    {
+        return gRenderNoteCachePacked;
+    }
+    if (noteIndex < 0 || noteIndex >= gChartTotalNotes)
+    {
+        return 0;
+    }
+
+    integer packed = (integer)llLinksetDataRead(ddrChartNoteKey(noteIndex));
+    gRenderNoteCacheIndex = noteIndex;
+    gRenderNoteCachePacked = packed;
+    return packed;
+}
+
+integer ddrNoteTimeCsAt(integer noteIndex)
+{
+    return ddrPackTimeDecode(ddrNotePackedAt(noteIndex) & 65535);
+}
+
+integer ddrNoteLaneAt(integer noteIndex)
+{
+    return (ddrNotePackedAt(noteIndex) >> 16) & 3;
+}
+
+#endif

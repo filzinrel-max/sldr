@@ -34,7 +34,7 @@ string gSongArtist = "";
 string gSongDifficulty = "";
 list gSongRadar = [0.0, 0.0, 0.0, 0.0, 0.0];
 float gLifeGauge = DDR_GAUGE_START;
-integer gLifeDepletedSent = FALSE;
+integer gLifeForceFailGrade = FALSE;
 
 string ddrJsonField(string payload, string fieldName)
 {
@@ -68,7 +68,7 @@ integer ddrScoreSvcResetCounters()
     gMetricOffbeatTotalNotes = 0;
     gMetricOffbeatHitNotes = 0;
     gLifeGauge = DDR_GAUGE_START;
-    gLifeDepletedSent = FALSE;
+    gLifeForceFailGrade = FALSE;
     return TRUE;
 }
 
@@ -174,12 +174,13 @@ float ddrScoreSvcGaugeDeltaForJudge(integer judgement)
 
 integer ddrScoreSvcApplyGaugeDelta(float delta)
 {
-    gLifeGauge = ddrClampFloat(gLifeGauge + delta, 0.0, DDR_GAUGE_MAX);
-    if (!gLifeDepletedSent && gLifeGauge <= 0.0)
+    float rawGauge = gLifeGauge + delta;
+    if (!gLifeForceFailGrade && rawGauge < 0.0)
     {
-        gLifeDepletedSent = TRUE;
-        llMessageLinked(LINK_SET, DDR_LM_MAIN_SCORE_DEPLETED, "", NULL_KEY);
+        // Do not fail the song immediately; latch grade to F for results.
+        gLifeForceFailGrade = TRUE;
     }
+    gLifeGauge = ddrClampFloat(rawGauge, 0.0, DDR_GAUGE_MAX);
     return TRUE;
 }
 
@@ -268,6 +269,11 @@ float ddrScoreSvcPercent()
 
 string ddrScoreSvcGrade()
 {
+    if (gLifeForceFailGrade)
+    {
+        return "F";
+    }
+
     float pct = ddrScoreSvcPercent();
     if (pct >= DDR_GRADE_A)
     {
@@ -320,37 +326,67 @@ list ddrScoreSvcPerformanceRadar()
     return [stream, voltage, air, freeze, chaos];
 }
 
-string ddrScoreSvcBuildPayload()
+string ddrScoreSvcCsvFromList(list values)
 {
-    string payload = "{}";
-    payload = llJsonSetValue(payload, ["songId"], gSongId);
-    payload = llJsonSetValue(payload, ["title"], gSongTitle);
-    payload = llJsonSetValue(payload, ["artist"], gSongArtist);
-    payload = llJsonSetValue(payload, ["difficulty"], gSongDifficulty);
-    payload = llJsonSetValue(payload, ["meter"], (string)gChartMeter);
-    payload = llJsonSetValue(payload, ["score"], (string)gScorePoints);
-    payload = llJsonSetValue(payload, ["percent"], (string)ddrScoreSvcPercent());
-    payload = llJsonSetValue(payload, ["life"], (string)ddrScoreSvcGaugePercent());
-    payload = llJsonSetValue(payload, ["grade"], ddrScoreSvcGrade());
-    payload = llJsonSetValue(payload, ["comboMax"], (string)gMaxCombo);
+    integer count = llGetListLength(values);
+    if (count <= 0)
+    {
+        return "0,0,0,0,0";
+    }
 
-    payload = llJsonSetValue(payload, ["judgements", "perfect"], (string)gJudgePerfect);
-    payload = llJsonSetValue(payload, ["judgements", "great"], (string)gJudgeGreat);
-    payload = llJsonSetValue(payload, ["judgements", "good"], (string)gJudgeGood);
-    payload = llJsonSetValue(payload, ["judgements", "boo"], (string)gJudgeBoo);
-    payload = llJsonSetValue(payload, ["judgements", "miss"], (string)gJudgeMiss);
+    string out = "";
+    integer i = 0;
+    for (; i < count; ++i)
+    {
+        if (i > 0)
+        {
+            out += ",";
+        }
+        out += (string)((float)llList2String(values, i));
+    }
+    return out;
+}
 
-    payload = llJsonSetValue(payload, ["holds", "ok"], (string)gHoldOk);
-    payload = llJsonSetValue(payload, ["holds", "ng"], (string)gHoldNg);
+string ddrScoreSvcAppendQuery(string query, string keyName, string value)
+{
+    if (query != "")
+    {
+        query += "&";
+    }
+    return query + keyName + "=" + llEscapeURL(value);
+}
 
-    payload = llJsonSetValue(payload, ["radar", "song"], llList2Json(JSON_ARRAY, gSongRadar));
-    payload = llJsonSetValue(payload, ["radar", "performance"], llList2Json(JSON_ARRAY, ddrScoreSvcPerformanceRadar()));
-    return payload;
+string ddrScoreSvcBuildCompactQuery()
+{
+    string query = "";
+    query = ddrScoreSvcAppendQuery(query, "sid", gSongId);
+    query = ddrScoreSvcAppendQuery(query, "title", gSongTitle);
+    query = ddrScoreSvcAppendQuery(query, "artist", gSongArtist);
+    query = ddrScoreSvcAppendQuery(query, "diff", gSongDifficulty);
+    query = ddrScoreSvcAppendQuery(query, "meter", (string)gChartMeter);
+    query = ddrScoreSvcAppendQuery(query, "score", (string)gScorePoints);
+    query = ddrScoreSvcAppendQuery(query, "pct", (string)ddrScoreSvcPercent());
+    query = ddrScoreSvcAppendQuery(query, "grade", ddrScoreSvcGrade());
+    query = ddrScoreSvcAppendQuery(query, "combo", (string)gMaxCombo);
+
+    query = ddrScoreSvcAppendQuery(query, "jp", (string)gJudgePerfect);
+    query = ddrScoreSvcAppendQuery(query, "jg", (string)gJudgeGreat);
+    query = ddrScoreSvcAppendQuery(query, "jd", (string)gJudgeGood);
+    query = ddrScoreSvcAppendQuery(query, "jb", (string)gJudgeBoo);
+    query = ddrScoreSvcAppendQuery(query, "jm", (string)gJudgeMiss);
+
+    query = ddrScoreSvcAppendQuery(query, "hok", (string)gHoldOk);
+    query = ddrScoreSvcAppendQuery(query, "hng", (string)gHoldNg);
+
+    query = ddrScoreSvcAppendQuery(query, "rs", ddrScoreSvcCsvFromList(gSongRadar));
+    query = ddrScoreSvcAppendQuery(query, "rp", ddrScoreSvcCsvFromList(ddrScoreSvcPerformanceRadar()));
+    query = ddrScoreSvcAppendQuery(query, "ts", (string)llGetUnixTime());
+    return query;
 }
 
 integer ddrScoreSvcFinish()
 {
-    llMessageLinked(LINK_SET, DDR_LM_MAIN_COMPLETE, ddrScoreSvcBuildPayload(), NULL_KEY);
+    llMessageLinked(LINK_SET, DDR_LM_MAIN_COMPLETE, ddrScoreSvcBuildCompactQuery(), NULL_KEY);
     return TRUE;
 }
 

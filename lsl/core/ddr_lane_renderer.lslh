@@ -341,18 +341,37 @@ integer ddrRendererInit()
 
 integer ddrRendererReset()
 {
-    ddrRendererDiscoverSlots();
     gLaneNextSlotStart = [0, 0, 0, 0];
     gRendererNextSpawnIndex = 0;
 
-    integer lane = 0;
-    for (; lane < DDR_LANE_COUNT; ++lane)
+    integer totalSlots = DDR_LANE_COUNT * DDR_ARROW_SLOTS_PER_LANE;
+    integer i = 0;
+    for (; i < totalSlots; ++i)
     {
-        integer slot = 0;
-        for (; slot < DDR_ARROW_SLOTS_PER_LANE; ++slot)
+        integer linkNum = llList2Integer(gLaneSlotLinks, i);
+        if (linkNum > 0)
         {
-            ddrRendererStopSlot(lane, slot);
+            llSetLinkTextureAnim(linkNum, 0, DDR_ARROW_FACE, 0, 0, 0.0, 0.0, 0.0);
+            llSetLinkPrimitiveParamsFast(
+                linkNum,
+                [
+                    PRIM_COLOR, DDR_ARROW_FACE, DDR_ARROW_TINT, 0.0
+                ]
+            );
         }
+    }
+
+    gLaneSlotActive = [];
+    gLaneSlotNotePos = [];
+    gLaneSlotEndTimes = [];
+    gLaneSlotFrozen = [];
+    i = 0;
+    for (; i < totalSlots; ++i)
+    {
+        gLaneSlotActive += [FALSE];
+        gLaneSlotNotePos += [-1];
+        gLaneSlotEndTimes += [0.0];
+        gLaneSlotFrozen += [FALSE];
     }
 
     return TRUE;

@@ -20,6 +20,9 @@ string DDR_PATH_SCORE = "/web/score.html";
 
 // Prim/media settings
 integer DDR_MEDIA_FACE = 7;
+integer DDR_MEDIA_CONTROLS = PRIM_MEDIA_CONTROLS_MINI;
+integer DDR_MEDIA_PERMS_INTERACT = PRIM_MEDIA_PERM_ANYONE;
+integer DDR_MEDIA_PERMS_CONTROL = PRIM_MEDIA_PERM_NONE;
 
 string DDR_SIT_TEXT = "Dance";
 vector DDR_SIT_TARGET_OFFSET = <-1.75, 0.0, -2>;
