@@ -49,6 +49,12 @@ These pages are loaded on the media texture by `lsl/core/sldr_game_main.lsl`.
 `score.html`
 - `result` (escaped JSON payload from LSL)
 
+`scorebar.html`
+- `percent` (score percent from `0` to `100`; also accepts `0.0` to `1.0`)
+- behavior:
+  - teal/light-teal animated gradient by default
+  - at `100%`, switches to animated orange/yellow gradient
+
 ## Local Chart Tester
 
 Use `chart-tester.html` to validate condensed chunked charts locally.

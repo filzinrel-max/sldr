@@ -19,6 +19,12 @@ string gPlayingMediaPath = "";
 integer gDirectionHeldMask = 0;
 vector gSitTargetOffset = <0.0, 0.0, 0.0>;
 rotation gSitTargetRot = ZERO_ROTATION;
+integer gScorebarLink = 0;
+integer gScorebarEnabled = FALSE;
+integer gScorebarVisible = FALSE;
+float gScorebarNextStatusAt = 0.0;
+float gScorebarLastPercent = -1.0;
+integer gSongFailRequested = FALSE;
 
 integer ddrIsOwner(key agentId)
 {
@@ -49,8 +55,182 @@ integer ddrSetupSitTarget()
     return TRUE;
 }
 
+integer ddrFindLinkByName(string targetName)
+{
+    string wanted = llToLower(llStringTrim(targetName, STRING_TRIM));
+    if (wanted == "")
+    {
+        return 0;
+    }
+
+    integer linkNum = 1;
+    integer primCount = llGetNumberOfPrims();
+    for (; linkNum <= primCount; ++linkNum)
+    {
+        string current = llToLower(llStringTrim(llGetLinkName(linkNum), STRING_TRIM));
+        if (current == wanted)
+        {
+            return linkNum;
+        }
+    }
+    return 0;
+}
+
+integer ddrScorebarResolveLink()
+{
+    integer byName = ddrFindLinkByName(DDR_SCOREBAR_PRIM_NAME);
+    if (byName > 0)
+    {
+        return byName;
+    }
+
+    if (DDR_SCOREBAR_LINK > 0 && DDR_SCOREBAR_LINK <= llGetNumberOfPrims())
+    {
+        return DDR_SCOREBAR_LINK;
+    }
+    return 0;
+}
+
+integer ddrScorebarSetVisible(integer visible)
+{
+    if (!gScorebarEnabled)
+    {
+        return FALSE;
+    }
+
+    float alpha = 0.0;
+    if (visible)
+    {
+        alpha = 1.0;
+    }
+
+    llSetLinkPrimitiveParamsFast(
+        gScorebarLink,
+        [
+            PRIM_COLOR, DDR_SCOREBAR_FACE, <1.0, 1.0, 1.0>, alpha
+        ]
+    );
+    gScorebarVisible = visible;
+    return TRUE;
+}
+
+string ddrScorebarUrl(float percent)
+{
+    float clamped = ddrClampFloat(percent, 0.0, 100.0);
+    string query = "percent=" + llEscapeURL((string)clamped) + "&ts=" + (string)llGetUnixTime();
+    return ddrUrlWithQuery(ddrJoinUrl(DDR_BASE_URL, DDR_PATH_SCOREBAR), query);
+}
+
+integer ddrScorebarSetPercent(float percent)
+{
+    if (!gScorebarEnabled)
+    {
+        return FALSE;
+    }
+
+    float clamped = ddrClampFloat(percent, 0.0, 100.0);
+    if (!gScorebarVisible)
+    {
+        ddrScorebarSetVisible(TRUE);
+    }
+
+    string url = ddrScorebarUrl(clamped);
+    llSetLinkMedia(
+        gScorebarLink,
+        DDR_SCOREBAR_FACE,
+        [
+            PRIM_MEDIA_CURRENT_URL, url,
+            PRIM_MEDIA_HOME_URL, url,
+            PRIM_MEDIA_AUTO_PLAY, TRUE,
+            PRIM_MEDIA_AUTO_SCALE, TRUE
+        ]
+    );
+    gScorebarLastPercent = clamped;
+    return TRUE;
+}
+
+integer ddrScorebarInit()
+{
+    gScorebarLink = ddrScorebarResolveLink();
+    gScorebarEnabled = (gScorebarLink > 0);
+    gScorebarVisible = FALSE;
+    gScorebarNextStatusAt = 0.0;
+    gScorebarLastPercent = -1.0;
+
+    if (gScorebarEnabled)
+    {
+        ddrScorebarSetVisible(FALSE);
+        ddrDebug("UI", "scorebar enabled link=" + (string)gScorebarLink + " face=" + (string)DDR_SCOREBAR_FACE);
+    }
+    else
+    {
+        ddrDebug("UI", "scorebar disabled (name=" + DDR_SCOREBAR_PRIM_NAME + ")");
+    }
+    return gScorebarEnabled;
+}
+
+integer ddrScorebarStop()
+{
+    gScorebarNextStatusAt = 0.0;
+    gScorebarLastPercent = -1.0;
+    if (!gScorebarEnabled)
+    {
+        return FALSE;
+    }
+    return ddrScorebarSetVisible(FALSE);
+}
+
+integer ddrScorebarStart()
+{
+    gScorebarNextStatusAt = 0.0;
+    gScorebarLastPercent = -1.0;
+    if (!gScorebarEnabled)
+    {
+        return FALSE;
+    }
+    ddrScorebarRequestStatus();
+    gScorebarNextStatusAt = ddrNow() + DDR_SCOREBAR_UPDATE_SECONDS;
+    return TRUE;
+}
+
+integer ddrScorebarRequestStatus()
+{
+    if (!gScorebarEnabled)
+    {
+        return FALSE;
+    }
+    if (!gGameplayActive || gState != DDR_STATE_PLAYING)
+    {
+        return FALSE;
+    }
+    llMessageLinked(LINK_SET, DDR_LM_SCORE_STATUS, "", NULL_KEY);
+    return TRUE;
+}
+
+integer ddrTriggerSongFail()
+{
+    if (gSongFailRequested)
+    {
+        return FALSE;
+    }
+    if (!gGameplayActive || gState != DDR_STATE_PLAYING)
+    {
+        return FALSE;
+    }
+
+    gSongFailRequested = TRUE;
+    gLoadingChart = FALSE;
+    gGameplayActive = FALSE;
+    ddrInputStopCapture();
+    ddrScorebarStop();
+    llMessageLinked(LINK_SET, DDR_LM_SCORE_FINISH, "", NULL_KEY);
+    ddrSendRuntimeReset();
+    return TRUE;
+}
+
 integer ddrBootShowSplash()
 {
+    ddrScorebarStop();
     gState = DDR_STATE_SPLASH;
     gStateEnteredAt = ddrNow();
     return ddrSetMediaUrl(ddrBuildScreenUrl(DDR_STATE_SPLASH, "status=idle"));
@@ -58,6 +238,7 @@ integer ddrBootShowSplash()
 
 integer ddrGoMainMenu(string reason, string extraQuery)
 {
+    ddrScorebarStop();
     gHasShownMenu = TRUE;
     string query = extraQuery;
     if (gPlayingSongId != "")
@@ -296,6 +477,8 @@ integer ddrStopGameplayLocal()
 {
     gLoadingChart = FALSE;
     gGameplayActive = FALSE;
+    gSongFailRequested = FALSE;
+    ddrScorebarStop();
     ddrInputStopCapture();
     ddrSendRuntimeReset();
     return TRUE;
@@ -365,6 +548,8 @@ integer ddrStartSongLoadFromSelection(
 
     gLoadingChart = TRUE;
     gGameplayActive = FALSE;
+    gSongFailRequested = FALSE;
+    ddrScorebarStop();
     ddrSendRuntimeMessage(DDR_LM_RUNTIME_START, payload);
 
     if (!ddrInputStartCapture())
@@ -433,9 +618,12 @@ integer ddrTryPlayRequestFromMediaUrl()
 
 integer ddrFinishGameplay(string scorePayload)
 {
+    ddrSendRuntimeReset();
     ddrInputStopCapture();
     gLoadingChart = FALSE;
     gGameplayActive = FALSE;
+    gSongFailRequested = FALSE;
+    ddrScorebarStop();
     gLastScorePayload = scorePayload;
 
     ddrTransition(
@@ -450,6 +638,7 @@ integer ddrHandleRuntimeReady(string payload)
 {
     gLoadingChart = FALSE;
     gGameplayActive = TRUE;
+    gSongFailRequested = FALSE;
 
     string runtimeDifficulty = llJsonGetValue(payload, ["difficulty"]);
     if (runtimeDifficulty != JSON_INVALID && runtimeDifficulty != "")
@@ -478,6 +667,7 @@ integer ddrHandleRuntimeReady(string payload)
     {
         query += "&media=" + llEscapeURL(gPlayingMediaPath);
     }
+    ddrScorebarStart();
     ddrTransition(DDR_STATE_PLAYING, "chart-ready", query);
     return TRUE;
 }
@@ -487,6 +677,8 @@ integer ddrHandleRuntimeFail(string reason)
     ddrInputStopCapture();
     gLoadingChart = FALSE;
     gGameplayActive = FALSE;
+    gSongFailRequested = FALSE;
+    ddrScorebarStop();
 
     string query = "";
     if (reason != "")
@@ -514,6 +706,25 @@ integer ddrHandleRuntimeStatus(string payload)
     return TRUE;
 }
 
+integer ddrHandleScorebarStatus(string payload)
+{
+    if (!gScorebarEnabled)
+    {
+        return FALSE;
+    }
+    if (!gGameplayActive || gState != DDR_STATE_PLAYING)
+    {
+        return FALSE;
+    }
+
+    float percent = ddrClampFloat((float)llStringTrim(payload, STRING_TRIM), 0.0, 100.0);
+    if (llFabs(percent - gScorebarLastPercent) < 0.001)
+    {
+        return TRUE;
+    }
+    return ddrScorebarSetPercent(percent);
+}
+
 integer ddrTick()
 {
     if (gState == DDR_STATE_SPLASH)
@@ -526,6 +737,18 @@ integer ddrTick()
     else if (gState == DDR_STATE_MAIN_MENU)
     {
         ddrTryPlayRequestFromMediaUrl();
+    }
+    else if (gState == DDR_STATE_PLAYING)
+    {
+        if (gGameplayActive && gScorebarEnabled)
+        {
+            float now = ddrNow();
+            if (now >= gScorebarNextStatusAt)
+            {
+                ddrScorebarRequestStatus();
+                gScorebarNextStatusAt = now + DDR_SCOREBAR_UPDATE_SECONDS;
+            }
+        }
     }
     return TRUE;
 }
@@ -620,6 +843,8 @@ integer ddrHandleOwnerCommand(string message)
             " player=" + (string)gActivePlayer +
             " loading=" + (string)gLoadingChart +
             " gameplayActive=" + (string)gGameplayActive +
+            " scorebarEnabled=" + (string)gScorebarEnabled +
+            " scorebarLink=" + (string)gScorebarLink +
             " sitOffset=" + (string)gSitTargetOffset +
             " media=" + ddrReadMediaCurrentUrl() +
             " freeMemory=" + (string)llGetFreeMemory()
@@ -675,6 +900,8 @@ integer ddrEndSession(string reason)
     gLastPlayRequestSignature = "";
     gPlayingMediaPath = "";
     gDirectionHeldMask = 0;
+    gSongFailRequested = FALSE;
+    ddrScorebarStop();
 
     ddrTransition(DDR_STATE_SPLASH, "session-end", "status=idle");
     return TRUE;
@@ -702,6 +929,7 @@ integer ddrStartSession(key playerId)
     gLastPlayRequestSignature = "";
     gPlayingMediaPath = "";
     gDirectionHeldMask = 0;
+    gSongFailRequested = FALSE;
     ddrInputStopCapture();
     ddrClearRuntimePermissions();
     ddrSendRuntimeReset();
@@ -754,9 +982,11 @@ integer ddrBoot()
     gLastPlayRequestSignature = "";
     gPlayingMediaPath = "";
     gDirectionHeldMask = 0;
+    gSongFailRequested = FALSE;
     gSitTargetOffset = DDR_SIT_TARGET_OFFSET;
     gSitTargetRot = DDR_SIT_TARGET_ROT;
     ddrSetupSitTarget();
+    ddrScorebarInit();
 
     if (gListenHandle != 0)
     {
@@ -793,6 +1023,7 @@ default
         if (changeMask & CHANGED_LINK)
         {
             ddrHandleSitChange();
+            ddrScorebarInit();
             ddrSendRuntimeMessage(DDR_LM_RUNTIME_RESCAN_LINKS, "");
         }
     }
@@ -849,6 +1080,16 @@ default
         if (num == DDR_LM_MAIN_STATUS)
         {
             ddrHandleRuntimeStatus(str);
+            return;
+        }
+        if (num == DDR_LM_MAIN_SCORE_STATUS)
+        {
+            ddrHandleScorebarStatus(str);
+            return;
+        }
+        if (num == DDR_LM_MAIN_SCORE_DEPLETED)
+        {
+            ddrTriggerSongFail();
             return;
         }
     }
