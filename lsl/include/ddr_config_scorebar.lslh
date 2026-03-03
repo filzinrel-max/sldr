@@ -1,0 +1,20 @@
+#ifndef DDR_CONFIG_SCOREBAR_LSLH
+#define DDR_CONFIG_SCOREBAR_LSLH
+
+#ifndef DDR_DEBUG
+#define DDR_DEBUG 1
+#endif
+
+// Hosted content root
+string DDR_BASE_URL = "https://filzinrel-max.github.io/sldr";
+
+// Scorebar page endpoint
+string DDR_PATH_SCOREBAR = "/web/scorebar.html";
+
+// Scorebar prim/media settings
+integer DDR_SCOREBAR_FACE = 0;
+integer DDR_SCOREBAR_LINK = -1;
+string DDR_SCOREBAR_PRIM_NAME = "SCOREBAR";
+float DDR_SCOREBAR_UPDATE_SECONDS = 1.0;
+
+#endif

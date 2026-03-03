@@ -537,12 +537,60 @@
           };
         }
 
+        function parseRadarCsv(text) {
+          const values = [];
+          const raw = String(text || "");
+          const parts = raw ? raw.split(",") : [];
+          let i = 0;
+          for (; i < 5; i += 1) {
+            values.push(SLDR.toNumber(parts[i], 0));
+          }
+          return values;
+        }
+
+        function loadResultFromCompactQuery(query) {
+          if (!query || !(query.has("sid") || query.has("score") || query.has("pct") || query.has("title"))) {
+            return null;
+          }
+
+          return {
+            songId: SLDR.getParam(query, "sid", ""),
+            title: SLDR.getParam(query, "title", "Unknown Song"),
+            artist: SLDR.getParam(query, "artist", "Unknown Artist"),
+            difficulty: SLDR.getParam(query, "diff", "-"),
+            meter: SLDR.toNumber(SLDR.getParam(query, "meter", "0"), 0),
+            score: SLDR.toNumber(SLDR.getParam(query, "score", "0"), 0),
+            percent: SLDR.toNumber(SLDR.getParam(query, "pct", "0"), 0),
+            grade: SLDR.getParam(query, "grade", "F"),
+            comboMax: SLDR.toNumber(SLDR.getParam(query, "combo", "0"), 0),
+            judgements: {
+              perfect: SLDR.toNumber(SLDR.getParam(query, "jp", "0"), 0),
+              great: SLDR.toNumber(SLDR.getParam(query, "jg", "0"), 0),
+              good: SLDR.toNumber(SLDR.getParam(query, "jd", "0"), 0),
+              boo: SLDR.toNumber(SLDR.getParam(query, "jb", "0"), 0),
+              miss: SLDR.toNumber(SLDR.getParam(query, "jm", "0"), 0)
+            },
+            holds: {
+              ok: SLDR.toNumber(SLDR.getParam(query, "hok", "0"), 0),
+              ng: SLDR.toNumber(SLDR.getParam(query, "hng", "0"), 0)
+            },
+            radar: {
+              song: parseRadarCsv(SLDR.getParam(query, "rs", "0,0,0,0,0")),
+              performance: parseRadarCsv(SLDR.getParam(query, "rp", "0,0,0,0,0"))
+            }
+          };
+        }
+
         function loadResultFromQuery() {
           const q = SLDR.query();
           const raw = SLDR.getParam(q, "result", "");
           const parsed = SLDR.decodeMaybeJson(raw);
           if (parsed && typeof parsed === "object") {
             return parsed;
+          }
+          const compact = loadResultFromCompactQuery(q);
+          if (compact) {
+            return compact;
           }
           return fallbackResult();
         }
