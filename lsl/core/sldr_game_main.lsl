@@ -19,7 +19,6 @@ string gPlayingMediaPath = "";
 integer gDirectionHeldMask = 0;
 vector gSitTargetOffset = <0.0, 0.0, 0.0>;
 rotation gSitTargetRot = ZERO_ROTATION;
-integer gSongFailRequested = FALSE;
 
 integer ddrIsOwner(key agentId)
 {
@@ -47,26 +46,6 @@ integer ddrSetupSitTarget()
     llSetSitText(DDR_SIT_TEXT);
     llSetTouchText(DDR_SIT_TEXT);
     llSetClickAction(CLICK_ACTION_SIT);
-    return TRUE;
-}
-
-integer ddrTriggerSongFail()
-{
-    if (gSongFailRequested)
-    {
-        return FALSE;
-    }
-    if (!gGameplayActive || gState != DDR_STATE_PLAYING)
-    {
-        return FALSE;
-    }
-
-    gSongFailRequested = TRUE;
-    gLoadingChart = FALSE;
-    gGameplayActive = FALSE;
-    ddrInputStopCapture();
-    llMessageLinked(LINK_SET, DDR_LM_SCORE_FINISH, "", NULL_KEY);
-    ddrSendRuntimeReset();
     return TRUE;
 }
 
@@ -162,15 +141,41 @@ integer ddrSyncIdleAnimationFromHeld(integer heldMask)
 
 integer ddrInputStartCapture()
 {
-    if (!ddrHasPermission(PERMISSION_TAKE_CONTROLS))
+    if (!gSessionActive || gActivePlayer == NULL_KEY)
     {
         return FALSE;
     }
+
+    if (llGetPermissionsKey() != gActivePlayer)
+    {
+        return FALSE;
+    }
+
+    integer granted = llGetPermissions();
+    if ((granted & PERMISSION_TAKE_CONTROLS) == 0)
+    {
+        return FALSE;
+    }
+
     llTakeControls(ddrInputControlMask(), TRUE, FALSE);
     gControlsCaptured = TRUE;
     gDirectionHeldMask = 0;
     ddrSyncIdleAnimationFromHeld(gDirectionHeldMask);
     return TRUE;
+}
+
+integer ddrEnsureInputCapture()
+{
+    if (gControlsCaptured)
+    {
+        return TRUE;
+    }
+    if (ddrInputStartCapture())
+    {
+        return TRUE;
+    }
+    ddrRequestRuntimePermissionsFor(gActivePlayer);
+    return FALSE;
 }
 
 integer ddrInputStopCapture()
@@ -317,7 +322,6 @@ integer ddrStopGameplayLocal()
 {
     gLoadingChart = FALSE;
     gGameplayActive = FALSE;
-    gSongFailRequested = FALSE;
     ddrInputStopCapture();
     ddrSendRuntimeReset();
     return TRUE;
@@ -387,13 +391,9 @@ integer ddrStartSongLoadFromSelection(
 
     gLoadingChart = TRUE;
     gGameplayActive = FALSE;
-    gSongFailRequested = FALSE;
     ddrSendRuntimeMessage(DDR_LM_RUNTIME_START, payload);
 
-    if (!ddrInputStartCapture())
-    {
-        ddrRequestRuntimePermissionsFor(gActivePlayer);
-    }
+    ddrEnsureInputCapture();
 
     string loadingQuery =
         "loading=1" +
@@ -412,7 +412,11 @@ integer ddrStartSongLoadFromSelection(
 
 integer ddrTryPlayRequestFromMediaUrl()
 {
-    if (!gSessionActive || gState != DDR_STATE_MAIN_MENU)
+    if (!gSessionActive)
+    {
+        return FALSE;
+    }
+    if (gState != DDR_STATE_MAIN_MENU && gState != DDR_STATE_SCORE)
     {
         return FALSE;
     }
@@ -454,110 +458,30 @@ integer ddrTryPlayRequestFromMediaUrl()
     return TRUE;
 }
 
-string ddrJsonGetOr(string payload, string keyName, string fallback)
-{
-    string value = llJsonGetValue(payload, [keyName]);
-    if (value == JSON_INVALID || value == "")
-    {
-        return fallback;
-    }
-    return value;
-}
-
-string ddrJsonGetNestedOr(string payload, string parentKey, string childKey, string fallback)
-{
-    string value = llJsonGetValue(payload, [parentKey, childKey]);
-    if (value == JSON_INVALID || value == "")
-    {
-        return fallback;
-    }
-    return value;
-}
-
-string ddrJsonArrayToCsv(string jsonArray)
-{
-    if (jsonArray == JSON_INVALID || jsonArray == "")
-    {
-        return "0,0,0,0,0";
-    }
-    if (llJsonValueType(jsonArray, []) != JSON_ARRAY)
-    {
-        return "0,0,0,0,0";
-    }
-
-    list values = llJson2List(jsonArray);
-    integer count = llGetListLength(values);
-    if (count <= 0)
-    {
-        return "0,0,0,0,0";
-    }
-
-    string out = "";
-    integer i = 0;
-    for (; i < count; ++i)
-    {
-        if (i > 0)
-        {
-            out += ",";
-        }
-        out += (string)((float)llList2String(values, i));
-    }
-    return out;
-}
-
-string ddrQueryAppend(string query, string keyName, string value)
-{
-    if (query != "")
-    {
-        query += "&";
-    }
-    return query + keyName + "=" + llEscapeURL(value);
-}
-
-string ddrBuildScoreQueryFromPayload(string payload)
-{
-    string query = "";
-
-    query = ddrQueryAppend(query, "sid", ddrJsonGetOr(payload, "songId", ""));
-    query = ddrQueryAppend(query, "title", ddrJsonGetOr(payload, "title", "Unknown Song"));
-    query = ddrQueryAppend(query, "artist", ddrJsonGetOr(payload, "artist", "Unknown Artist"));
-    query = ddrQueryAppend(query, "diff", ddrJsonGetOr(payload, "difficulty", "-"));
-    query = ddrQueryAppend(query, "meter", ddrJsonGetOr(payload, "meter", "0"));
-    query = ddrQueryAppend(query, "score", ddrJsonGetOr(payload, "score", "0"));
-    query = ddrQueryAppend(query, "pct", ddrJsonGetOr(payload, "percent", "0"));
-    query = ddrQueryAppend(query, "grade", ddrJsonGetOr(payload, "grade", "F"));
-    query = ddrQueryAppend(query, "combo", ddrJsonGetOr(payload, "comboMax", "0"));
-
-    query = ddrQueryAppend(query, "jp", ddrJsonGetNestedOr(payload, "judgements", "perfect", "0"));
-    query = ddrQueryAppend(query, "jg", ddrJsonGetNestedOr(payload, "judgements", "great", "0"));
-    query = ddrQueryAppend(query, "jd", ddrJsonGetNestedOr(payload, "judgements", "good", "0"));
-    query = ddrQueryAppend(query, "jb", ddrJsonGetNestedOr(payload, "judgements", "boo", "0"));
-    query = ddrQueryAppend(query, "jm", ddrJsonGetNestedOr(payload, "judgements", "miss", "0"));
-    query = ddrQueryAppend(query, "hok", ddrJsonGetNestedOr(payload, "holds", "ok", "0"));
-    query = ddrQueryAppend(query, "hng", ddrJsonGetNestedOr(payload, "holds", "ng", "0"));
-
-    query = ddrQueryAppend(
-        query,
-        "rs",
-        ddrJsonArrayToCsv(llJsonGetValue(payload, ["radar", "song"]))
-    );
-    query = ddrQueryAppend(
-        query,
-        "rp",
-        ddrJsonArrayToCsv(llJsonGetValue(payload, ["radar", "performance"]))
-    );
-    query = ddrQueryAppend(query, "ts", (string)llGetUnixTime());
-    return query;
-}
-
 integer ddrFinishGameplay(string scorePayload)
 {
     ddrSendRuntimeReset();
     ddrInputStopCapture();
     gLoadingChart = FALSE;
     gGameplayActive = FALSE;
-    gSongFailRequested = FALSE;
-    string scoreQuery = ddrBuildScoreQueryFromPayload(scorePayload);
+    string scoreQuery = llStringTrim(scorePayload, STRING_TRIM);
+    if (scoreQuery == "")
+    {
+        scoreQuery =
+            "title=No%20Result" +
+            "&artist=N%2FA" +
+            "&diff=-" +
+            "&meter=0" +
+            "&score=0" +
+            "&pct=0" +
+            "&grade=F" +
+            "&combo=0" +
+            "&jp=0&jg=0&jd=0&jb=0&jm=0" +
+            "&hok=0&hng=0" +
+            "&rs=0%2C0%2C0%2C0%2C0" +
+            "&rp=0%2C0%2C0%2C0%2C0" +
+            "&ts=" + (string)llGetUnixTime();
+    }
 
     ddrTransition(
         DDR_STATE_SCORE,
@@ -571,7 +495,6 @@ integer ddrHandleRuntimeReady(string payload)
 {
     gLoadingChart = FALSE;
     gGameplayActive = TRUE;
-    gSongFailRequested = FALSE;
 
     string runtimeDifficulty = llJsonGetValue(payload, ["difficulty"]);
     if (runtimeDifficulty != JSON_INVALID && runtimeDifficulty != "")
@@ -584,10 +507,7 @@ integer ddrHandleRuntimeReady(string payload)
         runtimeMeter = "0";
     }
 
-    if (!ddrInputStartCapture())
-    {
-        ddrRequestRuntimePermissionsFor(gActivePlayer);
-    }
+    ddrEnsureInputCapture();
 
     string query =
         "loading=0" +
@@ -609,7 +529,6 @@ integer ddrHandleRuntimeFail(string reason)
     ddrInputStopCapture();
     gLoadingChart = FALSE;
     gGameplayActive = FALSE;
-    gSongFailRequested = FALSE;
 
     string query = "";
     if (reason != "")
@@ -646,7 +565,7 @@ integer ddrTick()
             ddrGoMainMenu("auto", "status=ready");
         }
     }
-    else if (gState == DDR_STATE_MAIN_MENU)
+    else if (gState == DDR_STATE_MAIN_MENU || gState == DDR_STATE_SCORE)
     {
         ddrTryPlayRequestFromMediaUrl();
     }
@@ -798,7 +717,6 @@ integer ddrEndSession(string reason)
     gLastPlayRequestSignature = "";
     gPlayingMediaPath = "";
     gDirectionHeldMask = 0;
-    gSongFailRequested = FALSE;
 
     ddrTransition(DDR_STATE_SPLASH, "session-end", "status=idle");
     return TRUE;
@@ -826,7 +744,6 @@ integer ddrStartSession(key playerId)
     gLastPlayRequestSignature = "";
     gPlayingMediaPath = "";
     gDirectionHeldMask = 0;
-    gSongFailRequested = FALSE;
     ddrInputStopCapture();
     ddrClearRuntimePermissions();
     ddrSendRuntimeReset();
@@ -879,7 +796,6 @@ integer ddrBoot()
     gLastPlayRequestSignature = "";
     gPlayingMediaPath = "";
     gDirectionHeldMask = 0;
-    gSongFailRequested = FALSE;
     gSitTargetOffset = DDR_SIT_TARGET_OFFSET;
     gSitTargetRot = DDR_SIT_TARGET_ROT;
     ddrSetupSitTarget();
@@ -936,6 +852,10 @@ default
         {
             ddrInputStartCapture();
         }
+        else
+        {
+            ddrInputStopCapture();
+        }
     }
 
     touch_start(integer detectedCount)
@@ -975,11 +895,6 @@ default
         if (num == DDR_LM_MAIN_STATUS)
         {
             ddrHandleRuntimeStatus(str);
-            return;
-        }
-        if (num == DDR_LM_MAIN_SCORE_DEPLETED)
-        {
-            ddrTriggerSongFail();
             return;
         }
     }
