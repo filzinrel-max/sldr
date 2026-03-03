@@ -14,6 +14,8 @@
 #define DDR_LM_MAIN_FAIL 7201
 #define DDR_LM_MAIN_COMPLETE 7202
 #define DDR_LM_MAIN_STATUS 7203
+#define DDR_LM_MAIN_SCORE_STATUS 7204 // payload: "<gaugePercent>"
+#define DDR_LM_MAIN_SCORE_DEPLETED 7205
 
 // Runtime engine -> FX
 #define DDR_LM_FX_RESET 7300

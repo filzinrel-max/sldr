@@ -33,6 +33,8 @@ string gSongTitle = "";
 string gSongArtist = "";
 string gSongDifficulty = "";
 list gSongRadar = [0.0, 0.0, 0.0, 0.0, 0.0];
+float gLifeGauge = DDR_GAUGE_START;
+integer gLifeDepletedSent = FALSE;
 
 string ddrJsonField(string payload, string fieldName)
 {
@@ -65,6 +67,8 @@ integer ddrScoreSvcResetCounters()
     gMetricChordHitNotes = 0;
     gMetricOffbeatTotalNotes = 0;
     gMetricOffbeatHitNotes = 0;
+    gLifeGauge = DDR_GAUGE_START;
+    gLifeDepletedSent = FALSE;
     return TRUE;
 }
 
@@ -147,9 +151,47 @@ integer ddrScoreSvcPointsForJudge(integer judgement)
     return DDR_POINTS_MISS;
 }
 
+float ddrScoreSvcGaugeDeltaForJudge(integer judgement)
+{
+    if (judgement == DDR_JUDGE_PERFECT)
+    {
+        return DDR_GAUGE_DELTA_PERFECT;
+    }
+    if (judgement == DDR_JUDGE_GREAT)
+    {
+        return DDR_GAUGE_DELTA_GREAT;
+    }
+    if (judgement == DDR_JUDGE_GOOD)
+    {
+        return DDR_GAUGE_DELTA_GOOD;
+    }
+    if (judgement == DDR_JUDGE_BOO)
+    {
+        return DDR_GAUGE_DELTA_BOO;
+    }
+    return DDR_GAUGE_DELTA_MISS;
+}
+
+integer ddrScoreSvcApplyGaugeDelta(float delta)
+{
+    gLifeGauge = ddrClampFloat(gLifeGauge + delta, 0.0, DDR_GAUGE_MAX);
+    if (!gLifeDepletedSent && gLifeGauge <= 0.0)
+    {
+        gLifeDepletedSent = TRUE;
+        llMessageLinked(LINK_SET, DDR_LM_MAIN_SCORE_DEPLETED, "", NULL_KEY);
+    }
+    return TRUE;
+}
+
+float ddrScoreSvcGaugePercent()
+{
+    return ddrClampFloat(gLifeGauge, 0.0, DDR_GAUGE_MAX);
+}
+
 integer ddrScoreSvcApplyNote(integer judgement, integer noteFlags)
 {
     gScorePoints += ddrScoreSvcPointsForJudge(judgement);
+    ddrScoreSvcApplyGaugeDelta(ddrScoreSvcGaugeDeltaForJudge(judgement));
 
     if (judgement == DDR_JUDGE_PERFECT)
     {
@@ -203,12 +245,14 @@ integer ddrScoreSvcApplyHold(integer holdState)
     {
         ++gHoldOk;
         gScorePoints += DDR_POINTS_HOLD_OK;
+        ddrScoreSvcApplyGaugeDelta(DDR_GAUGE_DELTA_HOLD_OK);
     }
     else if (holdState == DDR_HOLD_STATE_NG)
     {
         ++gHoldNg;
         gScorePoints += DDR_POINTS_HOLD_NG;
         gCombo = 0;
+        ddrScoreSvcApplyGaugeDelta(DDR_GAUGE_DELTA_HOLD_NG);
     }
     return TRUE;
 }
@@ -286,6 +330,7 @@ string ddrScoreSvcBuildPayload()
     payload = llJsonSetValue(payload, ["meter"], (string)gChartMeter);
     payload = llJsonSetValue(payload, ["score"], (string)gScorePoints);
     payload = llJsonSetValue(payload, ["percent"], (string)ddrScoreSvcPercent());
+    payload = llJsonSetValue(payload, ["life"], (string)ddrScoreSvcGaugePercent());
     payload = llJsonSetValue(payload, ["grade"], ddrScoreSvcGrade());
     payload = llJsonSetValue(payload, ["comboMax"], (string)gMaxCombo);
 
@@ -306,6 +351,12 @@ string ddrScoreSvcBuildPayload()
 integer ddrScoreSvcFinish()
 {
     llMessageLinked(LINK_SET, DDR_LM_MAIN_COMPLETE, ddrScoreSvcBuildPayload(), NULL_KEY);
+    return TRUE;
+}
+
+integer ddrScoreSvcSendStatus()
+{
+    llMessageLinked(LINK_SET, DDR_LM_MAIN_SCORE_STATUS, (string)ddrScoreSvcGaugePercent(), NULL_KEY);
     return TRUE;
 }
 
@@ -360,6 +411,11 @@ default
         if (num == DDR_LM_SCORE_FINISH)
         {
             ddrScoreSvcFinish();
+            return;
+        }
+        if (num == DDR_LM_SCORE_STATUS)
+        {
+            ddrScoreSvcSendStatus();
             return;
         }
         if (num == DDR_LM_RUNTIME_DEBUG)

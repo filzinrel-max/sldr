@@ -32,6 +32,17 @@
 #define DDR_POINTS_HOLD_OK 2
 #define DDR_POINTS_HOLD_NG -2
 
+// Life gauge model (DDR-style groove gauge)
+#define DDR_GAUGE_START 50.0
+#define DDR_GAUGE_MAX 100.0
+#define DDR_GAUGE_DELTA_PERFECT 1.8
+#define DDR_GAUGE_DELTA_GREAT 1.0
+#define DDR_GAUGE_DELTA_GOOD -0.8
+#define DDR_GAUGE_DELTA_BOO -4.0
+#define DDR_GAUGE_DELTA_MISS -6.0
+#define DDR_GAUGE_DELTA_HOLD_OK 0.6
+#define DDR_GAUGE_DELTA_HOLD_NG -4.0
+
 // Grade thresholds (%)
 #define DDR_GRADE_A 93.0
 #define DDR_GRADE_B 80.0
