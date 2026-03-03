@@ -1,0 +1,44 @@
+#ifndef DDR_CONFIG_MAIN_LSLH
+#define DDR_CONFIG_MAIN_LSLH
+
+// Lightweight config for sldr_game_main.lsl.
+// Keep only values required by main + included state/animation headers.
+
+#ifndef DDR_DEBUG
+#define DDR_DEBUG 1
+#endif
+
+// Hosted content root
+string DDR_BASE_URL = "https://filzinrel-max.github.io/sldr";
+
+// Relative web/screen endpoints
+string DDR_PATH_SPLASH = "/web/splash.html";
+string DDR_PATH_MENU = "/web/menu.html";
+string DDR_PATH_SELECT = "/web/select.html";
+string DDR_PATH_PLAY = "/web/play.html";
+string DDR_PATH_SCORE = "/web/score.html";
+
+// Prim/media settings
+integer DDR_MEDIA_FACE = 7;
+
+string DDR_SIT_TEXT = "Dance";
+vector DDR_SIT_TARGET_OFFSET = <-1.75, 0.0, -2>;
+rotation DDR_SIT_TARGET_ROT = ZERO_ROTATION;
+
+// Runtime cadence
+float DDR_TICK_SECONDS = 0.05;
+float DDR_SPLASH_SECONDS = 5.0;
+
+// Command channel (owner + active player)
+integer DDR_COMMAND_CHANNEL = 9919;
+
+// Animation names
+list DDR_LANE_ANIMATIONS = [
+    "DDR_Left",
+    "DDR_Down",
+    "DDR_Up",
+    "DDR_Right"
+];
+string DDR_IDLE_ANIMATION = "DDR_Idle";
+
+#endif

@@ -5,18 +5,10 @@ integer gState = -1;
 float gStateEnteredAt = 0.0;
 string gCurrentMediaUrl = "";
 
-integer gSelectedSongIndex = 0;
-string gSelectedDifficulty = "Easy";
-
 string gPlayingSongId = "";
 string gPlayingSongTitle = "";
 string gPlayingSongArtist = "";
 string gPlayingDifficulty = "";
-
-integer gSongClockStarted = FALSE;
-float gSongClockStartAt = 0.0;
-
-string gLastScorePayload = "{}";
 
 string ddrStateName(integer stateValue)
 {
@@ -110,36 +102,6 @@ integer ddrTransition(integer nextState, string reason, string query)
 float ddrStateAge()
 {
     return ddrNow() - gStateEnteredAt;
-}
-
-integer ddrSongClockReset()
-{
-    gSongClockStarted = FALSE;
-    gSongClockStartAt = 0.0;
-    return TRUE;
-}
-
-integer ddrSongClockStart()
-{
-    gSongClockStartAt = ddrNow() + DDR_PLAY_START_DELAY;
-    gSongClockStarted = TRUE;
-    ddrDebug("PLAY", "song clock starts in " + (string)DDR_PLAY_START_DELAY + "s");
-    return TRUE;
-}
-
-integer ddrSongClockStop()
-{
-    gSongClockStarted = FALSE;
-    return TRUE;
-}
-
-float ddrSongTimeNow()
-{
-    if (!gSongClockStarted)
-    {
-        return -9999.0;
-    }
-    return ddrNow() - gSongClockStartAt;
 }
 
 #endif
